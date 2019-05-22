@@ -28,8 +28,11 @@
 <template>
     <div id="dynamic-editor" v-on-clickaway="clickedAway">
         <dynamic-card class="left-panel">
+            <div v-show="selectedElement !== 'undefined'">
+                <DynamicTextComposer :selectedElement="selectedElement"/>
+            </div>
             <div v-show="selectedContainer !== 'undefined'">
-                
+                <DynamicContainerComposer :selectedContainer="selectedContainer"/>
             </div>
         </dynamic-card>
         <dynamic-card class="editor-area">
@@ -49,19 +52,22 @@ import Container from "./container";
 import DynamicCard from "./DynamicCard";
 import DynamicContainer from "./DynamicContainer";
 import { EventBus } from "./EventBus";
-
+import DynamicContainerComposer from "./composer/DynamicContainerComposer";
+import DynamicTextComposer from "./composer/DynamicTextComposer"
 export default {
     name: "DynamicEditor",
     components: {
         DynamicCard,
-        DynamicContainer
+        DynamicContainer,
+        DynamicContainerComposer,
+        DynamicTextComposer
     },
     mixins: [clickaway],
     data() {
         return {
             containers: [],
-            selectedContainer: null,
-            selectedElement: null,
+            selectedContainer: {children:[1,1,1]},
+            selectedElement: {data:""},
         }
     },
     mounted() {

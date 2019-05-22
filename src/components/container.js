@@ -8,16 +8,18 @@ export default class Container {
         this.childOrder = [];
         this.isFocused = false;
         this.styles = {
-            formData: {
+            inputStyles: {
                 width: '100%',
-                padding: {
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                },
+                backgroundColor: '#fff',
+                padding: 0,
+                margin: 0,
             },
-            styleObject: {},
+            computedStyles: {
+                width: '100%',
+                backgroundColor: '#fff',
+                padding: '0px',
+                margin: '0px',
+            },
         };
     }
 
@@ -27,5 +29,27 @@ export default class Container {
 
     getId() {
         return this.uuid;
+    }
+
+    recompute() {
+        if (typeof this.styles.computedStyles.width === 'number') {
+            this.styles.computedStyles.width = `${this.styles.inputStyles.width}px`;
+        } else {
+            this.styles.computedStyles.width = this.styles.inputStyles.width;
+        }
+
+        this.styles.computedStyles.backgroundColor = this.styles.inputStyles.backgroundColor;
+
+        if (typeof this.styles.computedStyles.padding === 'number') {
+            this.styles.computedStyles.padding = `${this.styles.inputStyles.padding}px`;
+        } else {
+            this.styles.computedStyles.padding = this.styles.inputStyles.padding;
+        }
+
+        if (typeof this.styles.computedStyles.margin === 'number') {
+            this.styles.computedStyles.margin = `${this.styles.inputStyles.margin}px`;
+        } else {
+            this.styles.computedStyles.margin = this.styles.inputStyles.margin;
+        }
     }
 }

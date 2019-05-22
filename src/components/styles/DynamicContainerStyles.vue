@@ -4,11 +4,11 @@
     }
     .form-item {
         display: flex;
+        flex-direction: column;
         margin-bottom: 24px;
-        justify-content: space-between;
     }
-    .label {
-        font-weight: 500;
+    .style-label {
+        font-weight: 600;
         max-width: 120px;
     }
 </style>
@@ -16,21 +16,10 @@
 <template>
     <div class="editor-styles">
         <div class="styles-form">
-            <div class="form-item">
-                <div class="label">Width</div>
-                <div class="input"><dynamic-text-input :value="inputStyles.width" @input="value => emitInput('width', value)" /></div>
-            </div>
-            <div class="form-item">
-                <div class="label">BG Color</div>
-                <div class="input"><dynamic-text-input :value="inputStyles.backgroundColor" /></div>
-            </div>
-            <div class="form-item">
-                <div class="label">Padding</div>
-                <div class="input"><dynamic-text-input :value="inputStyles.padding" /></div>
-            </div>
-            <div class="form-item">
-                <div class="label">Margin</div>
-                <div class="input"><dynamic-text-input :value="inputStyles.margin" /></div>
+            <div class="form-item" v-for="style in styles" :key="style.label">
+                <div class="style-label">{{style.label}}</div>
+                <div v-if="style.component"> <component :is="style.component" :inputs="style.inputs"></component> </div>
+                <div class="input-styles" v-else>Style inputs here</div>
             </div>
         </div>
     </div>
@@ -41,7 +30,7 @@ import DynamicTextInput from "../inputs/DynamicTextInput"
 import { EventBus } from '../EventBus';
 
 export default {
-    props: ["inputStyles"],
+    props: ["styles"],
     data() {
         return {
         }
@@ -49,9 +38,12 @@ export default {
     components: {
         DynamicTextInput
     },
-    methods: {
-        emitInput(styleName, value) {
-            EventBus.$emit('updateContainerStyles', styleName, value);
+    watch: {
+        styles: {
+            deep: true,
+            handler: function(newValue, oldValue) {
+                EventBus.$emit('recomputeStyles');
+            }
         }
     }
 }

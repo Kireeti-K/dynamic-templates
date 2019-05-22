@@ -43,7 +43,7 @@
             <div v-if="selectedContainer">
                 <h4>Styles</h4>
                 <dynamic-container-styles 
-                    :input-styles="selectedContainer.styles.inputStyles">
+                    :styles="selectedContainer.styles.inputStyles">
                 </dynamic-container-styles>
             </div>
         </dynamic-card>
@@ -78,9 +78,9 @@ export default {
             this.addNewContainer();
         }
         EventBus.$on("updateSelectedContainer", this.updateSelectedContainer);
-        EventBus.$on("updateContainerStyles", (styleName, value) => {
-            console.log("updateContainerStyles event caught");
-            this.updateStyles(this.selectedContainer, styleName, value)
+        EventBus.$on("recomputeStyles", () => {
+            console.log("recomputing Styles event caught");
+            this.selectedContainer.recomputeStyles();
         });
     },
     destroyed() {
@@ -96,7 +96,7 @@ export default {
         updateStyles(item, styleName, value) {
             console.log("Updating style with name ", styleName);
             item.styles.inputStyles[styleName] = value;
-            item.recompute();
+            item.recomputeStyles();
         },
         clickedAway() {
             this.updateSelectedContainer(null);

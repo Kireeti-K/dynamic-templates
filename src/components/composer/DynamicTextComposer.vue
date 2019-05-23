@@ -1,0 +1,69 @@
+<template>
+    <div class="editor-controls">
+        <h4>Text</h4>
+        <div  id="controls-list">
+           <div  class="item">
+               <p>Title</p>
+               <input class=" medium" v-model="inputText" />
+           </div>
+
+        </div>
+    </div>
+</template>
+
+<script>
+import {EventBus} from "../EventBus"
+export default {
+    name: "DynamicTextComposer",
+    props: ["selectedElement"],
+    data(){
+        return {
+            inputText:""
+        }
+    },
+    mounted(){
+        this.inputText=this.selectedElement.data;
+    }
+    ,watch:{
+        inputText:function(newv){
+            EventBus.$emit("setElementText",{element:this.selectedElement,text:this.inputText});
+        }
+    },
+}
+</script>
+
+<style>
+    #controls-list{
+        margin: 4px;
+        padding: 4px;
+        background-color: white;
+        /*
+        border-radius: 8px;
+        box-shadow:  0 0 8px lightgray;
+        */
+    }
+    #controls-list input{
+        padding: 12px;
+        border:1px solid lightgray;
+        width:80px;
+        font-size: 110%;
+        background-color: white;
+        /* 
+        border-radius: 8px;
+        box-shadow: inset 0 2px 4px gray;
+        
+         */
+    }
+    #controls-list .item{
+       margin:8px 0;
+        display:flex;
+        justify-content: space-between;
+        flex-direction: row;
+        align-items: center;
+    }
+    #controls-list .medium{width:120px}
+
+    #controls-list p{
+        font-size: 120%;
+    }
+</style>

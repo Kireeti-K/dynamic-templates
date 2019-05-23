@@ -28,15 +28,15 @@
 <template>
     <div id="dynamic-editor" v-on-clickaway="clickedAway">
         <dynamic-card class="left-panel">
-            <div v-show="selectedElement !== 'undefined'">
+            <div v-show="selectedElement !== null">
                 <DynamicTextComposer :selectedElement="selectedElement"/>
             </div>
-            <div v-show="selectedContainer !== 'undefined'">
+            <div v-show="selectedContainer !==  null">
                 <DynamicContainerComposer :selectedContainer="selectedContainer"/>
             </div>
         </dynamic-card>
-        <dynamic-card class="editor-area">
-            <div v-for="(container, index) in containers" :key="index">
+        <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
+            <div v-for="(container, index) in root.children" :key="index">
                 <dynamic-container :container-object="container" ></dynamic-container>
             </div>
         </dynamic-card>
@@ -44,7 +44,7 @@
             <div v-if="selectedContainer">
                 <h4>Styles</h4>
                 <dynamic-container-styles 
-                    :styles="selectedContainer.styles.inputStyles">
+                    :styles="selectedContainer.styling.inputStyles">
                 </dynamic-container-styles>
             </div>
         </dynamic-card>
@@ -72,26 +72,21 @@ export default {
     mixins: [clickaway],
     data() {
         return {
-            root: new Container(),
+            root: new Container(null,[new Container()]),
             selectedContainer: null,
             selectedElement:null,
         }
     },
     mounted() {
-        if (Object.keys(this.containers).length === 0) {
-            this.addNewContainer();
-        }
+  
         EventBus.$on("updateSelectedContainer", this.updateSelectedContainer);
-<<<<<<< HEAD
-        EventBus.$on("addNewContainer",addNewContainer);
-        EventBus.$on("deleteItem",deleteItem);
-        this.selectedContainer=this.root;
-=======
+        EventBus.$on("addNewContainer",this.addNewContainer);
+        EventBus.$on("deleteItem",this.deleteItem);
         EventBus.$on("recomputeStyles", () => {
             console.log("recomputing Styles event caught");
             this.selectedContainer.recomputeStyles();
         });
->>>>>>> 90ae0eb971712a4e3ccbf43b300a695ede8e1ff7
+        this.selectedContainer=this.root;
     },
     destroyed() {
         EventBus.$off("updateSelectedContianer");
@@ -99,21 +94,21 @@ export default {
     methods: {
         addNewContainer() {
 
-            this.selectedContainer.push(new Container());
+            this.selectedContainer.children.push(new Container());
         },
         updateSelectedContainer(selectedContainer) {
             this.selectedContainer = selectedContainer;
         },
         updateStyles(item, styleName, value) {
             console.log("Updating style with name ", styleName);
-            item.styles.inputStyles[styleName] = value;
+            item.styling.inputStyles[styleName] = value;
             item.recomputeStyles();
         },
         clickedAway() {
             this.updateSelectedContainer(null);
         }
         ,deleteItem(item){
-            ths.selectedContainer.pop(item);
+            this.selectedContainer.children.pop(item);
         }
     }
 };

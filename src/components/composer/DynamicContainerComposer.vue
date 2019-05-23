@@ -1,17 +1,17 @@
 <template>
     <div class="editor-controls">
         <h4>Container</h4>
-        <div v-if="selectedContainer && selectedContainer.children.length > 0" >
-            <!-- childen list -->
-            <div id="container-list">
-                <div class="item" v-for="(c,i) in selectedContainer.children" :key="i" >
-                    <p> container </p>
-                    <button class="delete" @click="deleteItem(c)">-</button>
-                </div>
+    
+        <!-- childen list -->
+        <div id="container-list" v-if="selectedContainer && selectedContainer.children.length > 0" >
+            <div class="item" v-for="(c,i) in selectedContainer.children" :key="i" >
+                <p> container </p>
+                <button class="delete" @click="deleteItem(c)">-</button>
             </div>
-            <button id='addnew' @click="addNew">add new </button>
         </div>
         <div v-else>No items in the container</div>
+        <button id='addnew' @click="addNew">add new </button>
+    
     </div>
 </template>
 

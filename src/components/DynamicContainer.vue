@@ -6,14 +6,15 @@
 
 <template>
     <div class="container" 
-        :style="styles"
+        :style="containerObject.styling"
         :class="{'is-focused': isFocused}" 
         @click.stop="() => EventBus.$emit('updateSelectedContainer', containerObject)" 
     >
         <div v-if="containerObject.children.length > 0">
-            Showing children
+            <div style="padding: 10px; color: #333;background-color:pink;">parent container</div>
+           <DynamicContainer  v-for="(c,i) in containerObject.children" :key=i :container-object="c" />
         </div>
-        <div v-else style="padding: 10px; color: #333">Empty container</div>
+        <div v-else style="padding: 10px; color: #333;background-color:lightgrey;">Empty container</div>
     </div>
 </template>
 
@@ -22,11 +23,16 @@ import { EventBus } from "./EventBus";
 
 export default {
     name: "DynamicContainer",
-    props: ["containerObject", "styles", "isFocused"],
+    props: ["containerObject"],
     data() {
         return {
             EventBus: EventBus,
         }
     },
+    computed:{
+        isFocused:function(){
+            return false;
+        }
+    }
 }
 </script>

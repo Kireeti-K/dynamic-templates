@@ -1,16 +1,15 @@
 /* eslint-disable class-methods-use-this */
 import { randomString } from '../utils/string';
 import Item from './Item';
-import StyleSystem from '../components/styles/styles';
+
 
 export default class Container extends Item {
-    constructor(parent, styling) {
-        super(parent, styling);
-        this.id = this.createContainerId();
-        this.children = {};
-        this.childOrder = [];
-        this.isFocused = false;
-        this.styles = new StyleSystem();
+    constructor(parent, children = null) {
+        super(parent);
+        this.children = children != null ? children : [];
+        // this.id = this.createContainerId();
+        // this.childOrder = [];
+        // this.isFocused = false;
     }
 
     createContainerId() {
@@ -22,6 +21,6 @@ export default class Container extends Item {
     }
 
     recomputeStyles() {
-        this.styles.recompute();
+        this.styling.recompute();
     }
 }

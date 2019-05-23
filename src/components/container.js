@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { randomString } from '../utils/string';
+import StyleSystem from './styles/styles';
 
 export default class Container {
     constructor() {
@@ -7,18 +8,7 @@ export default class Container {
         this.children = {};
         this.childOrder = [];
         this.isFocused = false;
-        this.styles = {
-            formData: {
-                width: '100%',
-                padding: {
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: 0,
-                },
-            },
-            styleObject: {},
-        };
+        this.styles = new StyleSystem();
     }
 
     createContainerId() {
@@ -27,5 +17,9 @@ export default class Container {
 
     getId() {
         return this.uuid;
+    }
+
+    recomputeStyles() {
+        this.styles.recompute();
     }
 }

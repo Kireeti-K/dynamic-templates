@@ -10,18 +10,18 @@
         width: 230px;
         margin-right: 40px;
         height: 633px;
-        padding: 24px;
+        padding: 12px 24px;
     }
     #dynamic-editor .editor-area {
         margin-right: 40px;
         width: 16.1cm;
         height: 633px;
-        padding: 24px;
+        padding: 12px 24px;
     }
     #dynamic-editor .right-panel {
         width: 230px;
         height: 633px;
-        padding: 24px;
+        padding: 12px 24px;
     }
 </style>
 
@@ -41,7 +41,12 @@
             </div>
         </dynamic-card>
         <dynamic-card class="right-panel">
-            <h4>Styles</h4>
+            <div v-if="selectedContainer">
+                <h4>Styles</h4>
+                <dynamic-container-styles 
+                    :styles="selectedContainer.styles.inputStyles">
+                </dynamic-container-styles>
+            </div>
         </dynamic-card>
     </div>
 </template>
@@ -51,6 +56,7 @@ import { mixin as clickaway } from 'vue-clickaway';
 import Container from "../classes/container";
 import DynamicCard from "./DynamicCard";
 import DynamicContainer from "./DynamicContainer";
+import DynamicContainerStyles from "./styles/DynamicContainerStyles";
 import { EventBus } from "./EventBus";
 import DynamicContainerComposer from "./composer/DynamicContainerComposer";
 import DynamicTextComposer from "./composer/DynamicTextComposer"
@@ -60,7 +66,8 @@ export default {
         DynamicCard,
         DynamicContainer,
         DynamicContainerComposer,
-        DynamicTextComposer
+        DynamicTextComposer,
+        DynamicContainerStyles,
     },
     mixins: [clickaway],
     data() {
@@ -75,9 +82,16 @@ export default {
             this.addNewContainer();
         }
         EventBus.$on("updateSelectedContainer", this.updateSelectedContainer);
+<<<<<<< HEAD
         EventBus.$on("addNewContainer",addNewContainer);
         EventBus.$on("deleteItem",deleteItem);
         this.selectedContainer=this.root;
+=======
+        EventBus.$on("recomputeStyles", () => {
+            console.log("recomputing Styles event caught");
+            this.selectedContainer.recomputeStyles();
+        });
+>>>>>>> 90ae0eb971712a4e3ccbf43b300a695ede8e1ff7
     },
     destroyed() {
         EventBus.$off("updateSelectedContianer");
@@ -89,6 +103,11 @@ export default {
         },
         updateSelectedContainer(selectedContainer) {
             this.selectedContainer = selectedContainer;
+        },
+        updateStyles(item, styleName, value) {
+            console.log("Updating style with name ", styleName);
+            item.styles.inputStyles[styleName] = value;
+            item.recomputeStyles();
         },
         clickedAway() {
             this.updateSelectedContainer(null);

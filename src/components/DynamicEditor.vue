@@ -37,7 +37,7 @@
         </dynamic-card>
         <dynamic-card class="editor-area">
             <div v-for="(container, index) in containers" :key="index">
-                <dynamic-container :container-object="container" :is-focused="selectedContainer && container.id === selectedContainer.id"></dynamic-container>
+                <dynamic-container :container-object="container" ></dynamic-container>
             </div>
         </dynamic-card>
         <dynamic-card class="right-panel">
@@ -48,7 +48,7 @@
 
 <script>
 import { mixin as clickaway } from 'vue-clickaway';
-import Container from "./container";
+import Container from "../classes/container";
 import DynamicCard from "./DynamicCard";
 import DynamicContainer from "./DynamicContainer";
 import { EventBus } from "./EventBus";
@@ -65,9 +65,9 @@ export default {
     mixins: [clickaway],
     data() {
         return {
-            containers: [],
-            selectedContainer: {children:[1,1,1]},
-            selectedElement: {data:""},
+            root: new Container(),
+            selectedContainer: null,
+            selectedElement:null,
         }
     },
     mounted() {
@@ -75,19 +75,26 @@ export default {
             this.addNewContainer();
         }
         EventBus.$on("updateSelectedContainer", this.updateSelectedContainer);
+        EventBus.$on("addNewContainer",addNewContainer);
+        EventBus.$on("deleteItem",deleteItem);
+        this.selectedContainer=this.root;
     },
     destroyed() {
         EventBus.$off("updateSelectedContianer");
     },
     methods: {
         addNewContainer() {
-            this.containers.push(new Container());
+
+            this.selectedContainer.push(new Container());
         },
         updateSelectedContainer(selectedContainer) {
             this.selectedContainer = selectedContainer;
         },
         clickedAway() {
             this.updateSelectedContainer(null);
+        }
+        ,deleteItem(item){
+            ths.selectedContainer.pop(item);
         }
     }
 };

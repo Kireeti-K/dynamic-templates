@@ -1,12 +1,12 @@
 /* eslint-disable class-methods-use-this */
 import { randomString } from '../utils/string';
+import Item from './Item';
 
-export default class Container {
-    constructor() {
+export default class Container extends Item {
+    constructor(parent, styling) {
+        super(parent, styling);
         this.id = this.createContainerId();
-        this.children = {};
-        this.childOrder = [];
-        this.isFocused = false;
+        this.children = [];
         this.styles = {
             formData: {
                 width: '100%',

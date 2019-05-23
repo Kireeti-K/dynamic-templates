@@ -9,7 +9,7 @@
                     <button class="delete" @click="deleteItem(c)">-</button>
                 </div>
             </div>
-            <button id='addnew'>add new </button>
+            <button id='addnew' @click="addNew">add new </button>
         </div>
         <div v-else>No items in the container</div>
     </div>
@@ -24,6 +24,9 @@ export default {
     methods:{
         deleteItem(item){
             EventBus.$emit('deleteItem',item)
+        },
+        addNew(){
+            EventBus.$emit('addNewContainer');
         }
     }
 }

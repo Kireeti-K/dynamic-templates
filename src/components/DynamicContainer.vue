@@ -10,7 +10,7 @@
 <template>
     <div class="container" 
         :class="{'is-focused': isFocused}" 
-        @click="() => EventBus.$emit('updateSelectedContainer', containerObject)" 
+        @click.stop="() => EventBus.$emit('updateSelectedContainer', containerObject)" 
     >
         <div v-if="containerObject.children.length > 0">
             Showing children

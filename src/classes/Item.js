@@ -16,4 +16,8 @@ export default class Item {
     getId() {
         return this.uuid;
     }
+
+    setStyles(styles) {
+        this.styles.mergeComputedStyles(styles);
+    }
 }

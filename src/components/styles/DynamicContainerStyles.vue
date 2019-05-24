@@ -1,6 +1,11 @@
 <style>
+    .editor-styles {
+        height: 570px;
+        overflow: auto;
+        padding: 0px 24px;
+    }
     .styles-form {
-        margin-top: 28px;
+        margin-top: 4px;
     }
     .single-style {
         display: flex;

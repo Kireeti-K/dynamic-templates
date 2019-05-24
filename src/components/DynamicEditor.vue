@@ -19,9 +19,9 @@
         padding: 12px 24px;
     }
     #dynamic-editor .right-panel {
-        width: 230px;
+        width: 280px;
         height: 633px;
-        padding: 12px 24px;
+        padding: 12px 0px;
     }
 </style>
 
@@ -42,7 +42,7 @@
         </dynamic-card>
         <dynamic-card class="right-panel">
             <div v-if="selectedContainer">
-                <h4>Styles</h4>
+                <h4 style="margin-left: 24px">Styles</h4>
                 <dynamic-container-styles 
                     :styles="selectedContainer.styles.inputStyles">
                 </dynamic-container-styles>
@@ -80,13 +80,12 @@ export default {
         }
     },
     mounted() {
-  
         EventBus.$on("updateSelectedContainer", this.updateSelectedContainer);
         EventBus.$on("addNewContainer",this.addNewContainer);
         EventBus.$on("deleteItem",this.deleteItem);
         EventBus.$on("recomputeStyles", () => {
             this.selectedContainer.recomputeStyles();
-            console.log('recomputing styles')
+            console.log('recomputing styles');
         });
         this.selectedContainer=this.root;
     },

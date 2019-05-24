@@ -6,20 +6,26 @@
     .style-inputs .input .label {
         margin-bottom: 8px;
     }
-    .style-inputs .input input {
-        width: 180px !important;
+    .style-inputs .width-input {
+        margin-top: 6px;
+    }
+    .style-inputs .checkbox-input .label {
+        margin-left: 5px;
+    }
+    .style-inputs .checkbox-input .label,
+    .style-inputs .checkbox-input input {
+        display: inline-block;
     }
 </style>
 
 <template>
     <div class="style-inputs">
         <div class="input">
-            <div class="label">Width Type</div>
-            <dynamic-radio-switch :options="widthType.options" v-model="widthType.value" />
-        </div>
-        <div class="input">
-            <div class="label">Width</div>
-            <dynamic-input type="number" v-model="width.value" />
+            <div class="checkbox-input">
+                <input type="checkbox" v-model="setFixedWidth.value" />
+                <div class="label">Set Fixed Width</div>
+            </div>
+            <dynamic-input type="number" v-model="width.value" class="width-input" v-show="setFixedWidth.value" />
         </div>
     </div>
 </template>
@@ -31,11 +37,11 @@ import DynamicRadioSwitch from "../inputs/DynamicRadioSwitch";
 export default {
     props: ["inputs"],
     computed: {
-        widthType() {
-            return this.inputs.filter(input => input.label === 'Width Type')[0];
+        setFixedWidth() {
+            return this.inputs.find(input => input.meta === 'set-fixed-width');
         },
         width() {
-            return this.inputs.filter(input => input.label === 'Width')[0];
+            return this.inputs.find(input => input.meta === 'width');
         }
     },
     components: {

@@ -28,22 +28,16 @@
 <template>
     <div id="dynamic-editor" v-on-clickaway="clickedAway">
         <dynamic-card class="left-panel">
-            <div v-if="selectedElement">
-                <div v-show="selectedElement !== 'undefined'">
-                    <DynamicTextComposer :selectedElement="selectedElement"/>
-                </div>
-                <div v-show="selectedContainer !== 'undefined'">
-                    <DynamicContainerComposer :selectedContainer="selectedContainer"/>
-                </div>
+            <div v-show="selectedElement !== null">
+                <DynamicTextComposer :selectedElement="selectedElement"/>
+            </div>
+            <div v-show="selectedContainer !==  null">
+                <DynamicContainerComposer :selectedContainer="selectedContainer"/>
             </div>
         </dynamic-card>
-        <dynamic-card class="editor-area">
-            <div v-for="(container, index) in containers" :key="index">
-                <dynamic-container 
-                    :styles="container.styles.computedStyles"
-                    :container-object="container" 
-                    :is-focused="selectedContainer && container.id === selectedContainer.id">
-                </dynamic-container>
+        <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
+            <div v-for="(container, index) in root.children" :key="index">
+                <dynamic-container :container-object="container" :selectedItem="selectedItem" ></dynamic-container>
             </div>
         </dynamic-card>
         <dynamic-card class="right-panel">
@@ -59,7 +53,7 @@
 
 <script>
 import { mixin as clickaway } from 'vue-clickaway';
-import Container from "./container";
+import Container from "../classes/container";
 import DynamicCard from "./DynamicCard";
 import DynamicContainer from "./DynamicContainer";
 import DynamicContainerStyles from "./styles/DynamicContainerStyles";
@@ -80,32 +74,43 @@ export default {
     mixins: [clickaway],
     data() {
         return {
-            containers: [],
+            root: new Container(null,[new Container()]),
             selectedContainer: null,
-            selectedElement: null,
+            selectedElement:null,
         }
     },
     mounted() {
-        if (Object.keys(this.containers).length === 0) {
-            this.addNewContainer();
-        }
+  
         EventBus.$on("updateSelectedContainer", this.updateSelectedContainer);
+        EventBus.$on("addNewContainer",this.addNewContainer);
+        EventBus.$on("deleteItem",this.deleteItem);
         EventBus.$on("recomputeStyles", () => {
             this.selectedContainer.recomputeStyles();
+            console.log('recomputing styles')
         });
+        this.selectedContainer=this.root;
     },
     destroyed() {
         EventBus.$off("updateSelectedContianer");
     },
     methods: {
         addNewContainer() {
-            this.containers.push(new Container());
+
+            this.selectedContainer.children.push(new Container());
         },
         updateSelectedContainer(selectedContainer) {
             this.selectedContainer = selectedContainer;
         },
         clickedAway() {
             this.updateSelectedContainer(null);
+        }
+        ,deleteItem(item){
+            this.selectedContainer.children.pop(item);
+        }
+    },
+    computed:{
+        selectedItem:function(){
+            return this.selectedElement?this.selectedElement:(this.selectedContainer?this.selectedContainer:null);
         }
     }
 };

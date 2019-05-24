@@ -22,7 +22,9 @@ export default {
         }
     },
     mounted(){
-        this.inputText=this.selectedElement.data;
+        if(this.selectedElement){
+            this.inputText=this.selectedElement.data;
+        }
     }
     ,watch:{
         inputText:function(newv){

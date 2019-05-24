@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import Item from './Item';
+import DynamicContainerComponent from '../components/DynamicContainer.vue';
 
 
 export default class Container extends Item {
@@ -8,6 +9,7 @@ export default class Container extends Item {
         this.children = children != null ? children : [];
         // this.childOrder = [];
         // this.isFocused = false;
+        this.component = DynamicContainerComponent;
     }
 
 

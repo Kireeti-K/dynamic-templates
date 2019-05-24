@@ -9,14 +9,9 @@
     <div class="container" 
         :style="object.styles.computedStyles"
         :class="{'is-focused': isFocused}" 
-        @click.stop="() => EventBus.$emit('updateSelectedContainer', object)" 
+        @click.stop="() => EventBus.$emit('updateSelectedElement', object)" 
     >
-        
-        <div v-if="object.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
-        <div v-else style="padding: 10px; color: #333;">
-            <p>parent container</p>
-             <component  v-for="(child,i) in object.children" :key=i :is="child.component"  :object="child" :selectedItem="selectedItem" ></component>
-        </div>
+        <p>{{object.data}}</p>
     </div>
 </template>
 

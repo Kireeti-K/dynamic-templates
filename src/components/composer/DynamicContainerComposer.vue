@@ -10,7 +10,10 @@
             </div>
         </div>
         <div v-else>No items in the container</div>
-        <button id='addnew' @click="addNew">add new </button>
+        <button id='addnew' @click="handleAddNew">add new </button>
+        <div id="add-item-menu" v-show="this.showAddMenu">
+            <button class="item" v-for="(item,n) in addables" :key=n  @click="addNewItem(item)">{{item}}</button>
+        </div>
     
     </div>
 </template>
@@ -21,18 +24,29 @@ export default {
 
     name: "DynamicContainerComposer",
     props: ["selectedContainer"],
+    data(){
+        return{
+            showAddMenu:false,
+            addables:['Container','Text','Table','Image']
+        }
+    },
     methods:{
         deleteItem(item){
             EventBus.$emit('deleteItem',item)
         },
-        addNew(){
-            EventBus.$emit('addNewContainer');
-        }
+        handleAddNew(){
+            if(this.selectedContainer.parent==null){this.addNewItem("Container");this.showAddMenu=false;return;}
+            this.showAddMenu=true;
+        },
+        addNewItem(itemName){
+            EventBus.$emit('addNewItem',itemName);
+            this.showAddMenu = false;
+        },
     }
 }
 </script>
 
-<style>
+<style scoped>
     #container-list{
         /*
         padding: 8px;
@@ -91,6 +105,19 @@ export default {
     }
     #addnew:active{
         box-shadow: inset 0 0 8px lightgray;color:gray;
+    }
+    #add-item-menu{
+        width:100%;
+        display:flex;
+        flex-direction: column;
+        background-color: pink;
+        justify-content: start;
+    }
+    #add-item-menu .item{
+        padding: 8px;
+        margin:0;
+        border:1px solid lightgrey;
+        background-color: white;
     }
     @keyframes disco{
         from{box-shadow: 0 0 4px red;}

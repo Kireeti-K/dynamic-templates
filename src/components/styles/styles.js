@@ -13,8 +13,6 @@ export class BaseStyle {
         this.inputs.forEach((input) => {
             computedStyle[input.attr] = input.getComputedValue(input.value);
         });
-        console.log('ComputedStyle for ', this.label);
-        console.log(JSON.stringify(computedStyle));
         return computedStyle;
     }
 }
@@ -155,11 +153,11 @@ export default class StyleSystem {
     }
 
     recompute() {
-        this.computedStyles = this.inputStyles.map(
-            inputStyle => !inputStyle.setOnParent && inputStyle.getComputedValue(),
-        );
-        return this.inputStyles.map(
-            inputStyle => inputStyle.setOnParent && inputStyle.getComputedValue(),
-        );
+        this.computedStyles = this.inputStyles
+            .filter(inputStyle => !inputStyle.setOnParent)
+            .map(inputStyle => inputStyle.getComputedValue());
+        return this.inputStyles
+            .filter(inputStyle => inputStyle.setOnParent)
+            .map(inputStyle => inputStyle.getComputedValue());
     }
 }

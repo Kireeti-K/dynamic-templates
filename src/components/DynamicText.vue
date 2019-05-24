@@ -1,10 +1,4 @@
 <style>
-    .container {
-        display: flex;
-    }
-    .container-children {
-        flex: 1;
-    }
     .container.is-focused {
         background-color: #f7f7f7 !important;
     }
@@ -13,12 +7,11 @@
 
 <template>
     <div class="container" 
-        :style="itemObject.styles.computedStyles"
+        :style="object.styles.computedStyles"
         :class="{'is-focused': isFocused}" 
-        @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)" 
+        @click.stop="() => EventBus.$emit('updateSelectedElement', object)" 
     >
-        <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
-        <component  v-for="(child,i) in itemObject.children" :key=i :is="child.component" :item-object="child" :selectedItem="selectedItem" ></component>
+        <p>{{itemObject.data}}</p>
     </div>
 </template>
 

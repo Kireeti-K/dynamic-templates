@@ -31,13 +31,15 @@
             <div v-show="selectedElement !== null">
                 <DynamicTextComposer :selectedElement="selectedElement"/>
             </div>
-            <div v-show="selectedContainer !==  null">
+            <div v-show="selectedContainer !==  null && selectedElement == null">
                 <DynamicContainerComposer :selectedContainer="selectedContainer"/>
             </div>
         </dynamic-card>
-        <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
-            <div v-for="(container, index) in root.children" :key="index">
-                <dynamic-container :container-object="container" :selectedItem="selectedItem" ></dynamic-container>
+        <dynamic-card class="editor-area">
+            <div @click="updateSelectedContainer(root)" :style="root.styles.computedStyles">
+                <div v-for="(child, index) in root.children" :key="index">
+                    <DynamicContainer :item-object="child" :selectedItem="selectedItem" />
+                </div>
             </div>
         </dynamic-card>
         <dynamic-card class="right-panel">
@@ -54,6 +56,8 @@
 <script>
 import { mixin as clickaway } from 'vue-clickaway';
 import Container from "../classes/container";
+import TextElement from "../classes/TextElement";
+
 import DynamicCard from "./DynamicCard";
 import DynamicContainer from "./DynamicContainer";
 import DynamicContainerStyles from "./styles/DynamicContainerStyles";
@@ -74,37 +78,62 @@ export default {
     mixins: [clickaway],
     data() {
         return {
-            root: new Container(null,[new Container()]),
+            root: new Container(),
             selectedContainer: null,
             selectedElement:null,
         }
     },
     mounted() {
+        // Container events
+        EventBus.$on("addNewItem",this.addNewItem);
+        EventBus.$on("updateSelectedElement",this.updateSelectedElement);
         EventBus.$on("updateSelectedContainer", this.updateSelectedContainer);
-        EventBus.$on("addNewContainer",this.addNewContainer);
         EventBus.$on("deleteItem",this.deleteItem);
+        EventBus.$on("setElementText",this.setElementText);
+
+        // Style events
         EventBus.$on("recomputeStyles", () => {
             this.selectedContainer.recomputeStyles();
-            console.log('recomputing styles');
         });
+
+        // Other usual stuff.
         this.selectedContainer=this.root;
+        this.addNewItem("Container");
     },
     destroyed() {
         EventBus.$off("updateSelectedContianer");
     },
     methods: {
-        addNewContainer() {
-
-            this.selectedContainer.children.push(new Container());
+        addNewItem(itemType) {
+            var item=null;  
+            switch(itemType){
+                case "Container":
+                    item=new Container(this.selectedContainer);break;
+                case "Text":
+                    item=new TextElement(this.selectedContainer);break;
+                 case "Table":
+                    item=new TextElement(this.selectedContainer);break;
+                 case "Image":
+                    item=new TextElement(this.selectedContainer);break;
+            }
+            this.selectedContainer.children.push(item);
         },
         updateSelectedContainer(selectedContainer) {
             this.selectedContainer = selectedContainer;
+            this.selectedElement = null;
         },
+        updateSelectedElement(element){
+            this.selectedElement=element;
+        }
+        ,
         clickedAway() {
             this.updateSelectedContainer(null);
         }
         ,deleteItem(item){
             this.selectedContainer.children.pop(item);
+        },
+        setElementText(txt){
+            this.selectedElement.data=txt;
         }
     },
     computed:{

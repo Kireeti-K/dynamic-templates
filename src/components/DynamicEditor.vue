@@ -44,7 +44,7 @@
             <div v-if="selectedContainer">
                 <h4>Styles</h4>
                 <dynamic-container-styles 
-                    :styles="selectedContainer.styling.inputStyles">
+                    :styles="selectedContainer.styles.inputStyles">
                 </dynamic-container-styles>
             </div>
         </dynamic-card>
@@ -101,7 +101,7 @@ export default {
         },
         updateStyles(item, styleName, value) {
             console.log("Updating style with name ", styleName);
-            item.styling.inputStyles[styleName] = value;
+            item.styles.inputStyles[styleName] = value;
             item.recomputeStyles();
         },
         clickedAway() {

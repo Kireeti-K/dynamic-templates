@@ -21,6 +21,6 @@ export default class Container extends Item {
     }
 
     recomputeStyles() {
-        this.styling.recompute();
+        this.styles.recompute();
     }
 }

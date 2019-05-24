@@ -6,7 +6,7 @@
 
 <template>
     <div class="container" 
-        :style="containerObject.styling"
+        :style="containerObject.styles"
         :class="{'is-focused': isFocused}" 
         @click.stop="() => EventBus.$emit('updateSelectedContainer', containerObject)" 
     >

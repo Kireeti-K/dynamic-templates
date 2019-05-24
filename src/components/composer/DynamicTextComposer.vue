@@ -15,20 +15,20 @@
 import {EventBus} from "../EventBus"
 export default {
     name: "DynamicTextComposer",
-    props: ["selectedElement"],
+    props: ["selectedItem"],
     data(){
         return {
             inputText:""
         }
     },
     mounted(){
-        if(this.selectedElement){
-            this.inputText=this.selectedElement.data;
+        if(this.selectedItem){
+            this.inputText=this.selectedItem.data;
         }
     }
     ,watch:{
         inputText:function(newv){
-            EventBus.$emit("setElementText",{element:this.selectedElement,text:this.inputText});
+            EventBus.$emit("setElementText",this.inputText);
         }
     },
 }

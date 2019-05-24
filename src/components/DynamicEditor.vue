@@ -28,26 +28,16 @@
 <template>
     <div id="dynamic-editor" v-on-clickaway="clickedAway">
         <dynamic-card class="left-panel">
-<<<<<<< HEAD
             <div v-show="selectedElement !== null">
                 <DynamicTextComposer :selectedElement="selectedElement"/>
             </div>
             <div v-show="selectedContainer !==  null">
                 <DynamicContainerComposer :selectedContainer="selectedContainer"/>
-=======
-            <div v-if="selectedElement">
-                <div v-show="selectedElement !== 'undefined'">
-                    <DynamicTextComposer :selectedElement="selectedElement"/>
-                </div>
-                <div v-show="selectedContainer !== 'undefined'">
-                    <DynamicContainerComposer :selectedContainer="selectedContainer"/>
-                </div>
->>>>>>> origin/master
             </div>
         </dynamic-card>
         <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
             <div v-for="(container, index) in root.children" :key="index">
-                <dynamic-container :container-object="container" ></dynamic-container>
+                <dynamic-container :container-object="container" :selectedItem="selectedItem" ></dynamic-container>
             </div>
         </dynamic-card>
         <dynamic-card class="right-panel">
@@ -95,6 +85,7 @@ export default {
         EventBus.$on("deleteItem",this.deleteItem);
         EventBus.$on("recomputeStyles", () => {
             this.selectedContainer.recomputeStyles();
+            console.log('recomputing styles')
         });
         this.selectedContainer=this.root;
     },
@@ -114,6 +105,11 @@ export default {
         }
         ,deleteItem(item){
             this.selectedContainer.children.pop(item);
+        }
+    },
+    computed:{
+        selectedItem:function(){
+            return this.selectedElement?this.selectedElement:(this.selectedContainer?this.selectedContainer:null);
         }
     }
 };

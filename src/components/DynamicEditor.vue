@@ -28,11 +28,21 @@
 <template>
     <div id="dynamic-editor" v-on-clickaway="clickedAway">
         <dynamic-card class="left-panel">
+<<<<<<< HEAD
             <div v-show="selectedElement !== null">
                 <DynamicTextComposer :selectedElement="selectedElement"/>
             </div>
             <div v-show="selectedContainer !==  null">
                 <DynamicContainerComposer :selectedContainer="selectedContainer"/>
+=======
+            <div v-if="selectedElement">
+                <div v-show="selectedElement !== 'undefined'">
+                    <DynamicTextComposer :selectedElement="selectedElement"/>
+                </div>
+                <div v-show="selectedContainer !== 'undefined'">
+                    <DynamicContainerComposer :selectedContainer="selectedContainer"/>
+                </div>
+>>>>>>> origin/master
             </div>
         </dynamic-card>
         <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
@@ -60,6 +70,7 @@ import DynamicContainerStyles from "./styles/DynamicContainerStyles";
 import { EventBus } from "./EventBus";
 import DynamicContainerComposer from "./composer/DynamicContainerComposer";
 import DynamicTextComposer from "./composer/DynamicTextComposer"
+
 export default {
     name: "DynamicEditor",
     components: {
@@ -83,7 +94,6 @@ export default {
         EventBus.$on("addNewContainer",this.addNewContainer);
         EventBus.$on("deleteItem",this.deleteItem);
         EventBus.$on("recomputeStyles", () => {
-            console.log("recomputing Styles event caught");
             this.selectedContainer.recomputeStyles();
         });
         this.selectedContainer=this.root;
@@ -98,11 +108,6 @@ export default {
         },
         updateSelectedContainer(selectedContainer) {
             this.selectedContainer = selectedContainer;
-        },
-        updateStyles(item, styleName, value) {
-            console.log("Updating style with name ", styleName);
-            item.styles.inputStyles[styleName] = value;
-            item.recomputeStyles();
         },
         clickedAway() {
             this.updateSelectedContainer(null);

@@ -5,11 +5,17 @@
         display: flex;
         justify-content: space-between;
         border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
     }
     .dynamic-radio-switch .radio-item {
         flex: 1;
-        padding: 8px;
+        padding: 6px;
         border-right: 1px solid #aaa;
+    }
+    .dynamic-radio-switch .radio-item.selected {
+        color: #fff;
+        background-color: #aaa;
     }
     .dynamic-radio-switch .radio-item:first-child {
         border-left: 1px solid #aaa;
@@ -30,7 +36,12 @@
 
 <template>
     <div class="dynamic-radio-switch">
-        <div class="radio-item" v-for="option in options" :key="option.id" @click="() => handleChange(option)">
+        <div class="radio-item" 
+            :class="{'selected': option.id === value}"
+            v-for="option in options" 
+            :key="option.id" 
+            @click="() => handleChange(option)"
+        >
             <input type="radio" :id="option.id" :name="groupName" :value="value">
             <label class="text" :id="option.id">{{option.text}}</label>
         </div>

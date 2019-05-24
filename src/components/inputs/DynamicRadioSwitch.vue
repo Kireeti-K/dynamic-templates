@@ -10,7 +10,8 @@
     }
     .dynamic-radio-switch .radio-item {
         flex: 1;
-        padding: 6px;
+        position: relative;
+        padding: 6px 6px 6px 12px;
         border-right: 1px solid #aaa;
     }
     .dynamic-radio-switch .radio-item.selected {
@@ -30,6 +31,9 @@
     .dynamic-radio-switch input[type='radio'] {
         width: 0px;
         height: 0px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
         visibility: hidden;
     }
 </style>

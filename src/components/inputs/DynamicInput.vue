@@ -3,7 +3,6 @@
         height: 18px;
         font-size: 14px;
         padding: 4px 8px;
-        width: 110px;
     }
     .dynamic-input:focus,
     .dynamic-input:hover {
@@ -12,8 +11,9 @@
 </style>
 
 <template>
-    <input type="text" 
+    <input :type="type" 
         class="dynamic-input" 
+        :style="{'width': inputWidth}"
         :value="value"
         v-bind="$attrs" 
         v-on="listeners" 
@@ -23,18 +23,26 @@
 
 <script>
 export default {
-    name: "DynamicTextInput",
-    props: ["value"],
+    name: "DynamicInput",
+    props: {
+        type: String, 
+        value: [String, Number], 
+        containerWidth: Boolean,
+    },
     computed: {
         listeners() {
             const { input, listeners } = this.$listeners;
             return listeners;
+        },
+        inputWidth() {
+            if (this.containerWidth) return "100%";
+            else return "110px";
         }
     },
     methods: {
         handleInput(event) {
             this.$emit('input', event.target.value);
-        }
+        },
     }
 }
 </script>

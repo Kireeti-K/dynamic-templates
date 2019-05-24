@@ -2,7 +2,7 @@
     .styles-form {
         margin-top: 28px;
     }
-    .form-item {
+    .single-style {
         display: flex;
         flex-direction: column;
         margin-bottom: 24px;
@@ -16,17 +16,20 @@
 <template>
     <div class="editor-styles">
         <div class="styles-form">
-            <div class="form-item" v-for="style in styles" :key="style.label">
-                <div class="style-label">{{style.label}}</div>
-                <div v-if="style.component"> <component :is="style.component" :inputs="style.inputs"></component> </div>
-                <div class="input-styles" v-else>Style inputs here</div>
+            <div class="single-style" v-for="style in styles" :key="style.label">
+                <dynamic-collapse 
+                    :label="style.label"
+                >
+                    <component :is="style.component" :inputs="style.inputs" />
+                </dynamic-collapse>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import DynamicTextInput from "../inputs/DynamicTextInput"
+import DynamicCollapse from "../dumb/DynamicCollapse";
+import DynamicInput from "../inputs/DynamicInput";
 import { EventBus } from '../EventBus';
 
 export default {
@@ -36,7 +39,8 @@ export default {
         }
     },
     components: {
-        DynamicTextInput
+        DynamicInput,
+        DynamicCollapse,
     },
     watch: {
         styles: {

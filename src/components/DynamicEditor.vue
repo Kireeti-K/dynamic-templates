@@ -65,7 +65,8 @@ import DynamicContainer from "./DynamicContainer";
 import DynamicContainerStyles from "./styles/DynamicContainerStyles";
 import { EventBus } from "./EventBus";
 import DynamicContainerComposer from "./composer/DynamicContainerComposer";
-import DynamicTextComposer from "./composer/DynamicTextComposer"
+import DynamicTextComposer from "./composer/DynamicTextComposer";
+
 
 export default {
     name: "DynamicEditor",

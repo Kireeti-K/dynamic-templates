@@ -15,13 +15,14 @@
         </div>
         <div class="input">
             <div class="label">Width</div>
-            <dynamic-text-input v-model="width.value" />
+            <dynamic-number-input v-model="width.value" />
         </div>
     </div>
 </template>
 
 <script>
 import DynamicTextInput from "../inputs/DynamicTextInput"
+import DynamicNumberInput from "../inputs/DynamicNumberInput"
 import DynamicRadioSwitch from "../inputs/DynamicRadioSwitch";
 
 export default {
@@ -36,7 +37,8 @@ export default {
     },
     components: {
         DynamicRadioSwitch,
-        DynamicTextInput
+        DynamicTextInput,
+        DynamicNumberInput
     }
 }
 </script>

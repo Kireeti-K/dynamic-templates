@@ -28,11 +28,11 @@
 <template>
     <div id="dynamic-editor" v-on-clickaway="clickedAway">
         <dynamic-card class="left-panel">
-            <div v-show="selectedElement !== null">
-                <DynamicTextComposer :selectedElement="selectedElement"/>
+            <div v-if="selectedElement !=null ">
+                <DynamicTextComposer :selected-element="selectedElement"/>
             </div>
-            <div v-show="selectedContainer !==  null && selectedElement == null">
-                <DynamicContainerComposer :selectedContainer="selectedContainer"/>
+            <div v-if="selectedContainer !==  null && selectedElement == null">
+                <DynamicContainerComposer :selected-container="selectedContainer"/>
             </div>
         </dynamic-card>
         <dynamic-card class="editor-area">
@@ -54,16 +54,19 @@
 import { mixin as clickaway } from 'vue-clickaway';
 import { EventBus } from "./EventBus";
 import DynamicCard from "./dumb/DynamicCard";
-
-// classes
-import Container from "../classes/container";
-import TextElement from "../classes/TextElement";
-
-// Dynamic components
 import DynamicTemplate from "./DynamicTemplate";
+// classes
+import Container from "../classes/Container";
+import TextElement from "../classes/TextElement";
+import TableContainer from '../classes/TableContainer';
+// components
+import DynamicContainer from "./DynamicContainer";
+import DynamicContainerStyles from "./styles/DynamicContainerStyles";
+import DynamicTable from "./DynamicTable"
+
 import DynamicContainerComposer from "./composer/DynamicContainerComposer";
 import DynamicTextComposer from "./composer/DynamicTextComposer";
-import DynamicContainerStyles from "./styles/DynamicContainerStyles";
+
 
 export default {
     name: "DynamicEditor",
@@ -73,6 +76,7 @@ export default {
         DynamicTextComposer,
         DynamicTemplate,
         DynamicContainerStyles,
+        DynamicTable
     },
     mixins: [clickaway],
     data() {
@@ -125,8 +129,11 @@ export default {
                     item = new Container();
                     break;
                 case "Text":
-                    item = new TextElement();
-                    break;
+                    item=new TextElement();break;
+                case "Table":
+                    item=new TableContainer();break;
+                case "Image":
+                    item=new TextElement();break;
             }
             this.selectedContainer.addChild(item);
         },

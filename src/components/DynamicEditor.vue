@@ -28,16 +28,16 @@
 <template>
     <div id="dynamic-editor" v-on-clickaway="clickedAway">
         <dynamic-card class="left-panel">
-            <div v-show="selectedElement !== null">
-                <DynamicTextComposer :selectedElement="selectedElement"/>
+            <div v-if="selectedElement !=null ">
+                <DynamicTextComposer :selected-element="selectedElement"/>
             </div>
-            <div v-show="selectedContainer !==  null && selectedElement == null">
-                <DynamicContainerComposer :selectedContainer="selectedContainer"/>
+            <div v-if="selectedContainer !==  null && selectedElement == null">
+                <DynamicContainerComposer :selected-container="selectedContainer"/>
             </div>
         </dynamic-card>
         <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
             <div v-for="(child, index) in root.children" :key="index">
-                <DynamicContainer   :object="child" :selectedItem="selectedItem" />
+                <DynamicContainer   :object="child" :selected-item="selectedItem" />
             </div>
         </dynamic-card>
         <dynamic-card class="right-panel">
@@ -53,13 +53,17 @@
 
 <script>
 import { mixin as clickaway } from 'vue-clickaway';
-import Container from "../classes/container";
+import { EventBus } from "./EventBus";
+// classes
+import Container from "../classes/Container";
 import TextElement from "../classes/TextElement";
-
+import TableContainer from '../classes/TableContainer';
+// components
 import DynamicCard from "./DynamicCard";
 import DynamicContainer from "./DynamicContainer";
 import DynamicContainerStyles from "./styles/DynamicContainerStyles";
-import { EventBus } from "./EventBus";
+import DynamicTable from "./DynamicTable"
+
 import DynamicContainerComposer from "./composer/DynamicContainerComposer";
 import DynamicTextComposer from "./composer/DynamicTextComposer"
 
@@ -71,6 +75,7 @@ export default {
         DynamicContainerComposer,
         DynamicTextComposer,
         DynamicContainerStyles,
+        DynamicTable
     },
     mixins: [clickaway],
     data() {
@@ -109,7 +114,7 @@ export default {
                 case "Text":
                     item=new TextElement(this.selectedContainer);break;
                  case "Table":
-                    item=new TextElement(this.selectedContainer);break;
+                    item=new TableContainer(this.selectedContainer);break;
                  case "Image":
                     item=new TextElement(this.selectedContainer);break;
             }

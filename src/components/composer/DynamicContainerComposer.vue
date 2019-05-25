@@ -12,22 +12,22 @@
         <div v-else>No items in the container</div>
         <button id='addnew' @click="handleAddNew">add new </button>
         <div id="add-item-menu" v-show="this.showAddMenu">
-            <button class="item" v-for="(item,n) in addables" :key=n  @click="addNewItem(item)">{{item}}</button>
+            <button class="item" v-for="(item,n) in addables" :key=n  @click="() => addNewItem(item)">{{item}}</button>
         </div>
     
     </div>
 </template>
 
 <script>
-import {EventBus} from "../EventBus"
-export default {
+import {EventBus} from "../EventBus";
 
+export default {
     name: "DynamicContainerComposer",
     props: ["selectedContainer"],
     data(){
         return{
             showAddMenu:false,
-            addables:['Container','Text','Table','Image']
+            addables:['Container', 'Text', 'Table', 'Image']
         }
     },
     methods:{

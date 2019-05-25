@@ -10,10 +10,18 @@ export default class Container extends Item {
         this.component = DynamicContainerComponent;
     }
 
+    addChild(child) {
+        this.children.push(child);
+        child.setParent(this);
+    }
+
+    deleteChild(child) {
+        this.children = this.children.filter(c => c.id !== child.id);
+    }
+
     recomputeStyles() {
         const parentStyles = this.styles.recompute();
         if (this.parent && parentStyles) {
-            console.log('Adding padding styles to parent ', this.parent.id);
             this.parent.setStyles(parentStyles);
         }
     }

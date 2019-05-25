@@ -149,15 +149,23 @@ export default class StyleSystem {
     }
 
     mergeComputedStyles(styles) {
-        this.computedStyles = [...this.computedStyles, styles];
+        console.log('Merging computed styles');
+        this.computedStyles = { ...this.computedStyles, ...styles };
     }
 
     recompute() {
         this.computedStyles = this.inputStyles
             .filter(inputStyle => !inputStyle.setOnParent)
-            .map(inputStyle => inputStyle.getComputedValue());
+            .map(inputStyle => inputStyle.getComputedValue())
+            .reduce((obj, item) => {
+                console.log('Acc Obj ', JSON.stringify(obj));
+                console.log('Item ', JSON.stringify(item));
+                return { ...obj, ...item };
+            });
+
         return this.inputStyles
             .filter(inputStyle => inputStyle.setOnParent)
-            .map(inputStyle => inputStyle.getComputedValue());
+            .map(inputStyle => inputStyle.getComputedValue())
+            .reduce((obj, item) => ({ ...obj, ...item }));
     }
 }

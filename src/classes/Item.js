@@ -2,8 +2,8 @@ import StyleSystem from '../components/styles/styles';
 import { randomString } from '../utils/string';
 
 export default class Item {
-    constructor(parent) {
-        this.parent = parent;
+    constructor() {
+        this.parent = null;
         this.styles = new StyleSystem();
         this.id = this.createContainerId();
     }
@@ -13,8 +13,8 @@ export default class Item {
         return `${randomString(4)}-${randomString(4)}`;
     }
 
-    getId() {
-        return this.uuid;
+    setParent(parent) {
+        this.parent = parent;
     }
 
     setStyles(styles) {

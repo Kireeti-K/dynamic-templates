@@ -18,7 +18,7 @@
         @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)" 
     >
         <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
-        <component  v-for="(child,i) in itemObject.children" :key=i :is="child.component" :item-object="child" :selectedItem="selectedItem" ></component>
+        <component v-for="(child,i) in itemObject.children" :key=i :is="child.component" :item-object="child" :selected-item="selectedItem" ></component>
     </div>
 </template>
 
@@ -35,7 +35,7 @@ export default {
     },
     computed:{
         isFocused:function(){
-            return this.selectedItem==this.object;
+            return this.selectedItem === this.itemObject;
         }
     }
 }

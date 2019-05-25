@@ -42,7 +42,7 @@
             <div v-if="selectedContainer">
                 <h4 style="margin-left: 24px">Styles</h4>
                 <dynamic-container-styles 
-                    :styles="selectedContainer.styles.inputStyles">
+                    :styles="selectedItem.styles.inputStyles">
                 </dynamic-container-styles>
             </div>
         </dynamic-card>

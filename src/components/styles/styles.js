@@ -55,7 +55,7 @@ export class WidthStyle extends BaseStyle {
     }
 }
 
-class MarginStyle extends BaseStyle {
+export class MarginStyle extends BaseStyle {
     constructor() {
         super();
         this.label = 'Margin';
@@ -98,7 +98,7 @@ class MarginStyle extends BaseStyle {
     }
 }
 
-class FlexStyle extends BaseStyle {
+export class FlexStyle extends BaseStyle {
     constructor() {
         super();
         this.label = 'Alignment';
@@ -138,18 +138,13 @@ class FlexStyle extends BaseStyle {
 // or array of key-value pairs through getComputedValue
 
 export default class StyleSystem {
-    constructor() {
-        this.inputStyles = [
-            new WidthStyle(),
-            new MarginStyle(),
-            new FlexStyle(),
-        ];
+    constructor(inputStyles = []) {
+        this.inputStyles = inputStyles;
         this.computedStyles = [];
         this.recompute();
     }
 
     mergeComputedStyles(styles) {
-        console.log('Merging computed styles');
         this.computedStyles = { ...this.computedStyles, ...styles };
     }
 
@@ -157,11 +152,7 @@ export default class StyleSystem {
         this.computedStyles = this.inputStyles
             .filter(inputStyle => !inputStyle.setOnParent)
             .map(inputStyle => inputStyle.getComputedValue())
-            .reduce((obj, item) => {
-                console.log('Acc Obj ', JSON.stringify(obj));
-                console.log('Item ', JSON.stringify(item));
-                return { ...obj, ...item };
-            });
+            .reduce((obj, item) => ({ ...obj, ...item }));
 
         return this.inputStyles
             .filter(inputStyle => inputStyle.setOnParent)

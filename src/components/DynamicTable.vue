@@ -12,19 +12,23 @@
 
 <template>
     <div class="container" 
-        :style="object.styles.computedStyles"
+        :style="itemObject
+        .styles.computedStyles"
         :class="{'is-focused': isFocused}" 
-        @click.stop="() => EventBus.$emit('updateSelectedElement', object)" 
+        @click.stop="() => EventBus.$emit('updateSelectedElement', itemObject
+        )" 
     >
         <table class="table" >
             <tr>
-                <th v-for="i in object.columns" :key="i">
+                <th v-for="i in itemObject
+                .columns" :key="i">
                     subject
                 </th>
             </tr>
-            <tr v-for="j in object.rows" :key="j">
-                <td v-for="i in object.columns" :key="i">
-                    
+            <tr v-for="j in itemObject
+            .rows" :key="j">
+                <td v-for="i in itemObject.columns" :key="i">
+                    -
                 </td>
             </tr>
         </table>
@@ -38,7 +42,7 @@ import DynamicTableCell from './DynamicTableCell';
 
 export default {
     name: "DynamicTable",
-    props: ["object","selectedItem"],
+    props: ["itemObject","selectedItem"],
     components:{
         DynamicTableCell
     },
@@ -49,7 +53,8 @@ export default {
     },
     computed:{
         isFocused:function(){
-            return this.selectedItem==this.object;
+            return this.selectedItem==this.itemObject
+            ;
         }
     }
 }

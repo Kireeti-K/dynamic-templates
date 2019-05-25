@@ -7,11 +7,11 @@
 
 <template>
     <div class="container" 
-        :style="object.styles.computedStyles"
+        :style="itemObject.styles.computedStyles"
         :class="{'is-focused': isFocused}" 
-        @click.stop="() => EventBus.$emit('updateSelectedElement', object)" 
+        @click.stop="() => EventBus.$emit('updateSelectedElement', itemObject)" 
     >
-        <p>{{object.data}}</p>
+        <p>{{itemObject.data}}</p>
         <DynamicText />
     </div>
 </template>
@@ -22,7 +22,7 @@ import DynamicText from './DynamicText';
 
 export default {
     name: "DynamicTableCell",
-    props: ["object","selectedItem"],
+    props: ["itemObject","selectedItem"],
     components:{
         DynamicText,
     },
@@ -33,7 +33,7 @@ export default {
     },
     computed:{
         isFocused:function(){
-            return this.selectedItem==this.object;
+            return this.selectedItem==this.itemObject;
         }
     }
 }

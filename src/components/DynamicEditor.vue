@@ -19,9 +19,9 @@
         padding: 12px 24px;
     }
     #dynamic-editor .right-panel {
-        width: 230px;
+        width: 280px;
         height: 633px;
-        padding: 12px 24px;
+        padding: 12px 0px;
     }
 </style>
 
@@ -35,14 +35,12 @@
                 <DynamicContainerComposer :selectedContainer="selectedContainer"/>
             </div>
         </dynamic-card>
-        <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
-            <div v-for="(child, index) in root.children" :key="index">
-                <DynamicContainer   :object="child" :selectedItem="selectedItem" />
-            </div>
+        <dynamic-card class="editor-area">
+            <dynamic-template :root="root" :selected-item="selectedItem"></dynamic-template>
         </dynamic-card>
         <dynamic-card class="right-panel">
             <div v-if="selectedContainer">
-                <h4>Styles</h4>
+                <h4 style="margin-left: 24px">Styles</h4>
                 <dynamic-container-styles 
                     :styles="selectedContainer.styles.inputStyles">
                 </dynamic-container-styles>
@@ -52,24 +50,28 @@
 </template>
 
 <script>
+// dumb components and libraries
 import { mixin as clickaway } from 'vue-clickaway';
+import { EventBus } from "./EventBus";
+import DynamicCard from "./dumb/DynamicCard";
+
+// classes
 import Container from "../classes/container";
 import TextElement from "../classes/TextElement";
 
-import DynamicCard from "./DynamicCard";
-import DynamicContainer from "./DynamicContainer";
-import DynamicContainerStyles from "./styles/DynamicContainerStyles";
-import { EventBus } from "./EventBus";
+// Dynamic components
+import DynamicTemplate from "./DynamicTemplate";
 import DynamicContainerComposer from "./composer/DynamicContainerComposer";
-import DynamicTextComposer from "./composer/DynamicTextComposer"
+import DynamicTextComposer from "./composer/DynamicTextComposer";
+import DynamicContainerStyles from "./styles/DynamicContainerStyles";
 
 export default {
     name: "DynamicEditor",
     components: {
         DynamicCard,
-        DynamicContainer,
         DynamicContainerComposer,
         DynamicTextComposer,
+        DynamicTemplate,
         DynamicContainerStyles,
     },
     mixins: [clickaway],
@@ -81,39 +83,52 @@ export default {
         }
     },
     mounted() {
-  
+        // Container events
         EventBus.$on("addNewItem",this.addNewItem);
-
         EventBus.$on("updateSelectedElement",this.updateSelectedElement);
         EventBus.$on("updateSelectedContainer", this.updateSelectedContainer);
         EventBus.$on("deleteItem",this.deleteItem);
-        
         EventBus.$on("setElementText",this.setElementText);
 
+        // Style events
         EventBus.$on("recomputeStyles", () => {
             this.selectedContainer.recomputeStyles();
-            console.log('recomputing styles')
         });
+
+        // Other usual stuff.
         this.selectedContainer=this.root;
         this.addNewItem("Container");
     },
     destroyed() {
-        EventBus.$off("updateSelectedContianer");
+        // Container events
+        EventBus.$off("addNewItem");
+        EventBus.$off("updateSelectedElement");
+        EventBus.$off("updateSelectedContainer");
+        EventBus.$off("deleteItem");
+        EventBus.$off("setElementText");
+
+        // Style events
+        EventBus.$off("recomputeStyles");
+    },
+    computed:{
+        selectedItem(){
+            if (this.selectedElement) return this.selectedElement;
+            else if (this.selectedContainer) return this.selectedContainer;
+            else null;
+        }
     },
     methods: {
         addNewItem(itemType) {
-            var item=null;  
+            let item = null;
             switch(itemType){
                 case "Container":
-                    item=new Container(this.selectedContainer);break;
+                    item = new Container();
+                    break;
                 case "Text":
-                    item=new TextElement(this.selectedContainer);break;
-                 case "Table":
-                    item=new TextElement(this.selectedContainer);break;
-                 case "Image":
-                    item=new TextElement(this.selectedContainer);break;
+                    item = new TextElement();
+                    break;
             }
-            this.selectedContainer.children.push(item);
+            this.selectedContainer.addChild(item);
         },
         updateSelectedContainer(selectedContainer) {
             this.selectedContainer = selectedContainer;
@@ -121,22 +136,16 @@ export default {
         },
         updateSelectedElement(element){
             this.selectedElement=element;
-        }
-        ,
+        },
         clickedAway() {
             this.updateSelectedContainer(null);
-        }
-        ,deleteItem(item){
-            this.selectedContainer.children.pop(item);
         },
-        setElementText(txt){
-            this.selectedElement.data=txt;
+        deleteItem(item){
+            this.selectedContainer.deleteChild(item);
+        },
+        setElementText(text){
+            this.selectedElement.data=text;
         }
     },
-    computed:{
-        selectedItem:function(){
-            return this.selectedElement?this.selectedElement:(this.selectedContainer?this.selectedContainer:null);
-        }
-    }
 };
 </script>

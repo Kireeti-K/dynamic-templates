@@ -1,17 +1,24 @@
+import StyleComponent from './StyleComponent.vue';
+import MarginStyleComponent from './MarginStyleComponent.vue';
 import WidthStyleComponent from './WidthStyleComponent.vue';
 
 export class BaseStyle {
+    constructor() {
+        this.setOnParent = false;
+        this.component = StyleComponent;
+    }
+
     getComputedValue() {
-        return this.inputs.map(input => input.getComputedValue());
+        const computedStyle = {};
+        this.inputs.forEach((input) => {
+            computedStyle[input.attr] = input.getComputedValue(input.value);
+        });
+        return computedStyle;
     }
 }
 
-export class BaseInputStyle {
-}
-
-export class InputStyle extends BaseInputStyle {
+export class InputStyle {
     constructor(data) {
-        super();
         Object.keys(data).forEach((key) => { this[key] = data[key]; });
     }
 }
@@ -20,29 +27,110 @@ export class WidthStyle extends BaseStyle {
     constructor() {
         super();
         this.label = 'Width';
-        this.attr = 'width';
         this.component = WidthStyleComponent;
         this.inputs = [
             new InputStyle({
-                label: 'Width Type',
+                meta: 'set-fixed-width',
+                label: 'Set Fixed Width',
                 attr: null,
-                options: [{ id: 'percent', text: 'Percentage' }, { id: 'pixel', text: 'Pixels' }],
-                value: 'percent',
-                getComputedValue: () => `${this.value}px`,
+                inputType: 'checkbox',
+                value: false,
+                getComputedValue: () => {},
             }),
             new InputStyle({
-                label: 'Width',
+                meta: 'width',
+                label: '',
                 attr: 'width',
+                inputType: 'number',
                 value: 100,
-                getComputedValue: () => this.value,
+                getComputedValue: value => `${value}px`,
             }),
         ];
     }
 
     getComputedValue() {
-        const widthType = this.inputs.filter(input => input.label === 'Width Type')[0];
-        const width = this.inputs.filter(input => input.label === 'Width')[0];
-        return { width: widthType.value === 'percent' ? `${width.value}%` : `${width.value}px` };
+        const isFixedWidth = this.inputs[0].value;
+        const fixedWidth = this.inputs[1].getComputedValue(this.inputs[1].value);
+        return { width: isFixedWidth ? fixedWidth : 'initial' };
+    }
+}
+
+class MarginStyle extends BaseStyle {
+    constructor() {
+        super();
+        this.label = 'Margin';
+        this.setOnParent = true;
+        this.component = MarginStyleComponent;
+        this.inputs = [
+            new InputStyle({
+                meta: 'margin-left',
+                label: 'Left',
+                attr: 'padding-left',
+                inputType: 'number',
+                value: 5,
+                getComputedValue: value => `${value}px`,
+            }),
+            new InputStyle({
+                meta: 'margin-top',
+                label: 'Top',
+                attr: 'padding-top',
+                inputType: 'number',
+                value: 5,
+                getComputedValue: value => `${value}px`,
+            }),
+            new InputStyle({
+                meta: 'margin-right',
+                label: 'Right',
+                attr: 'padding-right',
+                inputType: 'number',
+                value: 5,
+                getComputedValue: value => `${value}px`,
+            }),
+            new InputStyle({
+                meta: 'margin-bottom',
+                label: 'Bottom',
+                attr: 'padding-bottom',
+                inputType: 'number',
+                value: 5,
+                getComputedValue: value => `${value}px`,
+            }),
+        ];
+    }
+}
+
+class FlexStyle extends BaseStyle {
+    constructor() {
+        super();
+        this.label = 'Alignment';
+        this.inputs = [
+            new InputStyle({
+                label: 'Direction',
+                attr: 'flex-direction',
+                inputType: 'radio-switch',
+                options: [
+                    { id: 'column', text: 'Vertical' },
+                    { id: 'row', text: 'Horizontal' },
+                ],
+                value: 'column',
+                getComputedValue: value => value,
+            }),
+            new InputStyle({
+                label: 'Alignment',
+                attr: 'justify-content',
+                inputType: 'radio-switch',
+                options: [
+                    { id: 'flex-start', text: 'Left' },
+                    { id: 'flex-end', text: 'Right' },
+                    { id: 'center', text: 'Center' },
+                ],
+                value: 'flex-start',
+                getComputedValue: value => value,
+            }),
+        ];
+    }
+
+    getComputedValue() {
+        return { display: 'flex', ...super.getComputedValue() };
     }
 }
 
@@ -53,19 +141,31 @@ export default class StyleSystem {
     constructor() {
         this.inputStyles = [
             new WidthStyle(),
+            new MarginStyle(),
+            new FlexStyle(),
         ];
-        this.computedStyles = {
-            width: '100%',
-            backgroundColor: '#fff',
-            padding: '0px',
-            margin: '0px',
-        };
+        this.computedStyles = [];
+        this.recompute();
+    }
+
+    mergeComputedStyles(styles) {
+        console.log('Merging computed styles');
+        this.computedStyles = { ...this.computedStyles, ...styles };
     }
 
     recompute() {
-        this.computedStyles = this.inputStyles.map(inputStyle => inputStyle.getComputedValue());
+        this.computedStyles = this.inputStyles
+            .filter(inputStyle => !inputStyle.setOnParent)
+            .map(inputStyle => inputStyle.getComputedValue())
+            .reduce((obj, item) => {
+                console.log('Acc Obj ', JSON.stringify(obj));
+                console.log('Item ', JSON.stringify(item));
+                return { ...obj, ...item };
+            });
+
+        return this.inputStyles
+            .filter(inputStyle => inputStyle.setOnParent)
+            .map(inputStyle => inputStyle.getComputedValue())
+            .reduce((obj, item) => ({ ...obj, ...item }));
     }
 }
-
-// structure of inputStyle
-// {label: "Width, value: "100%", }

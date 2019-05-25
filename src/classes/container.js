@@ -7,13 +7,22 @@ export default class Container extends Item {
     constructor(parent, children = null) {
         super(parent);
         this.children = children != null ? children : [];
-        // this.childOrder = [];
-        // this.isFocused = false;
         this.component = DynamicContainerComponent;
     }
 
+    addChild(child) {
+        this.children.push(child);
+        child.setParent(this);
+    }
+
+    deleteChild(child) {
+        this.children = this.children.filter(c => c.id !== child.id);
+    }
 
     recomputeStyles() {
-        this.styles.recompute();
+        const parentStyles = this.styles.recompute();
+        if (this.parent && parentStyles) {
+            this.parent.setStyles(parentStyles);
+        }
     }
 }

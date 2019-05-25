@@ -1,4 +1,10 @@
 <style>
+    .container {
+        display: flex;
+    }
+    .container-children {
+        flex: 1;
+    }
     .container.is-focused {
         background-color: #f7f7f7 !important;
     }
@@ -7,16 +13,12 @@
 
 <template>
     <div class="container" 
-        :style="object.styles.computedStyles"
+        :style="itemObject.styles.computedStyles"
         :class="{'is-focused': isFocused}" 
-        @click.stop="() => EventBus.$emit('updateSelectedContainer', object)" 
+        @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)" 
     >
-        
-        <div v-if="object.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
-        <div v-else style="padding: 10px; color: #333;">
-            <p>parent container</p>
-             <component  v-for="(child,i) in object.children" :key=i :is="child.component"  :object="child" :selectedItem="selectedItem" ></component>
-        </div>
+        <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
+        <component v-for="(child,i) in itemObject.children" :key=i :is="child.component" :item-object="child" :selected-item="selectedItem" ></component>
     </div>
 </template>
 
@@ -25,7 +27,7 @@ import { EventBus } from "./EventBus";
 
 export default {
     name: "DynamicContainer",
-    props: ["object","selectedItem"],
+    props: ["itemObject","selectedItem"],
     data() {
         return {
             EventBus: EventBus,
@@ -33,7 +35,7 @@ export default {
     },
     computed:{
         isFocused:function(){
-            return this.selectedItem==this.object;
+            return this.selectedItem === this.itemObject;
         }
     }
 }

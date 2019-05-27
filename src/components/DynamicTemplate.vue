@@ -1,3 +1,14 @@
+<style scoped>
+
+.dynamic-container{
+   min-height: 16.2cm;
+   min-width: 16.1cm;
+}
+.dynamic-container:hover{
+   outline-color: orange;
+}
+</style>
+
 <template>
     <div class="dynamic-template">
         <DynamicContainer :item-object="root" :selected-item="selectedItem" />

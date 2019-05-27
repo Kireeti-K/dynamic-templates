@@ -20,4 +20,11 @@ export class Item {
     setStyles(styles) {
         this.styles.mergeComputedStyles(styles);
     }
+
+    recomputeStyles() {
+        const parentStyles = this.styles.recompute();
+        if (this.parent && parentStyles) {
+            this.parent.setStyles(parentStyles);
+        }
+    }
 }

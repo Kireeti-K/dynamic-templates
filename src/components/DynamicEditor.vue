@@ -14,6 +14,7 @@
         width: 16.1cm;
         height: 633px;
         padding: 12px 24px;
+        overflow: auto;
     }
     #dynamic-editor .right-panel {
         width: 280px;
@@ -29,11 +30,11 @@
                 <component :is="selectedItem.composer" :selected-item="selectedItem"></component>
             </dynamic-composer>
         </dynamic-card>
-        <dynamic-card class="editor-area">
+        <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
             <dynamic-template :root="root" :selected-item="selectedItem"></dynamic-template>
         </dynamic-card>
         <dynamic-card class="right-panel">
-            <div v-if="selectedContainer">
+            <div v-if="selectedItem">
                 <h4 style="margin-left: 24px">Styles</h4>
                 <dynamic-styles
                     :styles="selectedItem.styles.inputStyles">
@@ -85,7 +86,7 @@ export default {
 
         // Style events
         EventBus.$on("recomputeStyles", () => {
-            this.selectedContainer.recomputeStyles();
+            this.selectedItem.recomputeStyles();
         });
 
         // Other usual stuff.

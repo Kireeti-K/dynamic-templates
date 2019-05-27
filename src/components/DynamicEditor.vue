@@ -116,7 +116,6 @@ export default {
             this.updateSelectedContainer(null);
         },
         addNewItem(ItemClass) {
-            console.log("Adding new item");
             const child = new ItemClass();
             this.selectedContainer.addChild(child);
         },

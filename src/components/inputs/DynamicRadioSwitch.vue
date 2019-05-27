@@ -64,7 +64,6 @@ export default {
     },
     methods: {
         handleChange(option) {
-            console.log("Handling change ", JSON.stringify(option));
             this.$emit('input', option.id);
         }
     }

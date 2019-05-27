@@ -33,12 +33,8 @@ export class Container extends Item {
         super.recomputeStyles();
         // children styles
         const childrenStyles = this.styles.recomputeChildrenStyles();
-        console.log('Setting children styles ', JSON.stringify(childrenStyles));
         if (this.children && childrenStyles) {
-            this.children.forEach((child) => {
-                console.log('Setting child with styles ', JSON.stringify(childrenStyles));
-                child.setStyles(childrenStyles);
-            });
+            this.children.forEach(child => child.setStyles(childrenStyles));
         }
     }
 }

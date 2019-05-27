@@ -1,18 +1,18 @@
-<style>
+<style scoped>
     .container.is-focused {
         background-color: #f7f7f7 !important;
     }
-    .container:hover{outline: 1px solid red;}
+    .container:hover{outline: 1px solid blue;}
+    .is-focused{background-color:red;}
 </style>
 
 <template>
     <div class="container" 
-        :style="itemObject.styles.computedStyles"
+        :style="itemObject.styles.computedStyles" 
         :class="{'is-focused': isFocused}" 
-        @click.stop="() => EventBus.$emit('updateSelectedElement', itemObject)" 
+        @click.stop="()=> EventBus.$emit('updateSelectedContainer', itemObject)" 
     >
-        <p>{{itemObject.data}}</p>
-        <DynamicText />
+        <DynamicText :item-object="itemObject.children[0]" :selected-item="selectedItem"/>
     </div>
 </template>
 
@@ -33,7 +33,13 @@ export default {
     },
     computed:{
         isFocused:function(){
-            return this.selectedItem==this.itemObject;
+            return this.selectedItem==this.itemObject.children[0];
+        }
+    },
+    methods:{
+        selectCell(){
+            EventBus.$emit('updateSelectedContainer', this.itemObject);
+            EventBus.$emit('updateSelectedElement', this.itemObject.children[0]); 
         }
     }
 }

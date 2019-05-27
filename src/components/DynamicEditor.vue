@@ -17,6 +17,7 @@
         width: 16.1cm;
         height: 633px;
         padding: 12px 24px;
+        overflow: auto;
     }
     #dynamic-editor .right-panel {
         width: 280px;
@@ -31,18 +32,22 @@
             <div v-if="selectedElement !=null ">
                 <DynamicTextComposer :selected-element="selectedElement"/>
             </div>
-            <div v-if="selectedContainer !==  null && selectedElement == null">
+            <div v-else-if="selectedContainer !==  null && (selectedContainer instanceof TableContainer)">
+                <DynamicTableComposer :selected-container="selectedContainer"/>
+            </div>
+            <div v-else-if="selectedContainer !==  null && selectedElement == null">
                 <DynamicContainerComposer :selected-container="selectedContainer"/>
             </div>
+
         </dynamic-card>
-        <dynamic-card class="editor-area">
+        <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
             <dynamic-template :root="root" :selected-item="selectedItem"></dynamic-template>
         </dynamic-card>
         <dynamic-card class="right-panel">
-            <div v-if="selectedContainer">
+            <div v-if="selectedItem">
                 <h4 style="margin-left: 24px">Styles</h4>
                 <dynamic-container-styles 
-                    :styles="selectedContainer.styles.inputStyles">
+                    :styles="selectedItem.styles.inputStyles">
                 </dynamic-container-styles>
             </div>
         </dynamic-card>
@@ -64,6 +69,7 @@ import DynamicContainer from "./DynamicContainer";
 import DynamicContainerStyles from "./styles/DynamicContainerStyles";
 import DynamicTable from "./DynamicTable"
 
+import DynamicTableComposer from'./composer/DynamicTableComposer';
 import DynamicContainerComposer from "./composer/DynamicContainerComposer";
 import DynamicTextComposer from "./composer/DynamicTextComposer";
 
@@ -76,7 +82,8 @@ export default {
         DynamicTextComposer,
         DynamicTemplate,
         DynamicContainerStyles,
-        DynamicTable
+        DynamicTable,
+        DynamicTableComposer
     },
     mixins: [clickaway],
     data() {
@@ -84,6 +91,7 @@ export default {
             root: new Container(),
             selectedContainer: null,
             selectedElement:null,
+            TableContainer
         }
     },
     mounted() {
@@ -96,7 +104,7 @@ export default {
 
         // Style events
         EventBus.$on("recomputeStyles", () => {
-            this.selectedContainer.recomputeStyles();
+            this.selectedItem.recomputeStyles();
         });
 
         // Other usual stuff.

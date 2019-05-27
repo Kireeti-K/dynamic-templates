@@ -4,7 +4,7 @@
         <div  id="controls-list">
            <div  class="item">
                <p>Title</p>
-               <input class=" medium" v-model="inputText" />
+               <input class=" medium" v-model="inputText" ref="elementTextField" autofocus/>
            </div>
 
         </div>
@@ -29,6 +29,10 @@ export default {
     ,watch:{
         inputText:function(newv){
             EventBus.$emit("setElementText",this.inputText);
+        },
+        selectedElement:function(newv){
+            this.inputText=this.selectedElement.data;
+            this.$refs.elementTextField.focus();
         }
     },
 }

@@ -18,11 +18,4 @@ export default class Container extends Item {
     deleteChild(child) {
         this.children = this.children.filter(c => c.id !== child.id);
     }
-
-    recomputeStyles() {
-        const parentStyles = this.styles.recompute();
-        if (this.parent && parentStyles) {
-            this.parent.setStyles(parentStyles);
-        }
-    }
 }

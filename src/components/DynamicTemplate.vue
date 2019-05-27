@@ -1,7 +1,18 @@
+<style scoped>
+
+.dynamic-container{
+   min-height: 16.2cm;
+   min-width: 16.1cm;
+}
+.dynamic-container:hover{
+   outline-color: orange;
+}
+</style>
+
 <template>
     <div class="dynamic-template">
         
-        <DynamicContainer :item-object="root" :selected-item="selectedItem" />
+        <DynamicContainer :item-object="root" :selected-item="selectedItem" class="dynamic-container"/>
 
         <!-- <div @click="updateSelectedContainer" :style="config.styles.computedStyles">
             <div v-for="(child, index) in config.children" :key="index">

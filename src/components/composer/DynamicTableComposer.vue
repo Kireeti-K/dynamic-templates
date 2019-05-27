@@ -2,7 +2,6 @@
     <div class="editor-controls">
         <h4>Table</h4>
 
-       
         <DynamicCollapse label="rows" >
             <div id="container-list" >
                 <div class="item" v-for="(c,i) in selectedContainer.rows" :key="i" >
@@ -12,7 +11,7 @@
             </div>
             <button id='addnew' @click="addNewRow">add row </button>
         </DynamicCollapse>
- 
+
         <DynamicCollapse label="columns" >
             <div id="container-list" >
                 <div class="item" v-for="(c,i) in selectedContainer.columnsize" :key="i" >
@@ -22,8 +21,7 @@
             </div>
             <button id='addnew' @click="addNewColumn">add column </button>
         </DynamicCollapse>
-   
-    
+
     </div>
 </template>
 
@@ -44,7 +42,6 @@ export default {
         }
     },
     methods:{
-    
         handleAddNew(){
             if(this.selectedContainer.parent==null){this.addNewItem("Container");this.showAddMenu=false;return;}
             this.showAddMenu=true;

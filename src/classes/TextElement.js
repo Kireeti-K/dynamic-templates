@@ -1,9 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable linebreak-style */
-import { Element } from '../internal';
+import {
+    Element, StyleSystem, WidthStyle, MarginStyle,
+} from '../internal';
 import DynamicTextComponent from '../components/DynamicText.vue';
 import DynamicTextComposer from '../components/composer/DynamicTextComposer.vue';
-import StyleSystem, { WidthStyle, MarginStyle } from '../components/styles/styles';
 
 
 export class TextElement extends Element {

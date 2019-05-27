@@ -1,11 +1,10 @@
-import StyleSystem from '../components/styles/styles';
 import { randomString } from '../utils/string';
 
 export default class Item {
     constructor() {
-        this.parent = null;
-        this.styles = new StyleSystem();
         this.id = this.createContainerId();
+        this.parent = null;
+        // each item should declare its own StyleSystem
     }
 
     // eslint-disable-next-line class-methods-use-this

@@ -1,12 +1,12 @@
+/* eslint-disable import/prefer-default-export */
 /* eslint-disable linebreak-style */
-import Element from './Element';
-import Container from './Container';
+import { Element } from '../internal';
 import DynamicTextComponent from '../components/DynamicText.vue';
 import DynamicTextComposer from '../components/composer/DynamicTextComposer.vue';
-import StyleSystem, { WidthStyle, MarginStyle, FlexStyle } from '../components/styles/styles';
+import StyleSystem, { WidthStyle, MarginStyle } from '../components/styles/styles';
 
 
-export default class TextElement extends Element {
+export class TextElement extends Element {
     constructor() {
         super();
         this.data = 'title';

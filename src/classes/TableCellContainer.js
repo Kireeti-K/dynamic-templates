@@ -1,6 +1,7 @@
-import Container from './Container';
+/* eslint-disable import/prefer-default-export */
+import { Container } from '../internal';
 
-export default class TableCellContainer extends Container {
+export class TableCellContainer extends Container {
     constructor() {
         super();
         this.pika = true;

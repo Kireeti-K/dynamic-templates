@@ -1,6 +1,7 @@
-import Item from './Item';
+/* eslint-disable import/prefer-default-export */
+import { Item } from '../internal';
 
-export default class Element extends Item {
+export class Element extends Item {
     constructor(data, parent) {
         super(parent);
         /*

@@ -1,10 +1,8 @@
-import Container from './Container';
+/* eslint-disable import/prefer-default-export */
+import { Container } from '../internal';
 import DynamicTable from '../components/DynamicTable.vue';
 
-console.log('Container ', Container);
-console.log('Dynamic Table ', DynamicTable);
-
-export default class TableContainer extends Container {
+export class TableContainer extends Container {
     constructor() {
         super();
         this.component = DynamicTable;

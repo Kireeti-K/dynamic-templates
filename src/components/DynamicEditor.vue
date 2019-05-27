@@ -7,11 +7,7 @@
         justify-content: center;
     }
     #dynamic-editor .left-panel {
-        width: 230px;
         margin-right: 40px;
-        height: 633px;
-        padding: 12px 24px;
-        overflow-y: auto;
     }
     #dynamic-editor .editor-area {
         margin-right: 40px;
@@ -29,7 +25,9 @@
 <template>
     <div id="dynamic-editor" v-on-clickaway="clickedAway">
         <dynamic-card class="left-panel" v-if="selectedItem">
-            <component :is="selectedItem.composer"></component>
+            <dynamic-composer>
+                <component :is="selectedItem.composer" :selected-item="selectedItem"></component>
+            </dynamic-composer>
         </dynamic-card>
         <dynamic-card class="editor-area">
             <dynamic-template :root="root" :selected-item="selectedItem"></dynamic-template>
@@ -37,7 +35,7 @@
         <dynamic-card class="right-panel">
             <div v-if="selectedContainer">
                 <h4 style="margin-left: 24px">Styles</h4>
-                <dynamic-styles 
+                <dynamic-styles
                     :styles="selectedItem.styles.inputStyles">
                 </dynamic-styles>
             </div>
@@ -53,14 +51,12 @@ import DynamicCard from "./dumb/DynamicCard";
 import DynamicTemplate from "./DynamicTemplate";
 
 // classes
-import Container from "../classes/Container";
-import TextElement from "../classes/TextElement";
-// import TableContainer from '../classes/TableContainer';
+import { Container, TextElement } from "../internal";
 
 // components
 import DynamicContainer from "./DynamicContainer";
 import DynamicStyles from "./styles/DynamicStyles";
-import DynamicTable from "./DynamicTable"
+import DynamicComposer from "./composer/DynamicComposer";
 
 
 export default {
@@ -69,7 +65,7 @@ export default {
         DynamicCard,
         DynamicTemplate,
         DynamicStyles,
-        DynamicTable
+        DynamicComposer
     },
     mixins: [clickaway],
     data() {

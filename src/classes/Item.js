@@ -1,6 +1,7 @@
+/* eslint-disable import/prefer-default-export */
 import { randomString } from '../utils/string';
 
-export default class Item {
+export class Item {
     constructor() {
         this.id = this.createContainerId();
         this.parent = null;

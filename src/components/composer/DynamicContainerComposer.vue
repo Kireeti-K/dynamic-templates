@@ -54,7 +54,7 @@
         <!-- childen list -->
         <div id="container-list" v-if="selectedItem && selectedItem.children.length > 0" >
             <div class="item" v-for="(c, i) in selectedItem.children" :key="i" >
-                <dynamic-option @delete-clicked="() => deleteItem(c)">Container</dynamic-option>
+                <dynamic-list-item @delete-clicked="() => deleteItem(c)">Container</dynamic-list-item>
             </div>
         </div>
         <div style="margin-bottom: 10px" v-else>No items in the container</div>
@@ -77,7 +77,7 @@
 <script>
 import {EventBus} from "../EventBus";
 import { Container, TableContainer, TextElement } from "../../internal";
-import DynamicOption from "../dumb/DynamicOption";
+import DynamicListItem from "../dumb/DynamicListItem";
 
 export default {
     name: "DynamicContainerComposer",
@@ -123,7 +123,7 @@ export default {
         },
     },
     components: {
-        DynamicOption
+        DynamicListItem
     }
 }
 </script>

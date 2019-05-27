@@ -36,7 +36,7 @@
 <script>
 import TrashIcon from "vue-ionicons/dist/md-trash";
 export default {
-    name: "DynamicOption",
+    name: "DynamicListItem",
     components: {
         TrashIcon,
     }

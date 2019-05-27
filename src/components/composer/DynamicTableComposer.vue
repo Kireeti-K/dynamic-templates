@@ -5,7 +5,7 @@
        
         <DynamicCollapse label="rows" >
             <div id="container-list" >
-                <div class="item" v-for="(c,i) in selectedContainer.rows" :key="i" >
+                <div class="item" v-for="(c,i) in selectedItem.rows" :key="i" >
                     <p> row </p>
                     <button class="delete" @click="deleteRow(c)">-</button>
                 </div>
@@ -15,7 +15,7 @@
  
         <DynamicCollapse label="columns" >
             <div id="container-list" >
-                <div class="item" v-for="(c,i) in selectedContainer.columnsize" :key="i" >
+                <div class="item" v-for="(c,i) in selectedItem.columnSize" :key="i" >
                     <p> column </p>
                     <button class="delete" @click="deleteColumn(i)">-</button>
                 </div>
@@ -33,8 +33,8 @@ import DynamicCollapse from "../dumb/DynamicCollapse";
 import TableCellContainer from '../../classes/TableCellContainer';
 
 export default {
-    name: "DynamicContainerComposer",
-    props: ["selectedContainer"],
+    name: "DynamicTableComposer",
+    props: ["selectedItem"],
     components:{
         DynamicCollapse,
     },
@@ -46,7 +46,7 @@ export default {
     methods:{
     
         handleAddNew(){
-            if(this.selectedContainer.parent==null){this.addNewItem("Container");this.showAddMenu=false;return;}
+            if(this.selectedItem.parent==null){this.addNewItem("Container");this.showAddMenu=false;return;}
             this.showAddMenu=true;
         },
         addNewItem(itemName){
@@ -54,29 +54,16 @@ export default {
             this.showAddMenu = false;
         },
         addNewRow(){
-            var newRow=[];
-            var table=this.selectedContainer;
-            for(var i=0;i<table.columnsize;i++){newRow.push(new TableCellContainer());}
-            this.selectedContainer.rows.push(newRow);
-            table.rowsize++;
+            this.selectedItem.addNewRow();
         },
         addNewColumn(){
-            var table=this.selectedContainer;
-            for(var i=0;i<table.rowsize;i++){
-                table.rows[i].push(new TableCellContainer());
-            } 
-            table.columnsize++;
+            this.selectedItem.addNewColumn();
         },
         deleteRow(n){
-            this.selectedContainer.rows.splice(n,1);
-            this.selectedContainer.rowsize--;
+            this.selectedItem.deleteRow(n);
         },
         deleteColumn(n){
-            var table=this.selectedContainer;
-            for(var i=0;i<table.rowsize;i++){
-                table.rows[i].splice(n,1);
-            }
-            table.columnsize--;
+            this.selectedItem.deleteColumn(n);
         }
     }
 }

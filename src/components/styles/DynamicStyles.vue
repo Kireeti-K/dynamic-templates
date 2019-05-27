@@ -22,7 +22,7 @@
     <div class="editor-styles">
         <div class="styles-form">
             <div class="single-style" v-for="style in styles" :key="style.label">
-                <dynamic-collapse 
+                <dynamic-collapse
                     :label="style.label"
                 >
                     <component :is="style.component" :inputs="style.inputs" />

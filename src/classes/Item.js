@@ -22,7 +22,11 @@ export class Item {
     }
 
     recomputeStyles() {
-        const parentStyles = this.styles.recompute();
+        // this item styles
+        this.styles.recompute();
+
+        // parent styles
+        const parentStyles = this.styles.recomputeParentStyles();
         if (this.parent && parentStyles) {
             this.parent.setStyles(parentStyles);
         }

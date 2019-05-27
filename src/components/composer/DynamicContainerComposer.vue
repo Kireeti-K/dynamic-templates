@@ -1,29 +1,4 @@
 <style scoped>
-    /* container list item */
-    #container-list .item{
-        display: flex;
-        margin-bottom: 10px;
-        padding: 4px 8px;
-        justify-content: space-between;
-        align-items: center;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-    }
-    #container-list .item .item-name {
-        margin: 4px;
-    }
-    #container-list .delete-icon {
-        fill: orangered;
-    }
-    #container-list .delete{
-        padding: 4px 8px;
-        border:none;
-        cursor: pointer;
-    }
-    #container-list .delete:hover {
-        outline: none;
-    }
-
     /* add new item */
     #add-item{
         padding: 8px;
@@ -78,11 +53,8 @@
 
         <!-- childen list -->
         <div id="container-list" v-if="selectedItem && selectedItem.children.length > 0" >
-            <div class="item" v-for="(c,i) in selectedItem.children" :key="i" >
-                <p class="item-name">container</p>
-                <button class="delete" @click="deleteItem(c)">
-                    <TrashIcon w="18px" h="18px" root-class="delete-icon" />
-                </button>
+            <div class="item" v-for="(c, i) in selectedItem.children" :key="i" >
+                <dynamic-list-item @delete-clicked="() => deleteItem(c)">Container</dynamic-list-item>
             </div>
         </div>
         <div style="margin-bottom: 10px" v-else>No items in the container</div>
@@ -104,8 +76,8 @@
 
 <script>
 import {EventBus} from "../EventBus";
-import TrashIcon from "vue-ionicons/dist/md-trash";
 import { Container, TableContainer, TextElement } from "../../internal";
+import DynamicListItem from "../dumb/DynamicListItem";
 
 export default {
     name: "DynamicContainerComposer",
@@ -151,7 +123,7 @@ export default {
         },
     },
     components: {
-        TrashIcon
+        DynamicListItem
     }
 }
 </script>

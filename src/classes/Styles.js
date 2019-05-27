@@ -1,6 +1,6 @@
-import StyleComponent from './StyleComponent.vue';
-import MarginStyleComponent from './MarginStyleComponent.vue';
-import WidthStyleComponent from './WidthStyleComponent.vue';
+import StyleComponent from '../components/styles/StyleComponent.vue';
+import MarginStyleComponent from '../components/styles/MarginStyleComponent.vue';
+import WidthStyleComponent from '../components/styles/WidthStyleComponent.vue';
 
 export class BaseStyle {
     constructor() {
@@ -10,9 +10,31 @@ export class BaseStyle {
 
     getComputedValue() {
         const computedStyle = {};
-        this.inputs.forEach((input) => {
-            computedStyle[input.attr] = input.getComputedValue(input.value);
-        });
+        this.inputs
+            .filter(input => !input.setOnParent && !input.setOnChildren)
+            .forEach((input) => {
+                computedStyle[input.attr] = input.getComputedValue(input.value);
+            });
+        return computedStyle;
+    }
+
+    getParentComputedValue() {
+        const computedStyle = {};
+        this.inputs
+            .filter(input => input.setOnParent)
+            .forEach((input) => {
+                computedStyle[input.attr] = input.getComputedValue(input.value);
+            });
+        return computedStyle;
+    }
+
+    getChildrenComputedValue() {
+        const computedStyle = {};
+        this.inputs
+            .filter(input => input.setOnChildren)
+            .forEach((input) => {
+                computedStyle[input.attr] = input.getComputedValue(input.value);
+            });
         return computedStyle;
     }
 }
@@ -20,6 +42,7 @@ export class BaseStyle {
 export class InputStyle {
     constructor(data) {
         Object.keys(data).forEach((key) => { this[key] = data[key]; });
+        if (!this.getComputedValue) this.getComputedValue = value => value;
     }
 }
 
@@ -59,13 +82,12 @@ export class MarginStyle extends BaseStyle {
     constructor() {
         super();
         this.label = 'Margin';
-        this.setOnParent = true;
         this.component = MarginStyleComponent;
         this.inputs = [
             new InputStyle({
                 meta: 'margin-left',
                 label: 'Left',
-                attr: 'padding-left',
+                attr: 'margin-left',
                 inputType: 'number',
                 value: 5,
                 getComputedValue: value => `${value}px`,
@@ -73,7 +95,7 @@ export class MarginStyle extends BaseStyle {
             new InputStyle({
                 meta: 'margin-top',
                 label: 'Top',
-                attr: 'padding-top',
+                attr: 'margin-top',
                 inputType: 'number',
                 value: 5,
                 getComputedValue: value => `${value}px`,
@@ -81,7 +103,7 @@ export class MarginStyle extends BaseStyle {
             new InputStyle({
                 meta: 'margin-right',
                 label: 'Right',
-                attr: 'padding-right',
+                attr: 'margin-right',
                 inputType: 'number',
                 value: 5,
                 getComputedValue: value => `${value}px`,
@@ -89,7 +111,7 @@ export class MarginStyle extends BaseStyle {
             new InputStyle({
                 meta: 'margin-bottom',
                 label: 'Bottom',
-                attr: 'padding-bottom',
+                attr: 'margin-bottom',
                 inputType: 'number',
                 value: 5,
                 getComputedValue: value => `${value}px`,
@@ -112,7 +134,6 @@ export class FlexStyle extends BaseStyle {
                     { id: 'row', text: 'Horizontal' },
                 ],
                 value: 'column',
-                getComputedValue: value => value,
             }),
             new InputStyle({
                 label: 'Alignment',
@@ -124,39 +145,17 @@ export class FlexStyle extends BaseStyle {
                     { id: 'center', text: 'Center' },
                 ],
                 value: 'flex-start',
-                getComputedValue: value => value,
+            }),
+            new InputStyle({
+                label: '',
+                attr: 'flex',
+                setOnChildren: true,
+                value: 1,
             }),
         ];
     }
 
     getComputedValue() {
         return { display: 'flex', ...super.getComputedValue() };
-    }
-}
-
-// individual inputStyle can return key-value pair
-// or array of key-value pairs through getComputedValue
-
-export default class StyleSystem {
-    constructor(inputStyles = []) {
-        this.inputStyles = inputStyles;
-        this.computedStyles = [];
-        this.recompute();
-    }
-
-    mergeComputedStyles(styles) {
-        this.computedStyles = { ...this.computedStyles, ...styles };
-    }
-
-    recompute() {
-        this.computedStyles = this.inputStyles
-            .filter(inputStyle => !inputStyle.setOnParent)
-            .map(inputStyle => inputStyle.getComputedValue())
-            .reduce((obj, item) => ({ ...obj, ...item }));
-
-        return this.inputStyles
-            .filter(inputStyle => inputStyle.setOnParent)
-            .map(inputStyle => inputStyle.getComputedValue())
-            .reduce((obj, item) => ({ ...obj, ...item }));
     }
 }

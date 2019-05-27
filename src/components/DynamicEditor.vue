@@ -55,8 +55,8 @@ import DynamicTemplate from "./DynamicTemplate";
 import { Container, TextElement } from "../internal";
 
 // components
-import DynamicContainer from "./DynamicContainer";
 import DynamicStyles from "./styles/DynamicStyles";
+import DynamicContainer from "./DynamicContainer";
 import DynamicComposer from "./composer/DynamicComposer";
 
 

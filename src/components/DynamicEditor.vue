@@ -11,6 +11,7 @@
         margin-right: 40px;
         height: 633px;
         padding: 12px 24px;
+        overflow-y: auto;
     }
     #dynamic-editor .editor-area {
         margin-right: 40px;
@@ -27,13 +28,8 @@
 
 <template>
     <div id="dynamic-editor" v-on-clickaway="clickedAway">
-        <dynamic-card class="left-panel">
-            <div v-if="selectedElement !=null ">
-                <DynamicTextComposer :selected-element="selectedElement"/>
-            </div>
-            <div v-if="selectedContainer !==  null && selectedElement == null">
-                <DynamicContainerComposer :selected-container="selectedContainer"/>
-            </div>
+        <dynamic-card class="left-panel" v-if="selectedItem">
+            <component :is="selectedItem.composer"></component>
         </dynamic-card>
         <dynamic-card class="editor-area">
             <dynamic-template :root="root" :selected-item="selectedItem"></dynamic-template>
@@ -41,9 +37,9 @@
         <dynamic-card class="right-panel">
             <div v-if="selectedContainer">
                 <h4 style="margin-left: 24px">Styles</h4>
-                <dynamic-container-styles 
+                <dynamic-styles 
                     :styles="selectedItem.styles.inputStyles">
-                </dynamic-container-styles>
+                </dynamic-styles>
             </div>
         </dynamic-card>
     </div>
@@ -55,27 +51,24 @@ import { mixin as clickaway } from 'vue-clickaway';
 import { EventBus } from "./EventBus";
 import DynamicCard from "./dumb/DynamicCard";
 import DynamicTemplate from "./DynamicTemplate";
+
 // classes
 import Container from "../classes/Container";
 import TextElement from "../classes/TextElement";
-import TableContainer from '../classes/TableContainer';
+// import TableContainer from '../classes/TableContainer';
+
 // components
 import DynamicContainer from "./DynamicContainer";
-import DynamicContainerStyles from "./styles/DynamicContainerStyles";
+import DynamicStyles from "./styles/DynamicStyles";
 import DynamicTable from "./DynamicTable"
-
-import DynamicContainerComposer from "./composer/DynamicContainerComposer";
-import DynamicTextComposer from "./composer/DynamicTextComposer";
 
 
 export default {
     name: "DynamicEditor",
     components: {
         DynamicCard,
-        DynamicContainerComposer,
-        DynamicTextComposer,
         DynamicTemplate,
-        DynamicContainerStyles,
+        DynamicStyles,
         DynamicTable
     },
     mixins: [clickaway],
@@ -83,16 +76,16 @@ export default {
         return {
             root: new Container(),
             selectedContainer: null,
-            selectedElement:null,
+            selectedElement: null,
         }
     },
     mounted() {
         // Container events
-        EventBus.$on("addNewItem",this.addNewItem);
-        EventBus.$on("updateSelectedElement",this.updateSelectedElement);
+        EventBus.$on("addNewItem", this.addNewItem);
+        EventBus.$on("updateSelectedElement", this.updateSelectedElement);
         EventBus.$on("updateSelectedContainer", this.updateSelectedContainer);
-        EventBus.$on("deleteItem",this.deleteItem);
-        EventBus.$on("setElementText",this.setElementText);
+        EventBus.$on("deleteItem", this.deleteItem);
+        EventBus.$on("setElementText", this.setElementText);
 
         // Style events
         EventBus.$on("recomputeStyles", () => {
@@ -100,8 +93,8 @@ export default {
         });
 
         // Other usual stuff.
-        this.selectedContainer=this.root;
-        this.addNewItem("Container");
+        this.selectedContainer = this.root;
+        this.addNewItem(Container);
     },
     destroyed() {
         // Container events
@@ -122,20 +115,13 @@ export default {
         }
     },
     methods: {
-        addNewItem(itemType) {
-            let item = null;
-            switch(itemType){
-                case "Container":
-                    item = new Container();
-                    break;
-                case "Text":
-                    item=new TextElement();break;
-                case "Table":
-                    item=new TableContainer();break;
-                case "Image":
-                    item=new TextElement();break;
-            }
-            this.selectedContainer.addChild(item);
+        clickedAway() {
+            this.updateSelectedContainer(null);
+        },
+        addNewItem(ItemClass) {
+            console.log("Adding new item");
+            const child = new ItemClass();
+            this.selectedContainer.addChild(child);
         },
         updateSelectedContainer(selectedContainer) {
             this.selectedContainer = selectedContainer;
@@ -143,9 +129,6 @@ export default {
         },
         updateSelectedElement(element){
             this.selectedElement=element;
-        },
-        clickedAway() {
-            this.updateSelectedContainer(null);
         },
         deleteItem(item){
             this.selectedContainer.deleteChild(item);

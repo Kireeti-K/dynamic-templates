@@ -11,12 +11,11 @@
 </style>
 
 <template>
-    <div class="container" 
+    <div class="container"
         :style="itemObject
         .styles.computedStyles"
-        :class="{'is-focused': isFocused}" 
-        @click.stop="() => EventBus.$emit('updateSelectedElement', itemObject
-        )" 
+        :class="{'is-focused': isFocused}"
+        @click.stop="() => EventBus.$emit('updateSelectedElement', itemObject)"
     >
         <table class="table" >
             <tr>
@@ -43,7 +42,7 @@ import DynamicTableCell from './DynamicTableCell';
 export default {
     name: "DynamicTable",
     props: ["itemObject","selectedItem"],
-    components:{
+    components: {
         DynamicTableCell
     },
     data() {
@@ -52,9 +51,8 @@ export default {
         }
     },
     computed:{
-        isFocused:function(){
-            return this.selectedItem==this.itemObject
-            ;
+        isFocused: function(){
+            return this.selectedItem === this.itemObject;
         }
     }
 }

@@ -1,14 +1,16 @@
 /* eslint-disable class-methods-use-this */
 import Item from './Item';
+import DynamicContainer from '../components/DynamicContainer.vue';
+import DynamicContainerComposer from '../components/composer/DynamicContainerComposer.vue';
 import StyleSystem, { WidthStyle, MarginStyle, FlexStyle } from '../components/styles/styles';
-import DynamicContainerComponent from '../components/DynamicContainer.vue';
 
 
 export default class Container extends Item {
-    constructor(parent, children = null) {
-        super(parent);
-        this.children = children != null ? children : [];
-        this.component = DynamicContainerComponent;
+    constructor() {
+        super();
+        this.children = [];
+        this.component = DynamicContainer;
+        this.composer = DynamicContainerComposer;
         this.styles = new StyleSystem([
             new WidthStyle(),
             new MarginStyle(),

@@ -22,8 +22,8 @@ import DynamicText from './DynamicText';
 
 export default {
     name: "DynamicTableCell",
-    props: ["itemObject","selectedItem"],
-    components:{
+    props: ["itemObject", "selectedItem"],
+    components: {
         DynamicText,
     },
     data() {

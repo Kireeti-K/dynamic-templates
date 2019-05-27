@@ -1,13 +1,6 @@
 <template>
     <div class="dynamic-template">
-        
         <DynamicContainer :item-object="root" :selected-item="selectedItem" />
-
-        <!-- <div @click="updateSelectedContainer" :style="config.styles.computedStyles">
-            <div v-for="(child, index) in config.children" :key="index">
-                <DynamicContainer :item-object="child" :selectedItem="selectedItem" />
-            </div>
-        </div> -->
     </div>
 </template>
 

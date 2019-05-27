@@ -6,10 +6,10 @@
 </style>
 
 <template>
-    <div class="container" 
+    <div class="container"
         :style="itemObject.styles.computedStyles"
-        :class="{'is-focused': isFocused}" 
-        @click.stop="() => EventBus.$emit('updateSelectedElement', itemObject)" 
+        :class="{'is-focused': isFocused}"
+        @click.stop="() => EventBus.$emit('updateSelectedElement', itemObject)"
     >
         <p>{{itemObject.data}}</p>
     </div>
@@ -20,7 +20,7 @@ import { EventBus } from "./EventBus";
 
 export default {
     name: "DynamicText",
-    props: ["itemObject","selectedItem"],
+    props: ["itemObject", "selectedItem"],
     data() {
         return {
             EventBus,

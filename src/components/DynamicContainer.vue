@@ -12,10 +12,10 @@
 </style>
 
 <template>
-    <div class="container" 
+    <div class="container"
         :style="itemObject.styles.computedStyles"
-        :class="{'is-focused': isFocused}" 
-        @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)" 
+        :class="{'is-focused': isFocused}"
+        @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)"
     >
         <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
         <component v-for="(child,i) in itemObject.children" :key=i :is="child.component" :item-object="child" :selected-item="selectedItem" ></component>

@@ -1,124 +1,139 @@
 <template>
     <div class="editor-controls">
         <h4>Container</h4>
-    
+
         <!-- childen list -->
         <div id="container-list" v-if="selectedContainer && selectedContainer.children.length > 0" >
             <div class="item" v-for="(c,i) in selectedContainer.children" :key="i" >
-                <p> container </p>
-                <button class="delete" @click="deleteItem(c)">-</button>
+                <p class="item-name">container</p>
+                <button class="delete" @click="deleteItem(c)">
+                    <TrashIcon w="18px" h="18px" root-class="delete-icon" />
+                </button>
             </div>
         </div>
-        <div v-else>No items in the container</div>
-        <button id='addnew' @click="handleAddNew">add new </button>
-        <div id="add-item-menu" v-show="this.showAddMenu">
-            <button class="item" v-for="(item,n) in addables" :key=n  @click="() => addNewItem(item)">{{item}}</button>
+        <div style="margin-bottom: 10px" v-else>No items in the container</div>
+        <button id='add-item' @click="handleAddItem">Add Item</button>
+
+        <div id="select-item-menu">
+            <ul>
+                <li v-for="(item, i) in addables" :key="i" @click="() => addNewItem(item)">{{item.label}}</li>
+            </ul>
         </div>
-    
+
     </div>
 </template>
 
 <script>
 import {EventBus} from "../EventBus";
+import TrashIcon from "vue-ionicons/dist/md-trash";
+import Container from "../../classes/Container";
+import TableContainer from "../../classes/TableContainer";
+import TextElement from "../../classes/TextElement";
 
 export default {
     name: "DynamicContainerComposer",
     props: ["selectedContainer"],
     data(){
         return{
-            showAddMenu:false,
-            addables:['Container', 'Text', 'Table', 'Image']
+            showAddMenu: false,
+            addables: [
+                {
+                    label: 'Container',
+                    class: Container,
+                },
+                {
+                    label: 'Text',
+                    class: TextElement,
+                },
+                {
+                    label: 'Table',
+                    class: TableContainer,
+                },
+                {
+                    label: 'Image',
+                    class: TextElement
+                }
+            ]
         }
     },
     methods:{
         deleteItem(item){
             EventBus.$emit('deleteItem',item)
         },
-        handleAddNew(){
-            if(this.selectedContainer.parent==null){this.addNewItem("Container");this.showAddMenu=false;return;}
-            this.showAddMenu=true;
+        handleAddItem(){
+            if( this.selectedContainer.parent === null) {
+                this.addNewItem(Container);
+                this.showAddMenu=false;
+                return;
+            }
+            this.showAddMenu = true;
         },
-        addNewItem(itemName){
-            EventBus.$emit('addNewItem',itemName);
+        addNewItem(item){
+            EventBus.$emit('addNewItem', item.class);
             this.showAddMenu = false;
         },
+    },
+    components: {
+        TrashIcon
     }
 }
 </script>
 
 <style scoped>
-    #container-list{
-        /*
-        padding: 8px;
-        
-        border-radius: 4px;
-        box-shadow: inset 0 0 4px gray;
-        background-color: rgb(230, 230, 230);
-        */
-    }
+    /* container list item */
     #container-list .item{
-        margin:4px 0;
-        padding: 0px 8px;
-       
-        background-color: white;
         display: flex;
+        margin-bottom: 10px;
+        padding: 4px 8px;
         justify-content: space-between;
         align-items: center;
-        border:  1px solid lightgray;
-        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+    }
+    #container-list .item .item-name {
+        margin: 4px;
+    }
+    #container-list .delete-icon {
+        fill: orangered;
     }
     #container-list .delete{
         padding: 4px 8px;
-        font-weight: bold;
-        background-color: orangered;
-        color:white;
-       
         border:none;
+        cursor: pointer;
     }
-    #container-list .delete:hover{
-        background-color: red;
-        /*
-        box-shadow: 0 0 4px red;
-        animation: disco 0.1s infinite alternate;
-        */
+    #container-list .delete:hover {
+        outline: none;
     }
-    #addnew{
-        padding: 12px;
+
+    /* add new item */
+    #add-item{
+        padding: 8px;
         border:none;
-        background-color: rgb(24, 162, 248);
+        background-color: #4f6fd0;
         color:white;
         width:  100%;
-        margin: 8px 0;
-        font-size: 1.2em;
-        /* 
-        border-radius: 80px;
-        box-shadow: 0 0 4px gray;
-        box-sizing: border-box;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-weight: 500;
+        border-radius: 6px;
         outline: none;
-         */
+        cursor: pointer;
     }
-    #addnew:hover{
-        background-color: lightskyblue;
-        /* 
-        box-shadow: 0 0 8px gray;
-         */
+    #add-item:hover{
+        background-color: #395BC7;
     }
-    #addnew:active{
-        box-shadow: inset 0 0 8px lightgray;color:gray;
+    #add-item:active{
+        box-shadow: inset 0 0 8px #395BC7;
+        color:gray;
     }
-    #add-item-menu{
-        width:100%;
-        display:flex;
-        flex-direction: column;
-        background-color: pink;
-        justify-content: start;
+
+    /* select item menu */
+    #select-item-menu {
+
     }
-    #add-item-menu .item{
-        padding: 8px;
-        margin:0;
-        border:1px solid lightgrey;
-        background-color: white;
-    }
+
+    /* this is a master piece, never delete */
     @keyframes disco{
         from{box-shadow: 0 0 4px red;}
         to{box-shadow: 0 0 16px blue;}

@@ -1,5 +1,5 @@
 <style>
-    .tcontainer.is-focused {
+    .is-focused {
         background-color: #f7f7f7 !important;
     }
     .tcontainer:hover{outline: 15px solid yellow;}

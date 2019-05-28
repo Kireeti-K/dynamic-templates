@@ -54,7 +54,9 @@
         <!-- childen list -->
         <div id="container-list" v-if="selectedItem && selectedItem.children.length > 0" >
             <div class="item" v-for="(c, i) in selectedItem.children" :key="i" >
-                <dynamic-list-item @delete-clicked="() => deleteItem(c)">{{c.displayName}}</dynamic-list-item>
+                <dynamic-list-item @delete-clicked="() => deleteItem(c)"
+                    @click="()=> updateSelectedItem(c)"
+                    >{{c.displayName}}</dynamic-list-item>
             </div>
         </div>
         <div style="margin-bottom: 10px" v-else>No items in the container</div>
@@ -78,6 +80,7 @@
 import {EventBus} from "../EventBus";
 import { Container, TableContainer, TextElement, ImageElement} from "../../internal";
 import DynamicListItem from "../dumb/DynamicListItem";
+import { Element } from '../../classes/Element';
 
 export default {
     name: "DynamicContainerComposer",
@@ -121,6 +124,14 @@ export default {
             EventBus.$emit('addNewItem', item);
             this.showAddMenu = false;
         },
+        updateSelectedItem(item){
+            if(this.selectedItem instanceof Container){
+                EventBus.$emit('updateSelectedContainer',item)
+            }
+            else if(this.selectedItem instanceof Element){
+                EventBus.$emit('updateSelectedElement',item)
+            }
+        }
     },
     components: {
         DynamicListItem

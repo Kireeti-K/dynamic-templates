@@ -2,11 +2,7 @@
     <div class="editor-controls">
         <h4>Text</h4>
         <div  id="controls-list">
-           <div  class="item">
-               <p>Title</p>
-               <input class=" medium" v-model="selectedItem.data.text" ref="elementTextField" autofocus/>
-           </div>
-
+           <textarea class="" minlength="2560" v-model="selectedItem.data.text" ref="elementTextField" autofocus> </textarea>
         </div>
     </div>
 </template>
@@ -40,20 +36,22 @@ export default {
 
 <style>
     #controls-list{
-        margin: 4px;
-        padding: 4px;
+        margin: 0;
+        padding:0 ;
         background-color: white;
         /*
         border-radius: 8px;
         box-shadow:  0 0 8px lightgray;
         */
     }
-    #controls-list input{
+    #controls-list textarea{
         padding: 12px;
         border:1px solid lightgray;
-        width:80px;
         font-size: 110%;
         background-color: white;
+        height: 120px;
+        margin: 0;
+        resize: none;
         /* 
         border-radius: 8px;
         box-shadow: inset 0 2px 4px gray;

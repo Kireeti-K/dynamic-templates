@@ -4,7 +4,7 @@
 
         <DynamicCollapse label="rows" >
             <div id="container-list" >
-                <div class="item" v-for="(c,i) in selectedItem.rows" :key="i" >
+                <div class="item" v-for="(c,i) in selectedItem.data.rows" :key="i" >
                     <p> row </p>
                     <button class="delete" @click="deleteRow(c)">-</button>
                 </div>
@@ -14,7 +14,7 @@
 
         <DynamicCollapse label="columns" >
             <div id="container-list" >
-                <div class="item" v-for="(c,i) in selectedItem.columnSize" :key="i" >
+                <div class="item" v-for="(c,i) in selectedItem.data.rows[0].length" :key="i" >
                     <p> column </p>
                     <button class="delete" @click="deleteColumn(i)">-</button>
                 </div>

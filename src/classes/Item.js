@@ -5,6 +5,7 @@ export class Item {
     constructor() {
         this.id = this.createContainerId();
         this.parent = null;
+        this.displayName = 'Item';
         // each item should declare its own StyleSystem
     }
 

@@ -131,7 +131,7 @@ export default {
             this.selectedContainer.deleteChild(item);
         },
         setElementText(text){
-            this.selectedElement.data=text;
+            this.selectedElement.data.text=text;
         }
     },
 };

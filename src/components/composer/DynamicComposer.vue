@@ -9,8 +9,8 @@
     #go-back{
         background-color: white;
         border:1px solid gray;
+        padding: 4px 4px;   
         border-radius: 4px;
-        padding: 2px 8px;   
         /*
         color:black;
         */
@@ -20,6 +20,8 @@
         display: flex;
         justify-content: stretch;
         flex-direction: row;
+        margin: 0;
+        align-items: center;
         /*border:1px solid gray;*/
     }
 </style>

@@ -6,13 +6,13 @@
 </style>
 
 <template>
-    <div class="container"
+    <p 
         :style="itemObject.styles.computedStyles"
         :class="{'is-focused': isFocused}"
         @click.stop="() => EventBus.$emit('updateSelectedElement', itemObject)"
     >
-        <p>{{itemObject.data}}</p>
-    </div>
+        {{itemObject.data.text}}
+    </p>
 </template>
 
 <script>

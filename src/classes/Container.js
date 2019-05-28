@@ -11,6 +11,7 @@ export class Container extends Item {
     constructor() {
         super();
         this.children = [];
+        this.displayName = 'Container';
         this.component = DynamicContainer;
         this.composer = DynamicContainerComposer;
         this.styles = new StyleSystem([

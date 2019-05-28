@@ -10,7 +10,8 @@ import DynamicTextComposer from '../components/composer/DynamicTextComposer.vue'
 export class TextElement extends Element {
     constructor() {
         super();
-        this.data = 'title';
+        this.data = { text: 'text' };
+        this.displayName = 'Text';
         this.component = DynamicTextComponent;
         this.composer = DynamicTextComposer;
         this.styles = new StyleSystem([

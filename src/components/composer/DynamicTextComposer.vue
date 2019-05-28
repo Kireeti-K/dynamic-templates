@@ -4,7 +4,7 @@
         <div  id="controls-list">
            <div  class="item">
                <p>Title</p>
-               <input class=" medium" v-model="inputText" ref="elementTextField" autofocus/>
+               <input class=" medium" v-model="selectedItem.data.text" ref="elementTextField" autofocus/>
            </div>
 
         </div>
@@ -15,23 +15,23 @@
 import {EventBus} from "../EventBus"
 export default {
     name: "DynamicTextComposer",
-    props: ["selectedElement"],
+    props: ["selectedItem"],
     data(){
         return {
             inputText:""
         }
     },
     mounted(){
-        if(this.selectedElement){
-            this.inputText=this.selectedElement.data;
+        if(this.selectedItem){
+            this.inputText=this.selectedItem.data.text;
         }
     }
     ,watch:{
         inputText:function(newv){
             EventBus.$emit("setElementText",this.inputText);
         },
-        selectedElement:function(newv){
-            this.inputText=this.selectedElement.data;
+        selectedItem:function(newv){
+            this.inputText=this.selectedItem.data.text;
             this.$refs.elementTextField.focus();
         }
     },

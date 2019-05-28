@@ -8,8 +8,8 @@ import DynamicContainerComposer from '../components/composer/DynamicContainerCom
 
 
 export class Container extends Item {
-    constructor() {
-        super();
+    constructor(editingMode) {
+        super(editingMode);
         this.children = [];
         this.component = DynamicContainer;
         this.composer = DynamicContainerComposer;
@@ -33,6 +33,8 @@ export class Container extends Item {
         super.recomputeStyles();
         // children styles
         const childrenStyles = this.styles.recomputeChildrenStyles();
+        console.log('ChildrenStyles ', JSON.stringify(childrenStyles));
+        console.log(this.id);
         if (this.children && childrenStyles) {
             this.children.forEach(child => child.setStyles(childrenStyles));
         }

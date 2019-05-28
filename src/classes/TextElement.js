@@ -8,8 +8,8 @@ import DynamicTextComposer from '../components/composer/DynamicTextComposer.vue'
 
 
 export class TextElement extends Element {
-    constructor() {
-        super();
+    constructor(editingMode) {
+        super(editingMode);
         this.data = 'title';
         this.component = DynamicTextComponent;
         this.composer = DynamicTextComposer;

@@ -29,6 +29,7 @@
         <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
         <component
             v-for="(child,i) in itemObject.children" :key=i
+            :class="{'is-editing': itemObject.editingMode}"
             :style="editingCssProps"
             :is="child.component" :item-object="child"
             :selected-item="selectedItem"

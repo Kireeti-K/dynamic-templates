@@ -3,7 +3,6 @@
         background-color: #f7f7f7 !important;
     }
     .container:hover{outline: 1px solid blue;}
-    .is-focused{background-color:red;}
 </style>
 
 <template>

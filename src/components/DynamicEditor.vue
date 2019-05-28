@@ -33,13 +33,11 @@
         <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
             <dynamic-template :root="root" :selected-item="selectedItem"></dynamic-template>
         </dynamic-card>
-        <dynamic-card class="right-panel">
-            <div v-if="selectedItem">
-                <h4 style="margin-left: 24px">Styles</h4>
-                <dynamic-styles
-                    :styles="selectedItem.styles.inputStyles">
-                </dynamic-styles>
-            </div>
+        <dynamic-card class="right-panel" v-if="selectedItem">
+            <h4 style="margin-left: 24px">Styles</h4>
+            <dynamic-styles
+                :styles="selectedItem.styles.inputStyles">
+            </dynamic-styles>
         </dynamic-card>
     </div>
 </template>
@@ -88,7 +86,7 @@ export default {
 
         // Other usual stuff.
         this.selectedContainer = this.root;
-        this.addNewItem(Container);
+        // this.addNewItem(Container);
     },
     destroyed() {
         // Container events

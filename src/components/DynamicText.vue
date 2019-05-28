@@ -1,18 +1,15 @@
 <style>
-    .tcontainer.is-focused {
-        background-color: #f7f7f7 !important;
-    }
-    .tcontainer:hover{outline: 15px solid yellow;}
+
 </style>
 
 <template>
-    <div class="container"
+    <p class="text-element"
         :style="itemObject.styles.computedStyles"
         :class="{'is-focused': isFocused}"
         @click.stop="() => EventBus.$emit('updateSelectedElement', itemObject)"
     >
-        <p>{{itemObject.data}}</p>
-    </div>
+        {{itemObject.data}}
+    </p>
 </template>
 
 <script>

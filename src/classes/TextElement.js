@@ -2,6 +2,7 @@
 /* eslint-disable linebreak-style */
 import {
     Element, StyleSystem, WidthStyle, MarginStyle,
+    TextAlignStyle, FontStyle,
 } from '../internal';
 import DynamicTextComponent from '../components/DynamicText.vue';
 import DynamicTextComposer from '../components/composer/DynamicTextComposer.vue';
@@ -16,6 +17,8 @@ export class TextElement extends Element {
         this.styles = new StyleSystem([
             new WidthStyle(),
             new MarginStyle(),
+            new TextAlignStyle(),
+            new FontStyle(),
         ]);
     }
 }

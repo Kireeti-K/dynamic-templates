@@ -5,18 +5,15 @@
     .container {
         display: flex;
     }
-    .container-children {
-        flex: 1;
-    }
-    .container.is-focused {
-        /* background-color: #f7f7f7; */
-    }
     .container .is-editing {
+        border: 1px dotted #bbb;
+        border-radius: 4px;
     }
     .container .is-editing:hover {
+        padding: 5px;
+        padding-top: 15px;
+        border: 1px dotted red;
         background-color: var(--color);
-        outline: 1px solid red;
-        padding-bottom: 10px;
     }
 </style>
 
@@ -26,7 +23,7 @@
         :style="[editingCssProps, itemObject.styles.computedStyles]"
         @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)"
     >
-        <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
+        <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;"></div>
         <component
             v-for="(child,i) in itemObject.children" :key=i
             :class="{'is-editing': itemObject.editingMode}"

@@ -1,7 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable class-methods-use-this */
 import {
-    Item, StyleSystem, WidthStyle, MarginStyle, FlexStyle,
+    Item, StyleSystem, WidthStyle, MarginStyle,
+    FlexStyle, removeFlexIfWidth,
 } from '../internal';
 import DynamicContainer from '../components/DynamicContainer.vue';
 import DynamicContainerComposer from '../components/composer/DynamicContainerComposer.vue';

@@ -89,7 +89,7 @@ export class MarginStyle extends BaseStyle {
                 label: 'Left',
                 attr: 'margin-left',
                 inputType: 'number',
-                value: 5,
+                value: 0,
                 getComputedValue: value => `${value}px`,
             }),
             new InputStyle({
@@ -97,7 +97,7 @@ export class MarginStyle extends BaseStyle {
                 label: 'Top',
                 attr: 'margin-top',
                 inputType: 'number',
-                value: 5,
+                value: 0,
                 getComputedValue: value => `${value}px`,
             }),
             new InputStyle({
@@ -105,7 +105,7 @@ export class MarginStyle extends BaseStyle {
                 label: 'Right',
                 attr: 'margin-right',
                 inputType: 'number',
-                value: 5,
+                value: 0,
                 getComputedValue: value => `${value}px`,
             }),
             new InputStyle({
@@ -113,7 +113,7 @@ export class MarginStyle extends BaseStyle {
                 label: 'Bottom',
                 attr: 'margin-bottom',
                 inputType: 'number',
-                value: 5,
+                value: 0,
                 getComputedValue: value => `${value}px`,
             }),
         ];
@@ -157,5 +157,55 @@ export class FlexStyle extends BaseStyle {
 
     getComputedValue() {
         return { display: 'flex', ...super.getComputedValue() };
+    }
+}
+
+
+export class TextAlignStyle extends BaseStyle {
+    constructor() {
+        super();
+        this.label = 'Alignment';
+        this.inputs = [
+            new InputStyle({
+                meta: 'text-align',
+                label: 'Text Align',
+                attr: 'text-align',
+                options: [
+                    { id: 'left', text: 'Left' },
+                    { id: 'right', text: 'Right' },
+                    { id: 'center', text: 'Center' },
+                ],
+                inputType: 'radio-switch',
+                value: 'left',
+            }),
+        ];
+    }
+}
+
+
+export class FontStyle extends BaseStyle {
+    constructor() {
+        super();
+        this.label = 'Font';
+        this.inputs = [
+            new InputStyle({
+                label: 'Font Size',
+                attr: 'font-size',
+                inputType: 'number',
+                value: 14,
+                getComputedValue: value => `${value}px`,
+            }),
+            new InputStyle({
+                label: 'Font Weight',
+                attr: 'font-weight',
+                options: [
+                    { id: 400, text: 'Normal' },
+                    { id: 500, text: 'SemiBold' },
+                    { id: 700, text: 'Bold' },
+                ],
+                inputType: 'radio-switch',
+                value: 'normal',
+            }),
+        ];
     }
 }

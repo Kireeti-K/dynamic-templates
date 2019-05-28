@@ -3,21 +3,25 @@
         <h4>Table</h4>
 
         <DynamicCollapse label="rows" >
-            <div id="container-list" >
-                <div class="item" v-for="(c,i) in selectedItem.data.rows" :key="i" >
-                    <p> row </p>
-                    <button class="delete" @click="deleteRow(c)">-</button>
-                </div>
+            <div id="" >
+                <DynamicListItem v-for="(c,i) in selectedItem.data.rows[0].length" :key="i"
+                    @delete-clicked="() => deleteRow(i)" 
+                    @move-item="(dir) => moveRow(c,i,dir)"
+                >
+                    row
+                </DynamicListItem>
             </div>
             <button id='addnew' @click="addNewRow">add row </button>
         </DynamicCollapse>
 
         <DynamicCollapse label="columns" >
             <div id="container-list" >
-                <div class="item" v-for="(c,i) in selectedItem.data.rows[0].length" :key="i" >
-                    <p> column </p>
-                    <button class="delete" @click="deleteColumn(i)">-</button>
-                </div>
+                <DynamicListItem v-for="(c,i) in selectedItem.data.rows[0].length" :key="i"
+                    @delete-clicked="() => deleteColumn(i)" 
+                    @move-item="(dir) => moveColumn(c,i,dir)"
+                >
+                    column
+                </DynamicListItem>
             </div>
             <button id='addnew' @click="addNewColumn">add column </button>
         </DynamicCollapse>
@@ -29,12 +33,13 @@
 import {EventBus} from "../EventBus";
 import DynamicCollapse from "../dumb/DynamicCollapse";
 import TableCellContainer from '../../classes/TableCellContainer';
+import DynamicListItem from "../dumb/DynamicListItem";
 
 export default {
     name: "DynamicTableComposer",
     props: ["selectedItem"],
     components:{
-        DynamicCollapse,
+        DynamicCollapse,DynamicListItem
     },
     data(){
         return{
@@ -61,6 +66,12 @@ export default {
         },
         deleteColumn(n){
             this.selectedItem.deleteColumn(n);
+        },
+        moveRow(index,dir){
+            this.selectedItem.moveRow(index,dir);
+        },
+        moveColumn(index,dir){
+            this.selectedItem.moveRow(index,dir);
         }
     }
 }

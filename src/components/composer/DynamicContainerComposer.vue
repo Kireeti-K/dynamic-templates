@@ -54,7 +54,7 @@
         <!-- childen list -->
         <div id="container-list" v-if="selectedItem && selectedItem.children.length > 0" >
             <div class="item" v-for="(c, i) in selectedItem.children" :key="i" >
-                <dynamic-list-item @delete-clicked="() => deleteItem(c)"
+                <dynamic-list-item @delete-clicked="() => deleteItem(c)" @move-item="(dir) => moveItem(c,i,dir)"
                     @click="()=> updateSelectedItem(c)"
                     >{{c.displayName}}</dynamic-list-item>
             </div>
@@ -131,6 +131,16 @@ export default {
             else if(this.selectedItem instanceof Element){
                 EventBus.$emit('updateSelectedElement',item)
             }
+        },
+        moveItem(item,index,dir){
+            let newIndex = index + dir;
+            const children=this.selectedItem.children;
+            //alert('moving '+index+'  by '+dir)
+            if((dir<0 && index <1 )||(dir>0 && index > children.length-2)){ return; }
+            // if(dir>0 && index>0){}else if(dir < 0 && index < children.length-1 ){}
+            this.selectedItem.children.splice(index,1);
+            this.selectedItem.children.splice(newIndex,0,item);
+
         }
     },
     components: {

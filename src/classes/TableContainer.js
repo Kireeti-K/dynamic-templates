@@ -69,4 +69,12 @@ export class TableContainer extends Container {
         }
         this.recomputeChildren();
     }
+    
+    moveRow(n, dir) {
+        const rows = this.data.rows;
+    }
+
+    moveColumn(n, dir) {
+
+    }
 }

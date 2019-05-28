@@ -47,7 +47,7 @@ export default {
     #controls-list textarea{
         padding: 12px;
         border:1px solid lightgray;
-        font-size: 110%;
+        font-size: 14px;
         background-color: white;
         height: 120px;
         margin: 0;
@@ -67,7 +67,4 @@ export default {
     }
     #controls-list .medium{width:120px}
 
-    #controls-list p{
-        font-size: 120%;
-    }
 </style>

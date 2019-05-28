@@ -12,6 +12,5 @@ export const removeFlexIfWidth = (styles) => {
     if (styles.flex && styles.width && isWidthValueConcrete(styles.width)) {
         delete styles.flex;
     }
-    console.log('Styles after deleting flex ', JSON.stringify(styles));
     return styles;
 };

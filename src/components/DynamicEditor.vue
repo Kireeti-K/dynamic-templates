@@ -118,7 +118,6 @@ export default {
             this.selectedElement=element;
         },
         recomputeStyles() {
-            console.log("Recomputing styles");
             this.selectedItem.recomputeStyles();
             if (this.selectedItem.parent) {
                 this.selectedItem.parent.recomputeStyles();

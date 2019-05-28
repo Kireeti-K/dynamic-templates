@@ -8,6 +8,7 @@
     .container .is-editing {
         border: 1px dotted #bbb;
         border-radius: 4px;
+        transition: all 0.5s ease;
     }
     .container .is-editing:hover {
         padding: 5px;

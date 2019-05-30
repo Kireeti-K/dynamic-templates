@@ -2,6 +2,13 @@
 import { Container, TableCellContainer } from '../internal';
 import DynamicTable from '../components/DynamicTable.vue';
 import DynamicTableComposer from '../components/composer/DynamicTableComposer.vue';
+import { randomString } from '../utils/string';
+
+function Row() {
+    this.id = randomString(4);
+}
+Row.prototype = [];
+
 
 export class TableContainer extends Container {
     constructor() {
@@ -12,7 +19,7 @@ export class TableContainer extends Container {
         this.static = true;
         this.data = { rows: [] };
         for (let j = 0; j < 3; j += 1) {
-            const trow = [];
+            const trow = new Row();
             for (let i = 0; i < 2; i += 1) {
                 const tcell = new TableCellContainer();
                 trow.push(tcell);
@@ -34,7 +41,7 @@ export class TableContainer extends Container {
     }
 
     addNewRow() {
-        const newRow = [];
+        const newRow = new Row();
         const columnSize = this.data.rows.length > 0 ? this.data.rows[0].length : 0;
         for (let i = 0; i < columnSize; i += 1) {
             const tcell = new TableCellContainer();

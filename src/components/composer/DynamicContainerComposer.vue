@@ -1,4 +1,4 @@
-<style scoped>
+<style>
     /* add new item */
     #add-item{
         padding: 8px;
@@ -45,33 +45,58 @@
         from{box-shadow: 0 0 4px red;}
         to{box-shadow: 0 0 16px blue;}
     }
+    .fade-enter-active, .fade-leave-active{
+        transition: opacity .2s;
+    }
+    .fade-enter, .fade-leave-to{
+        opacity: 0.5;
+    }
+    .slide-move{
+        transition: transform 0.8s;
+    }
+    .aboveall{
+        z-index: 5;
+    }
+    .container-list{
+        background-color: white;
+    }
 </style>
 
 <template>
-    <div class="editor-controls">
+    <div class="editor-controls" >
         <h4>Container</h4>
 
         <!-- childen list -->
-        <div id="container-list" v-if="selectedItem && selectedItem.children.length > 0" >
-            <div class="item" v-for="(c, i) in selectedItem.children" :key="i" >
-                <dynamic-list-item @delete-clicked="() => deleteItem(c)" @move-item="(dir) => moveItem(c,i,dir)"
+        <div class="container-list" v-if="selectedItem && selectedItem.children.length > 0" >
+            <transition-group name="slide">
+                <dynamic-list-item v-for="(c, i) in selectedItem.children" :key="c.id"
+                    :class="{aboveall: movingItem == i}"
+                    @delete-clicked="() => deleteItem(c)" 
+                    @move-item="(dir) => moveItem(c,i,dir)"
                     @click="()=> updateSelectedItem(c)"
-                    >{{c.displayName}}</dynamic-list-item>
-            </div>
+                >
+                    {{c.displayName}}
+                </dynamic-list-item>
+            </transition-group>
         </div>
         <div style="margin-bottom: 10px" v-else>No items in the container</div>
-        <button id='add-item' @click="handleAddItem">Add Item</button>
 
-        <div id="select-menu" v-show="showAddMenu">
-            <!-- <h4>Select Item</h4> -->
-            <div
-                v-for="(item, i) in addables" :key="i"
-                class="item"
-                @click="() => addNewItem(item.class)"
-            >
-                {{item.label}}
+    <div v-on-clickaway="clickedAway">
+        <button id='add-item' @click="handleAddItem">Add Item</button>
+        <transition name="fade">
+            <div id="select-menu" v-show="showAddMenu"  >
+                <!-- <h4>Select Item</h4> -->
+                <div 
+                    v-for="(item, i) in addables" :key="i"
+                    class="item"
+                    @click="() => addNewItem(item.class)"
+                >
+                    {{item.label}}
+                </div>
             </div>
-        </div>
+
+        </transition>
+    </div>
 
     </div>
 </template>
@@ -81,10 +106,11 @@ import {EventBus} from "../EventBus";
 import { Container, TableContainer, TextElement, ImageElement} from "../../internal";
 import DynamicListItem from "../dumb/DynamicListItem";
 import { Element } from '../../classes/Element';
-
+import { mixin as clickaway } from 'vue-clickaway';
 export default {
     name: "DynamicContainerComposer",
     props: ["selectedItem"],
+    mixins:[clickaway],
     data(){
         return{
             showAddMenu: false,
@@ -106,6 +132,8 @@ export default {
                     class: ImageElement
                 }
             ]
+            ,
+            movingItem: 0
         }
     },
     methods:{
@@ -113,12 +141,14 @@ export default {
             EventBus.$emit('deleteItem',item)
         },
         handleAddItem(){
+            /*
             if( this.selectedItem.parent === null) {
                 this.addNewItem(Container);
                 this.showAddMenu=false;
                 return;
             }
-            this.showAddMenu = true;
+            */
+            this.showAddMenu = !this.showAddMenu;
         },
         addNewItem(item){
             EventBus.$emit('addNewItem', item);
@@ -140,7 +170,10 @@ export default {
             // if(dir>0 && index>0){}else if(dir < 0 && index < children.length-1 ){}
             this.selectedItem.children.splice(index,1);
             this.selectedItem.children.splice(newIndex,0,item);
-
+            this.movingItem = index+dir;
+        },
+        clickedAway(){
+            this.showAddMenu=false;
         }
     },
     components: {

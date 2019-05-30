@@ -4,26 +4,32 @@
 
         <DynamicCollapse label="rows" >
             <div id="" >
-                <DynamicListItem v-for="(c,i) in selectedItem.data.rows" :key="i"
-                    @delete-clicked="() => deleteRow(i)" 
-                    @move-item="(dir) => moveRow(i,dir)"
-                >
-                    row
-                </DynamicListItem>
+                <transition-group name="slide">
+                    <DynamicListItem v-for="(c,i) in selectedItem.data.rows" :key="c.id"
+                        @delete-clicked="() => deleteRow(i)" 
+                        @move-item="(dir) => moveRow(i,dir)"
+                        :class="{aboveall: movingItem == i}"
+                    >
+                        row
+                    </DynamicListItem>
+                </transition-group>
             </div>
-            <button id='addnew' @click="addNewRow">add row </button>
+            <button id='add-item' @click="addNewRow">add row </button>
         </DynamicCollapse>
 
         <DynamicCollapse label="columns" >
             <div id="container-list" >
-                <DynamicListItem v-for="(c,i) in selectedItem.data.rows[0]" :key="i"
-                    @delete-clicked="() => deleteColumn(i)" 
-                    @move-item="(dir) => moveColumn(i,dir)"
-                >
-                    column
-                </DynamicListItem>
+                <transition-group name="slide">
+                    <DynamicListItem v-for="(c,i) in selectedItem.data.rows[0]" :key="c.id"
+                        @delete-clicked="() => deleteColumn(i)" 
+                        @move-item="(dir) => moveColumn(i,dir)"
+                        :class="{aboveall: movingItem == i}"
+                    >
+                        column
+                    </DynamicListItem>
+                </transition-group>
             </div>
-            <button id='addnew' @click="addNewColumn">add column </button>
+            <button id='add-item' @click="addNewColumn">add column </button>
         </DynamicCollapse>
 
     </div>
@@ -43,7 +49,7 @@ export default {
     },
     data(){
         return{
-            showAddMenu:false,
+            showAddMenu:false,movingItem:0
         }
     },
     methods:{
@@ -69,9 +75,11 @@ export default {
         },
         moveRow(index,dir){
             this.selectedItem.moveRow(index,dir);
+            this.movingItem = index+dir;
         },
         moveColumn(index,dir){
             this.selectedItem.moveColumn(index,dir);
+            this.movingItem = index+dir;
         }
     }
 }
@@ -113,30 +121,7 @@ export default {
         animation: disco 0.1s infinite alternate;
         */
     }
-    #addnew{
-        padding: 12px;
-        border:none;
-        background-color: rgb(24, 162, 248);
-        color:white;
-        width:  100%;
-        margin: 8px 0;
-        font-size: 1.2em;
-        /* 
-        border-radius: 80px;
-        box-shadow: 0 0 4px gray;
-        box-sizing: border-box;
-        outline: none;
-         */
-    }
-    #addnew:hover{
-        background-color: lightskyblue;
-        /* 
-        box-shadow: 0 0 8px gray;
-         */
-    }
-    #addnew:active{
-        box-shadow: inset 0 0 8px lightgray;color:gray;
-    }
+
     
     @keyframes disco{
         from{box-shadow: 0 0 4px red;}

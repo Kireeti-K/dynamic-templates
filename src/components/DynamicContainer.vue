@@ -1,6 +1,9 @@
 <style>
     .container {
         display: flex;
+        /*
+        background-color: white !important;
+        */
     }
     .container-children {
         flex: 1;
@@ -18,7 +21,9 @@
         @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)"
     >
         <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
-        <component v-for="(child,i) in itemObject.children" :key=i :is="child.component" :item-object="child" :selected-item="selectedItem" ></component>
+        <transition-group appear name="slide">
+        <component v-for="(child) in itemObject.children" :key="child.id" :is="child.component" :item-object="child" :selected-item="selectedItem" ></component>
+        </transition-group>
     </div>
 </template>
 

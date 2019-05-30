@@ -10,7 +10,8 @@
         margin-bottom: 10px;
         border: 1px solid #ddd;
         border-radius: 6px;
-        animation-duration: 1s;
+        background-color: white;
+        position: relative;
     }
     .dynamic-option .item-name {
         flex:1;
@@ -21,6 +22,7 @@
     }
     .dynamic-option .delete-icon {
         fill: orangered;
+        position: relative;
     }
     .dynamic-option .delete{
         margin: 0;
@@ -50,9 +52,11 @@
         border:none;
         background-color: white;
     }
+    /*
     .dynamic-option button:hover{
-        /* background-color: lightgray; */
+         background-color: lightgray; 
     }
+    */
     .move-button{
         cursor: pointer;
         padding: 0;
@@ -63,7 +67,8 @@
 </style>
 
 <template>
-    <div class="dynamic-option" style="animation-name: moveup ;"
+
+    <div class="dynamic-option" 
         @mouseover="() => this.showMoveControls=true"
         @mouseleave="() => this.showMoveControls=false"
     >
@@ -81,10 +86,11 @@
         <div class="item-name" v-on="$listeners" >
             <slot />
         </div>
-        <div class="delete" @click="() => $emit('delete-clicked')" v-show="showMoveControls">
+        <div class="delete" @click="() => $emit('delete-clicked')" v-show="showMoveControls||true">
             <TrashIcon w="18px" h="18px" root-class="delete-icon" />
         </div>
     </div>
+
 </template>
 
 <script>

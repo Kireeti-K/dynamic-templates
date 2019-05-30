@@ -2,7 +2,7 @@
     .container.is-focused {
         background-color: #f7f7f7 !important;
     }
-    .is-focused{background-color:lightgray;}
+    .container:hover{outline: 1px solid blue;}
 </style>
 
 <template>

@@ -1,15 +1,16 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable class-methods-use-this */
 import {
-    Item, StyleSystem, WidthStyle, MarginStyle, FlexStyle,
+    Item, StyleSystem, WidthStyle, MarginStyle,
+    FlexStyle, removeFlexIfWidth,
 } from '../internal';
 import DynamicContainer from '../components/DynamicContainer.vue';
 import DynamicContainerComposer from '../components/composer/DynamicContainerComposer.vue';
 
 
 export class Container extends Item {
-    constructor() {
-        super();
+    constructor(editingMode) {
+        super(editingMode);
         this.children = [];
         this.displayName = 'Container';
         this.component = DynamicContainer;
@@ -34,12 +35,10 @@ export class Container extends Item {
         super.recomputeStyles();
         // children styles
         const childrenStyles = this.styles.recomputeChildrenStyles();
-        console.log('Setting children styles ', JSON.stringify(childrenStyles));
+        console.log('ChildrenStyles ', JSON.stringify(childrenStyles));
+        console.log(this.id);
         if (this.children && childrenStyles) {
-            this.children.forEach((child) => {
-                console.log('Setting child with styles ', JSON.stringify(childrenStyles));
-                child.setStyles(childrenStyles);
-            });
+            this.children.forEach(child => child.setStyles(childrenStyles));
         }
     }
 }

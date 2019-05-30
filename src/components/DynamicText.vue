@@ -1,12 +1,9 @@
 <style>
-    .is-focused {
-        background-color: #f7f7f7 !important;
-    }
-    .tcontainer:hover{outline: 15px solid yellow;}
+
 </style>
 
 <template>
-    <p 
+    <p class="text-element"
         :style="itemObject.styles.computedStyles"
         :class="{'is-focused': isFocused}"
         @click.stop="() => EventBus.$emit('updateSelectedElement', itemObject)"

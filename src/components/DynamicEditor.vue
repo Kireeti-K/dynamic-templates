@@ -33,13 +33,11 @@
         <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
             <dynamic-template :root="root" :selected-item="selectedItem"></dynamic-template>
         </dynamic-card>
-        <dynamic-card class="right-panel">
-            <div v-if="selectedItem">
-                <h4 style="margin-left: 24px">Styles</h4>
-                <dynamic-styles
-                    :styles="selectedItem.styles.inputStyles">
-                </dynamic-styles>
-            </div>
+        <dynamic-card class="right-panel" v-if="selectedItem">
+            <h4 style="margin-left: 24px">Styles</h4>
+            <dynamic-styles
+                :styles="selectedItem.styles.inputStyles">
+            </dynamic-styles>
         </dynamic-card>
     </div>
 </template>
@@ -52,13 +50,12 @@ import DynamicCard from "./dumb/DynamicCard";
 import DynamicTemplate from "./DynamicTemplate";
 
 // classes
-import { Container, TextElement } from "../internal";
+import { Container, Element, TextElement } from "../internal";
 
 // components
 import DynamicStyles from "./styles/DynamicStyles";
 import DynamicContainer from "./DynamicContainer";
 import DynamicComposer from "./composer/DynamicComposer";
-
 
 export default {
     name: "DynamicEditor",
@@ -71,7 +68,7 @@ export default {
     mixins: [clickaway],
     data() {
         return {
-            root: new Container(),
+            root: new Container(true),
             selectedContainer: null,
             selectedElement: null,
         }
@@ -85,13 +82,11 @@ export default {
         EventBus.$on("setElementText", this.setElementText);
 
         // Style events
-        EventBus.$on("recomputeStyles", () => {
-            this.selectedItem.recomputeStyles();
-        });
+        EventBus.$on("recomputeStyles", this.recomputeStyles);
 
         // Other usual stuff.
         this.selectedContainer = this.root;
-        this.addNewItem(Container);
+        // this.addNewItem(Container);
     },
     destroyed() {
         // Container events
@@ -115,17 +110,26 @@ export default {
         clickedAway() {
             this.updateSelectedContainer(null);
         },
-        addNewItem(ItemClass) {
-            console.log("Adding new item");
-            const child = new ItemClass();
-            this.selectedContainer.addChild(child);
-        },
         updateSelectedContainer(selectedContainer) {
             this.selectedContainer = selectedContainer;
             this.selectedElement = null;
         },
         updateSelectedElement(element){
             this.selectedElement=element;
+        },
+        recomputeStyles() {
+            this.selectedItem.recomputeStyles();
+            if (this.selectedItem.parent) {
+                this.selectedItem.parent.recomputeStyles();
+                if (this.selectedItem instanceof Element && this.selectedItem.parent.parent) {
+                    this.selectedItem.parent.parent.recomputeStyles();
+                }
+            }
+        },
+        addNewItem(ItemClass) {
+            const child = new ItemClass(true);
+            this.selectedContainer.addChild(child);
+            this.recomputeStyles();
         },
         deleteItem(item){
             this.selectedContainer.deleteChild(item);

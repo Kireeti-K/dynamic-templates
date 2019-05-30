@@ -1,28 +1,43 @@
-<style>
+<style scoped>
+    :root {
+        --color: red;
+    }
     .container {
         display: flex;
         /*
         background-color: white !important;
         */
     }
-    .container-children {
-        flex: 1;
+    .container .is-editing {
+        border: 1px dotted #bbb;
+        border-radius: 4px;
+        transition: all 0.5s ease;
     }
-    .container.is-focused {
-        background-color: #f7f7f7 !important;
+    .container .is-editing:hover {
+        padding: 5px;
+        padding-top: 15px;
+        border: 1px dotted red;
+        background-color: var(--color);
     }
-    .container:hover{outline: 1px solid red;}
 </style>
 
 <template>
     <div class="container"
-        :style="itemObject.styles.computedStyles"
-        :class="{'is-focused': isFocused}"
+        :class="{'is-focused': isFocused, 'is-editing': itemObject.editingMode}"
+        :style="[editingCssProps, itemObject.styles.computedStyles]"
         @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)"
     >
         <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
         <transition-group appear name="slide">
-        <component v-for="(child) in itemObject.children" :key="child.id" :is="child.component" :item-object="child" :selected-item="selectedItem" ></component>
+        <component 
+            v-for="(child) in itemObject.children" :key="child.id"
+            :class="{'is-editing': itemObject.editingMode}"
+            :style="editingCssProps" 
+            :is="child.component" 
+            :item-object="child" 
+            :selected-item="selectedItem" 
+        >
+        </component>
         </transition-group>
     </div>
 </template>
@@ -32,7 +47,7 @@ import { EventBus } from "./EventBus";
 
 export default {
     name: "DynamicContainer",
-    props: ["itemObject","selectedItem"],
+    props: ["itemObject", "selectedItem"],
     data() {
         return {
             EventBus: EventBus,
@@ -41,6 +56,11 @@ export default {
     computed:{
         isFocused:function(){
             return this.selectedItem === this.itemObject;
+        },
+        editingCssProps() {
+            return {
+                "--color": this.itemObject.color,
+            }
         }
     }
 }

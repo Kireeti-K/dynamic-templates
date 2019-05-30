@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import { removeFlexIfWidth } from '../internal';
 
 export class StyleSystem {
     constructor(inputStyles = []) {
@@ -8,14 +9,19 @@ export class StyleSystem {
     }
 
     mergeComputedStyles(styles) {
-        this.computedStyles = { ...this.computedStyles, ...styles };
+        console.log('Merging');
+        console.log(JSON.stringify(this.computedStyles));
+        console.log(JSON.stringify(styles));
+        this.computedStyles = removeFlexIfWidth({ ...this.computedStyles, ...styles });
     }
 
     recompute() {
         try {
-            this.computedStyles = this.inputStyles
-                .map(inputStyle => inputStyle.getComputedValue())
-                .reduce((obj, item) => ({ ...obj, ...item }));
+            this.computedStyles = removeFlexIfWidth(
+                this.inputStyles
+                    .map(inputStyle => inputStyle.getComputedValue())
+                    .reduce((obj, item) => ({ ...obj, ...item })),
+            );
         } catch {
             console.log('Exception');
         }

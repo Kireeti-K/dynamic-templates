@@ -13,3 +13,6 @@ export * from './classes/ImageElement';
 // styles
 export * from './classes/Styles';
 export * from './classes/StyleSystem';
+
+export * from './utils/css';
+export * from './utils/string';

@@ -141,13 +141,6 @@ export default {
             EventBus.$emit('deleteItem',item)
         },
         handleAddItem(){
-            /*
-            if( this.selectedItem.parent === null) {
-                this.addNewItem(Container);
-                this.showAddMenu=false;
-                return;
-            }
-            */
             this.showAddMenu = !this.showAddMenu;
         },
         addNewItem(item){

@@ -5,6 +5,7 @@ import {
 } from '../internal';
 import DynamicTextComponent from '../components/DynamicText.vue';
 import DynamicTextComposer from '../components/composer/DynamicTextComposer.vue';
+import { randomString } from '../utils/string';
 
 
 export class TextElement extends Element {
@@ -18,5 +19,6 @@ export class TextElement extends Element {
             new WidthStyle(),
             new MarginStyle(),
         ]);
+        this.data.text = randomString(4);
     }
 }

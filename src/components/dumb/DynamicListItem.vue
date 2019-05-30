@@ -1,73 +1,111 @@
 <style scoped>
+    @keyframes moveup {
+        from {margin-top:50px;background-color: red;}
+        to {margin-top: 0;background-color: white;}
+    }
     .dynamic-option{
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 10px;
-        margin-left: 4px;
         border: 1px solid #ddd;
         border-radius: 6px;
+        animation-duration: 1s;
     }
     .dynamic-option .item-name {
         flex:1;
         padding: 8px;
         padding-left: 8px;
         position: relative;
+        font-size: 15px;
     }
     .dynamic-option .delete-icon {
         fill: orangered;
     }
     .dynamic-option .delete{
         margin: 0;
-        padding: 4px 8px;
+        padding: 8px 8px;
         border:none;
         cursor: pointer;
-        width: 40px;
-        background-color: white;
+        
+        transition: transform 0.1s ease;
     }
     .dynamic-option .delete:hover {
-        outline: none;
+        outline: none;transform: scale(1.2);
     }
     .floaty-icon{
-        left: 2px;
-        position: absolute;
+        transition: transform 0.1s ease;
+        margin:4px;
+        margin-left: 8px;   
+        width: 24px;
+        height: 36px;
         display: flex;
         flex-direction: column;
+        justify-content: center;    
+    }
+    .floaty-icon:hover{
+        transform: scale(1.2);
     }
     .dynamic-option button{
         border:none;
         background-color: white;
     }
     .dynamic-option button:hover{
-        background-color: lightgray;
+        /* background-color: lightgray; */
     }
+    .move-button{
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        line-height: 12px;
+    }
+    
 </style>
 
 <template>
-    <div class="dynamic-option">
-        <div class="item-name" v-on="$listeners"><slot /></div>
-        <button class="delete" @click="() => $emit('delete-clicked')">
+    <div class="dynamic-option" style="animation-name: moveup ;"
+        @mouseover="() => this.showMoveControls=true"
+        @mouseleave="() => this.showMoveControls=false"
+    >
+        <div class="floaty-icon" >
+                <div @click="() => moveItem(-1)" v-show="showMoveControls" class="move-button">
+                    <UpIcon w="16px" h="16px"/>
+                </div>
+                <div @click="() => moveItem(1)" v-show="showMoveControls" class="move-button">
+                    <DownIcon w="16px" h="16px"/>
+                </div>
+        </div>
+
+ 
+ 
+        <div class="item-name" v-on="$listeners" >
+            <slot />
+        </div>
+        <div class="delete" @click="() => $emit('delete-clicked')" v-show="showMoveControls">
             <TrashIcon w="18px" h="18px" root-class="delete-icon" />
-        </button>
-        <div class="floaty-icon">
-            <button @click="() => $emit('move-item',-1)">
-                <UpIcon w="12px" h="12px" />
-            </button>
-            <button @click="() => $emit('move-item',1)">
-                <DownIcon w="12px" h="12px" />
-            </button>
         </div>
     </div>
 </template>
 
 <script>
 import TrashIcon from "vue-ionicons/dist/md-trash";
-import UpIcon from "vue-ionicons/dist/md-thumbs-up";
-import DownIcon from "vue-ionicons/dist/md-thumbs-down";
+import UpIcon from "vue-ionicons/dist/ios-arrow-up";
+import DownIcon from "vue-ionicons/dist/ios-arrow-down";
 export default {
     name: "DynamicListItem",
     components: {
         TrashIcon,UpIcon,DownIcon
+    },
+    data(){
+        return{
+            showMoveControls:false
+        }
+    },
+    methods:{
+        moveItem(dir){
+            this.$emit('move-item',dir);
+            this.showMoveControls=false;
+        }
     }
 }
 </script>

@@ -69,12 +69,28 @@ export class TableContainer extends Container {
         }
         this.recomputeChildren();
     }
-    
+
     moveRow(n, dir) {
-        const rows = this.data.rows;
+        const index = n;
+        const newIndex = index + dir;
+        // alert('moving '+index+'  by '+dir)
+        if ((dir < 0 && index < 1) || (dir > 0 && index > this.data.rows.length - 2)) { return; }
+        const trow = this.data.rows[n];
+        this.data.rows.splice(index, 1);
+        this.data.rows.splice(newIndex, 0, trow);
+        console.log('row haha');
     }
 
     moveColumn(n, dir) {
-
+        const index = n;
+        const newIndex = index + dir;
+        // alert('moving '+index+'  by '+dir)
+        if ((dir < 0 && index < 1) || (dir > 0 && index > this.data.rows.length - 2)) { return; }
+        for (let i = 0; i < this.data.rows.length; i += 1) {
+            const tcolumn = this.data.rows[i][index];
+            this.data.rows[i].splice(index, 1);
+            this.data.rows[i].splice(newIndex, 0, tcolumn);
+        }
+        console.log('column hahaha');
     }
 }

@@ -4,9 +4,9 @@
 
         <DynamicCollapse label="rows" >
             <div id="" >
-                <DynamicListItem v-for="(c,i) in selectedItem.data.rows[0].length" :key="i"
+                <DynamicListItem v-for="(c,i) in selectedItem.data.rows" :key="i"
                     @delete-clicked="() => deleteRow(i)" 
-                    @move-item="(dir) => moveRow(c,i,dir)"
+                    @move-item="(dir) => moveRow(i,dir)"
                 >
                     row
                 </DynamicListItem>
@@ -16,9 +16,9 @@
 
         <DynamicCollapse label="columns" >
             <div id="container-list" >
-                <DynamicListItem v-for="(c,i) in selectedItem.data.rows[0].length" :key="i"
+                <DynamicListItem v-for="(c,i) in selectedItem.data.rows[0]" :key="i"
                     @delete-clicked="() => deleteColumn(i)" 
-                    @move-item="(dir) => moveColumn(c,i,dir)"
+                    @move-item="(dir) => moveColumn(i,dir)"
                 >
                     column
                 </DynamicListItem>
@@ -71,7 +71,7 @@ export default {
             this.selectedItem.moveRow(index,dir);
         },
         moveColumn(index,dir){
-            this.selectedItem.moveRow(index,dir);
+            this.selectedItem.moveColumn(index,dir);
         }
     }
 }

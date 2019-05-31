@@ -12,7 +12,9 @@ import { randomString } from '../utils/string';
 export class TextElement extends Element {
     constructor(editingMode) {
         super(editingMode);
-        this.data = { text: 'text' };
+        // this.data = { text: 'text', static: true };
+        this.data.text = 'text';
+
         this.displayName = 'Text';
         this.component = DynamicTextComponent;
         this.composer = DynamicTextComposer;

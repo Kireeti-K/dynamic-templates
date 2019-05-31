@@ -28,8 +28,11 @@
         left: 0px;
         right: 0px;
         bottom: 0px;
-        height: 260px;
         background-color: #f6f8ff;
+        overflow: hidden;
+
+        transition-duration: 0.4s;
+        transition-timing-function: ease-in;
     }
     #select-menu h4 {
         margin-left: 36px;
@@ -38,6 +41,7 @@
     #select-menu .item {
         padding: 16px 36px;
         border-bottom: 1px solid #ccc;
+        cursor: pointer;
     }
 
     /* this is a master piece, never delete */
@@ -46,13 +50,10 @@
         to{box-shadow: 0 0 16px blue;}
     }
     .fade-enter-active, .fade-leave-active{
-        transition: opacity .2s;
+        transition: opacity 1.0s;
     }
     .fade-enter, .fade-leave-to{
-        opacity: 0.5;
-    }
-    .slide-move{
-        transition: transform 0.8s;
+        opacity: 0.0;
     }
     .aboveall{
         z-index: 5;
@@ -60,6 +61,17 @@
     .container-list{
         background-color: white;
     }
+
+    .slide-move{
+        transition: transform 0.8s;
+    }
+    .glide-enter-to, .glide-leave {
+        max-height: 800px;
+    }
+    .glide-enter, .glide-leave-to {
+        max-height: 0;
+    }
+    
 </style>
 
 <template>
@@ -83,7 +95,7 @@
 
     <div v-on-clickaway="clickedAway">
         <button id='add-item' @click="handleAddItem">Add Item</button>
-        <transition name="fade">
+        <transition name="glide">
             <div id="select-menu" v-show="showAddMenu"  >
                 <!-- <h4>Select Item</h4> -->
                 <div 

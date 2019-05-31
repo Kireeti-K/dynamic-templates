@@ -2,7 +2,17 @@
     <div class="editor-controls">
         <h4>Text</h4>
         <div  id="controls-list">
-           <textarea class="" minlength="2560" v-model="selectedItem.data.text" ref="elementTextField" autofocus> </textarea>
+           <textarea class="" 
+                minlength="2560" 
+                v-model="selectedItem.data.text" 
+                ref="elementTextField" 
+                autofocus
+            /> 
+            <select>
+                <option v-for="o in 5" :key="o">
+                    variable {{o}}
+                </option>
+            </select>
         </div>
     </div>
 </template>
@@ -67,4 +77,11 @@ export default {
     }
     #controls-list .medium{width:120px}
 
+    #controls-list select {
+        border:none;
+        padding:4px;
+        border-radius: 4px;
+        border:1px solid gray;
+        background-color: white;
+    }
 </style>

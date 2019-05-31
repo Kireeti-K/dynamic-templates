@@ -10,7 +10,11 @@ import DynamicImageComposer from '../components/composer/DynamicImageComposer.vu
 export class ImageElement extends Element {
     constructor() {
         super();
-        this.data = { imageUrl: '', width: '128', height: '128' };
+        // this.data = { imageUrl: '', width: '128', height: '128' };
+        this.data.imageUrl = 'http://playweb.eckovation.com/bhagyasri2/wp-content/uploads/2018/05/golden-retriever.jpg';
+        this.data.width = 128;
+        this.data.height = 128;
+
         this.displayName = 'Image';
         this.component = DynamicImage;
         this.composer = DynamicImageComposer;

@@ -18,6 +18,7 @@ export class TableContainer extends Container {
         this.displayName = 'Table';
         this.static = true;
         this.data = { rows: [] };
+        // this.data.rows = [];
         for (let j = 0; j < 3; j += 1) {
             const trow = new Row();
             for (let i = 0; i < 2; i += 1) {

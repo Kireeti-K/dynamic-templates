@@ -19,6 +19,7 @@
         padding-left: 8px;
         position: relative;
         font-size: 15px;
+        cursor: pointer;
     }
     .dynamic-option .delete-icon {
         fill: orangered;

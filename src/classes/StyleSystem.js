@@ -9,9 +9,6 @@ export class StyleSystem {
     }
 
     mergeComputedStyles(styles) {
-        console.log('Merging');
-        console.log(JSON.stringify(this.computedStyles));
-        console.log(JSON.stringify(styles));
         this.computedStyles = removeFlexIfWidth({ ...this.computedStyles, ...styles });
     }
 

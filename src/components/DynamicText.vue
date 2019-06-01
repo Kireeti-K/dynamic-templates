@@ -8,7 +8,7 @@
         :class="{'is-focused': isFocused}"
         @click.stop="() => EventBus.$emit('updateSelectedElement', itemObject)"
     >
-        {{itemObject.data}}
+        {{itemObject.data.text}}
     </p>
 </template>
 

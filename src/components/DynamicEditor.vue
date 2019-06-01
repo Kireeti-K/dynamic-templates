@@ -26,7 +26,7 @@
 <template>
     <div id="dynamic-editor" v-on-clickaway="clickedAway">
         <dynamic-card class="left-panel" v-if="selectedItem">
-            <dynamic-composer>
+            <dynamic-composer :selected-item="selectedItem">
                 <component :is="selectedItem.composer" :selected-item="selectedItem"></component>
             </dynamic-composer>
         </dynamic-card>
@@ -135,8 +135,8 @@ export default {
             this.selectedContainer.deleteChild(item);
         },
         setElementText(text){
-            this.selectedElement.data=text;
-        },
+            this.selectedElement.data.text=text;
+        }
     },
 };
 </script>

@@ -3,23 +3,33 @@
         <h4>Table</h4>
 
         <DynamicCollapse label="rows" >
-            <div id="container-list" >
-                <div class="item" v-for="(c,i) in selectedContainer.rows" :key="i" >
-                    <p> row </p>
-                    <button class="delete" @click="deleteRow(c)">-</button>
-                </div>
+            <div id="" >
+                <transition-group name="slide">
+                    <DynamicListItem v-for="(c,i) in selectedItem.data.rows" :key="c.id"
+                        @delete-clicked="() => deleteRow(i)" 
+                        @move-item="(dir) => moveRow(i,dir)"
+                        :class="{aboveall: movingItem == i}"
+                    >
+                        row
+                    </DynamicListItem>
+                </transition-group>
             </div>
-            <button id='addnew' @click="addNewRow">add row </button>
+            <button id='add-item' @click="addNewRow">add row </button>
         </DynamicCollapse>
 
         <DynamicCollapse label="columns" >
             <div id="container-list" >
-                <div class="item" v-for="(c,i) in selectedContainer.columnsize" :key="i" >
-                    <p> column </p>
-                    <button class="delete" @click="deleteColumn(i)">-</button>
-                </div>
+                <transition-group name="slide">
+                    <DynamicListItem v-for="(c,i) in selectedItem.data.rows[0]" :key="c.id"
+                        @delete-clicked="() => deleteColumn(i)" 
+                        @move-item="(dir) => moveColumn(i,dir)"
+                        :class="{aboveall: movingItem == i}"
+                    >
+                        column
+                    </DynamicListItem>
+                </transition-group>
             </div>
-            <button id='addnew' @click="addNewColumn">add column </button>
+            <button id='add-item' @click="addNewColumn">add column </button>
         </DynamicCollapse>
 
     </div>
@@ -29,21 +39,22 @@
 import {EventBus} from "../EventBus";
 import DynamicCollapse from "../dumb/DynamicCollapse";
 import TableCellContainer from '../../classes/TableCellContainer';
+import DynamicListItem from "../dumb/DynamicListItem";
 
 export default {
-    name: "DynamicContainerComposer",
-    props: ["selectedContainer"],
+    name: "DynamicTableComposer",
+    props: ["selectedItem"],
     components:{
-        DynamicCollapse,
+        DynamicCollapse,DynamicListItem
     },
     data(){
         return{
-            showAddMenu:false,
+            showAddMenu:false,movingItem:0
         }
     },
     methods:{
         handleAddNew(){
-            if(this.selectedContainer.parent==null){this.addNewItem("Container");this.showAddMenu=false;return;}
+            if(this.selectedItem.parent==null){this.addNewItem("Container");this.showAddMenu=false;return;}
             this.showAddMenu=true;
         },
         addNewItem(itemName){
@@ -51,29 +62,24 @@ export default {
             this.showAddMenu = false;
         },
         addNewRow(){
-            var newRow=[];
-            var table=this.selectedContainer;
-            for(var i=0;i<table.columnsize;i++){newRow.push(new TableCellContainer());}
-            this.selectedContainer.rows.push(newRow);
-            table.rowsize++;
+            this.selectedItem.addNewRow();
         },
         addNewColumn(){
-            var table=this.selectedContainer;
-            for(var i=0;i<table.rowsize;i++){
-                table.rows[i].push(new TableCellContainer());
-            } 
-            table.columnsize++;
+            this.selectedItem.addNewColumn();
         },
         deleteRow(n){
-            this.selectedContainer.rows.splice(n,1);
-            this.selectedContainer.rowsize--;
+            this.selectedItem.deleteRow(n);
         },
         deleteColumn(n){
-            var table=this.selectedContainer;
-            for(var i=0;i<table.rowsize;i++){
-                table.rows[i].splice(n,1);
-            }
-            table.columnsize--;
+            this.selectedItem.deleteColumn(n);
+        },
+        moveRow(index,dir){
+            this.selectedItem.moveRow(index,dir);
+            this.movingItem = index+dir;
+        },
+        moveColumn(index,dir){
+            this.selectedItem.moveColumn(index,dir);
+            this.movingItem = index+dir;
         }
     }
 }
@@ -115,30 +121,7 @@ export default {
         animation: disco 0.1s infinite alternate;
         */
     }
-    #addnew{
-        padding: 12px;
-        border:none;
-        background-color: rgb(24, 162, 248);
-        color:white;
-        width:  100%;
-        margin: 8px 0;
-        font-size: 1.2em;
-        /* 
-        border-radius: 80px;
-        box-shadow: 0 0 4px gray;
-        box-sizing: border-box;
-        outline: none;
-         */
-    }
-    #addnew:hover{
-        background-color: lightskyblue;
-        /* 
-        box-shadow: 0 0 8px gray;
-         */
-    }
-    #addnew:active{
-        box-shadow: inset 0 0 8px lightgray;color:gray;
-    }
+
     
     @keyframes disco{
         from{box-shadow: 0 0 4px red;}

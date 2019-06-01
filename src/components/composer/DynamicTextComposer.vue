@@ -2,11 +2,17 @@
     <div class="editor-controls">
         <h4>Text</h4>
         <div  id="controls-list">
-           <div  class="item">
-               <p>Title</p>
-               <input class=" medium" v-model="inputText" ref="elementTextField" autofocus/>
-           </div>
-
+           <textarea class="" 
+                minlength="2560" 
+                v-model="selectedItem.data.text" 
+                ref="elementTextField" 
+                autofocus
+            /> 
+            <select>
+                <option v-for="o in 5" :key="o">
+                    variable {{o}}
+                </option>
+            </select>
         </div>
     </div>
 </template>
@@ -15,23 +21,23 @@
 import {EventBus} from "../EventBus"
 export default {
     name: "DynamicTextComposer",
-    props: ["selectedElement"],
+    props: ["selectedItem"],
     data(){
         return {
             inputText:""
         }
     },
     mounted(){
-        if(this.selectedElement){
-            this.inputText=this.selectedElement.data;
+        if(this.selectedItem){
+            this.inputText=this.selectedItem.data.text;
         }
     }
     ,watch:{
         inputText:function(newv){
             EventBus.$emit("setElementText",this.inputText);
         },
-        selectedElement:function(newv){
-            this.inputText=this.selectedElement.data;
+        selectedItem:function(newv){
+            this.inputText=this.selectedItem.data.text;
             this.$refs.elementTextField.focus();
         }
     },
@@ -40,20 +46,22 @@ export default {
 
 <style>
     #controls-list{
-        margin: 4px;
-        padding: 4px;
+        margin: 0;
+        padding:0 ;
         background-color: white;
         /*
         border-radius: 8px;
         box-shadow:  0 0 8px lightgray;
         */
     }
-    #controls-list input{
+    #controls-list textarea{
         padding: 12px;
         border:1px solid lightgray;
-        width:80px;
-        font-size: 110%;
+        font-size: 14px;
         background-color: white;
+        height: 120px;
+        margin: 0;
+        resize: none;
         /* 
         border-radius: 8px;
         box-shadow: inset 0 2px 4px gray;
@@ -69,7 +77,11 @@ export default {
     }
     #controls-list .medium{width:120px}
 
-    #controls-list p{
-        font-size: 120%;
+    #controls-list select {
+        border:none;
+        padding:4px;
+        border-radius: 4px;
+        border:1px solid gray;
+        background-color: white;
     }
 </style>

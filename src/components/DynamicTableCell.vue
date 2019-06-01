@@ -9,7 +9,7 @@
     <div class="container" 
         :style="itemObject.styles.computedStyles" 
         :class="{'is-focused': isFocused}" 
-        @click.stop="()=> EventBus.$emit('updateSelectedContainer', itemObject)" 
+        @click.stop="selectCell" 
     >
         <DynamicText :item-object="itemObject.children[0]" :selected-item="selectedItem"/>
     </div>

@@ -10,19 +10,19 @@
 </style>
 
 <template>
-    <div class="container"
+    <div class="table"
         :style="itemObject.styles.computedStyles"
         :class="{'is-focused': isFocused}"
         @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)"
     >
         <table class="table" >
             <tr>
-                <th v-for="(cell,n) in itemObject.rows[0]" :key="n">
+                <th v-for="(cell,n) in itemObject.data.rows[0]" :key="n">
                     <DynamicTableCell :item-object="cell" />
                 </th>
             </tr>
-            <tr v-for="(j) in itemObject.rows.length-1" :key="j">
-                <td v-for="(cell,n) in itemObject.rows[j]" :key="n">
+            <tr v-for="(j) in itemObject.data.rows.length-1" :key="j">
+                <td v-for="(cell,n) in itemObject.data.rows[j]" :key="n">
                     <DynamicTableCell :item-object="cell" :selectedItem="selectedItem" />
                 </td>
             </tr>

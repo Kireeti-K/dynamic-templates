@@ -4,6 +4,9 @@
     }
     .container {
         display: flex;
+        /*
+        background-color: white !important;
+        */
     }
     .container .is-editing {
         border: 1px dotted #bbb;
@@ -24,14 +27,18 @@
         :style="[editingCssProps, itemObject.styles.computedStyles]"
         @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)"
     >
-        <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;"></div>
-        <component
-            v-for="(child,i) in itemObject.children" :key=i
+        <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
+        <transition-group appear name="slide">
+        <component 
+            v-for="(child) in itemObject.children" :key="child.id"
             :class="{'is-editing': itemObject.editingMode}"
-            :style="editingCssProps"
-            :is="child.component" :item-object="child"
-            :selected-item="selectedItem"
-        ></component>
+            :style="editingCssProps" 
+            :is="child.component" 
+            :item-object="child" 
+            :selected-item="selectedItem" 
+        >
+        </component>
+        </transition-group>
     </div>
 </template>
 

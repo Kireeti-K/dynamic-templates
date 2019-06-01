@@ -8,6 +8,8 @@ export class Item {
     constructor(editingMode = false) {
         this.id = this.createContainerId();
         this.parent = null;
+        this.displayName = 'Item';
+        // each item should declare its own StyleSystem
         this.editingMode = editingMode;
         this.color = colors[Math.floor(Math.random() * colors.length)];
     }

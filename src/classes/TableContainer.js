@@ -101,4 +101,35 @@ export class TableContainer extends Container {
         }
         console.log('column hahaha');
     }
+
+    serialized() {
+        const result = {};
+        result.objectType = 'TableContainer';
+        result.data = { rows: [] };
+        for (let i = 0; i < this.data.rows.length; i += 1) {
+            const trow = [];
+            for (let j = 0; j < this.data.rows[0].length; j += 1) {
+                trow.push(this.data.rows[i][j].serialized());
+            }
+            result.data.rows.push(trow);
+        }
+        result.styles = this.styles.computedStyles;
+        return result;
+    }
+
+    deserialize(config) {
+        this.styles.decompute(config.styles);
+        this.data.rows.splice(0);
+        this.children.splice(0);
+        for (let i = 0; i < config.data.rows.length; i += 1) {
+            const trow = [];
+            for (let j = 0; j < config.data.rows[0].length; j += 1) {
+                const tcell = new TableCellContainer();
+                tcell.deserialize(config.data.rows[i][i]);
+                trow.push(tcell);
+                this.addChild(tcell);
+            }
+            this.data.rows.push(trow);
+        }
+    }
 }

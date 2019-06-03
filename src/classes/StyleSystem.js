@@ -27,6 +27,12 @@ export class StyleSystem {
         }
     }
 
+    decompute(computedStyles) {
+        for (let i = 0; i < this.inputStyles.length; i += 1) {
+            this.inputStyles[i].decompute(computedStyles);
+        }
+    }
+
     recomputeParentStyles() {
         try {
             return this.inputStyles

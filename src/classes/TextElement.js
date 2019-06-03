@@ -26,4 +26,24 @@ export class TextElement extends Element {
         ]);
         this.data.text = randomString(4);
     }
+
+    serialized() {
+        const result = {};
+        result.objectType = 'TextElement';
+        // result.data = this.data.text;
+        result.data = Object.assign({}, this.data);
+        result.styles = this.styles.computedStyles;
+        return result;
+    }
+
+    // scrap this probably
+    static construct(config) {
+        const item = new TextElement();
+        item.deserialize(config);
+    }
+
+    deserialize(config) {
+        this.data = Object.assign({}, config.data);
+        this.styles.decompute(config.styles);
+    }
 }

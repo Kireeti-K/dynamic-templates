@@ -4,6 +4,6 @@ import { Item } from '../internal';
 export class Element extends Item {
     constructor() {
         super();
-        this.data = { static: false };
+        this.data = { static: true };
     }
 }

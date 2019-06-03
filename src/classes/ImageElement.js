@@ -22,4 +22,17 @@ export class ImageElement extends Element {
             new MarginStyle(),
         ]);
     }
+
+    serialized() {
+        const result = {};
+        result.objectType = 'ImageElement';
+        result.data = Object.assign({}, this.data);
+        result.styles = this.styles.computedStyles;
+        return result;
+    }
+
+    deserialize(config) {
+        this.data = Object.assign({}, config.data);
+        this.styles.decompute(config.styles);
+    }
 }

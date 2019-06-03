@@ -24,13 +24,15 @@
 </style>
 
 <template>
-    <div id="dynamic-editor" v-on-clickaway="clickedAway">
-        <dynamic-card class="left-panel" v-if="selectedItem">
+    <div id="dynamic-editor" v-on-clickaway="clickedAway" >
+        <dynamic-card class="left-panel" v-if="selectedItem" >
             <dynamic-composer :selected-item="selectedItem">
-                <component :is="selectedItem.composer" :selected-item="selectedItem"></component>
+                <component :is="selectedItem.composer" :selected-item="selectedItem" :variables="variables"></component>
             </dynamic-composer>
+            <button @click="getConfig"> getConfig </button>
+            <button @click="setConfig"> setConfig </button>
         </dynamic-card>
-        <dynamic-card class="editor-area" @click="updateSelectedContainer(root)">
+        <dynamic-card class="editor-area" @click="updateSelectedContainer(root)" >
             <dynamic-template :root="root" :selected-item="selectedItem"></dynamic-template>
         </dynamic-card>
         <dynamic-card class="right-panel" v-if="selectedItem">
@@ -50,7 +52,7 @@ import DynamicCard from "./dumb/DynamicCard";
 import DynamicTemplate from "./DynamicTemplate";
 
 // classes
-import { Container, Element, TextElement } from "../internal";
+import { Container, Element, TextElement, TableContainer } from "../internal";
 
 // components
 import DynamicStyles from "./styles/DynamicStyles";
@@ -71,6 +73,33 @@ export default {
             root: new Container(true),
             selectedContainer: null,
             selectedElement: null,
+            variables: {
+                texts:[
+                    {id:"student-name",label:"Student name",data:"student 1"},
+                    {id:"student-class",label:"Class",data:"VII"},
+                    {id:"student-section",label:"Section",data:"A"},
+                ],
+                images:[
+                    {id:"student-photo",label:"student photo",data:"https://loremflickr.com/320/240/cat"},
+                    {id:"school-logo",label:"school logo",data:"https://loremflickr.com/320/240/dog"},
+                    {id:"school-logo",label:"school logo",data:"https://loremflickr.com/320/240/pig"},
+                    {id:"school-logo",label:"school logo",data:"https://loremflickr.com/320/240/donkey"},
+                    {id:"school-logo",label:"school logo",data:"https://loremflickr.com/320/240/cow"},
+                    {id:"school-logo",label:"school logo",data:"https://loremflickr.com/320/240/goat"},
+                    {id:"school-logo",label:"school logo",data:"https://loremflickr.com/320/240/hen"},
+                ],
+                tables:[
+                    {
+                        id:"scholastic-marks",label:"sholastic marks",
+                        data: new TableContainer().data
+                    },
+                    {
+                        id:"fake-marks",label:"fake marks",
+                        data: new TableContainer().data
+                    },
+                ]
+
+            }
         }
     },
     mounted() {
@@ -135,7 +164,22 @@ export default {
             this.selectedContainer.deleteChild(item);
         },
         setElementText(text){
-            this.selectedElement.data.text=text;
+            if(this.selectedElement){
+                this.selectedElement.data.text=text;
+            }
+        },
+        setConfig(){
+            const config = this.root.serialized();
+            const configString = JSON.stringify(config);
+            console.log(configString);
+            localStorage.setItem('config',configString);
+        },
+        getConfig() {
+            const configString = localStorage.getItem('config');
+            console.log(configString);
+            const tconfig = JSON.parse(configString);
+            this.root.deserialize(tconfig);
+            
         }
     },
 };

@@ -2,11 +2,25 @@
     <div class="editor-controls">
         <h4>Image</h4>
         <div  id="controls-list">
-           <div  class="item">
+
+            <div  class="margin12">
+                <label for="is-static">
+                    Use Variable
+                    <input type = "checkbox" id="is-static" v-model="useVariable">  
+                </label>
+            </div>
+
+           <div v-if="selectedItem.data.static" class="item">
                <p>File</p>
                <input type = "file" class=" medium" @change="setImage" autofocus/>
-
            </div>
+            <div v-else class="image-list">
+                <div class="image-column" v-for="(i,n) in variables.images" :key="i.id+n" @click="setImageVar(i)">
+                        <img :src="i.data" 
+                        alt="" srcset="" width="94px" height="94px">
+                </div>
+            </div>
+
            <div  class="item">
                <p>Width</p>
                <input class=" medium" type="number" v-model = "selectedItem.data.width"/>
@@ -18,16 +32,6 @@
 
            </div>
 
-        <div  class="image-list">
-            <div class="image-row" v-for="i in 6" :key="i">
-                <div class="image-column" v-for="i in 3" :key="i">
-                    <img src="http://playweb.eckovation.com/bhagyasri2/wp-content/uploads/2018/05/golden-retriever.jpg" 
-                    alt="" srcset="" width="64px" height="64px">
-                </div>
-            </div>
-        </div>
-
-
         </div>
     </div>
 </template>
@@ -36,7 +40,7 @@
 import {EventBus} from "../EventBus"
 export default {
     name: "DynamicImageComposer",
-    props: ["selectedItem"],
+    props: ["selectedItem","variables"],
     data(){
         return {
             imageWidth:"",imageHeight:""
@@ -60,8 +64,18 @@ export default {
             this.selectedItem.data.width = this.imageWidth;
             this.selectedItem.data.height = this.imageHeight;
 
+        },
+        setImageVar(variable){
+            this.selectedItem.data.imageUrl = variable.data;
+            this.selectedItem.data.variableID = variable.id;
         }
     },
+    computed:{
+        useVariable:{
+            get(){return !this.selectedItem.data.static;},
+            set(val){this.selectedItem.data.static = !val;}
+        }
+    }
     
 }
 </script>
@@ -101,8 +115,6 @@ export default {
         font-size: 120%;
     }
     .image-column{
-        width: 64px;
-        height: 64px;
         margin: 2px; 
         cursor: pointer;
         transition: transform 0.2s ease;
@@ -123,5 +135,10 @@ export default {
         border-radius: 8px;
         overflow-y: auto;
         overflow-x: hidden; 
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .margin12{
+      margin:12px 0;
     }
 </style>

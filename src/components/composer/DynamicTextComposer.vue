@@ -2,17 +2,34 @@
     <div class="editor-controls">
         <h4>Text</h4>
         <div  id="controls-list">
-           <textarea class="" 
-                minlength="2560" 
-                v-model="selectedItem.data.text" 
-                ref="elementTextField" 
-                autofocus
-            /> 
-            <select>
-                <option v-for="o in 5" :key="o">
-                    variable {{o}}
-                </option>
-            </select>
+           
+            <h4>Variable</h4>
+
+            <div  class="margin12">
+                <label for="is-static">
+                    Use Variable
+                    <input type = "checkbox" id="is-static" v-model="useVariable">  
+                </label>
+            </div>
+
+            <div v-show="selectedItem.data.static" class="text-box">
+                <h4>Label</h4>
+                <textarea  
+                    minlength="2560" 
+                    v-model="selectedItem.data.text" 
+                    ref="elementTextField" 
+                    autofocus
+                />
+            </div>
+            <div v-show="!selectedItem.data.static" >
+                <h4>Text</h4>
+                <select @change="setTextVar()" v-model="selectedVariable">
+                    <option v-for="t in variables.texts" :key="t.id" :value="t">
+                        {{t.label}}
+                    </option>
+                </select>
+            </div>
+            
         </div>
     </div>
 </template>
@@ -21,10 +38,10 @@
 import {EventBus} from "../EventBus"
 export default {
     name: "DynamicTextComposer",
-    props: ["selectedItem"],
+    props: ["selectedItem","variables"],
     data(){
         return {
-            inputText:""
+            inputText:"",selectedVariable:null
         }
     },
     mounted(){
@@ -41,6 +58,19 @@ export default {
             this.$refs.elementTextField.focus();
         }
     },
+    methods:{
+        setTextVar(){
+            const variable = this.selectedVariable;
+            this.selectedItem.data.variableID = variable.id;
+            this.selectedItem.data.text = variable.data;
+        }
+    },
+    computed:{
+        useVariable:{
+            get(){return !this.selectedItem.data.static;},
+            set(val){this.selectedItem.data.static = !val;}
+        }
+    }
 }
 </script>
 
@@ -83,5 +113,8 @@ export default {
         border-radius: 4px;
         border:1px solid gray;
         background-color: white;
+    }
+    .text-box{
+        margin-top:24px;
     }
 </style>

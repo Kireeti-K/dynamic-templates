@@ -37,6 +37,15 @@ export class BaseStyle {
             });
         return computedStyle;
     }
+
+    decompute(computedStyles) {
+        for (let i = 0; i < this.inputs.length; i += 1) {
+            const inputStyle = this.inputs[i];
+            if (inputStyle.attr) {
+                inputStyle.value = computedStyles[inputStyle.attr];
+            }
+        }
+    }
 }
 
 export class InputStyle {

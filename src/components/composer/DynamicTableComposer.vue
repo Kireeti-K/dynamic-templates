@@ -2,7 +2,14 @@
     <div class="editor-controls">
         <h4>Table</h4>
 
-        <DynamicCollapse label="rows" >
+        <div  class="margin12">
+                <label for="is-static">
+                    Use Variable
+                    <input type = "checkbox" id="is-static" v-model="useVariable">  
+                </label>
+        </div>
+
+        <DynamicCollapse label="rows" v-if="!useVariable" >
             <div id="" >
                 <transition-group name="slide">
                     <DynamicListItem v-for="(c,i) in selectedItem.data.rows" :key="c.id"
@@ -17,7 +24,7 @@
             <button id='add-item' @click="addNewRow">add row </button>
         </DynamicCollapse>
 
-        <DynamicCollapse label="columns" >
+        <DynamicCollapse label="columns" v-if="!useVariable">
             <div id="container-list" >
                 <transition-group name="slide">
                     <DynamicListItem v-for="(c,i) in selectedItem.data.rows[0]" :key="c.id"
@@ -32,6 +39,15 @@
             <button id='add-item' @click="addNewColumn">add column </button>
         </DynamicCollapse>
 
+         <div v-show="useVariable"  >
+                <h4>Table</h4>
+                <select v-model="selectedVariable" @click="setTableVar()" >
+                    <option v-for="t in variables.tables" :key="t.id" :value="t" >
+                        {{t.label}}
+                    </option>
+                </select>
+        </div>
+
     </div>
 </template>
 
@@ -43,13 +59,13 @@ import DynamicListItem from "../dumb/DynamicListItem";
 
 export default {
     name: "DynamicTableComposer",
-    props: ["selectedItem"],
+    props: ["selectedItem","variables"],
     components:{
         DynamicCollapse,DynamicListItem
     },
     data(){
         return{
-            showAddMenu:false,movingItem:0
+            showAddMenu:false,movingItem:0,selectedVariable:null
         }
     },
     methods:{
@@ -80,7 +96,19 @@ export default {
         moveColumn(index,dir){
             this.selectedItem.moveColumn(index,dir);
             this.movingItem = index+dir;
+        },
+        setTableVar(){
+            const variable = this.selectedVariable;
+            this.selectedItem.data.variableID = variable.id;
+            this.selectedItem.data = variable.data;
         }
+    },
+    computed:{
+        useVariable:{
+            get(){return !this.selectedItem.data.static;},
+            set(val){this.selectedItem.data.static = !val;}
+        }
+        
     }
 }
 </script>
@@ -121,7 +149,9 @@ export default {
         animation: disco 0.1s infinite alternate;
         */
     }
-
+    .margin12{
+        margin: 12px;
+    }
     
     @keyframes disco{
         from{box-shadow: 0 0 4px red;}

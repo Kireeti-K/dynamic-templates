@@ -12,9 +12,9 @@ export class ImageElement extends Element {
         super();
         // this.data = { imageUrl: '', width: '128', height: '128' };
         this.data.imageUrl = 'http://playweb.eckovation.com/bhagyasri2/wp-content/uploads/2018/05/golden-retriever.jpg';
-        this.data.width = 128;
-        this.data.height = 128;
-
+        this.data.width = 0;
+        this.data.height = 0;
+        // this.data.aspectRatio = 1;
         this.displayName = 'Image';
         this.component = DynamicImage;
         this.composer = DynamicImageComposer;

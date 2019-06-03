@@ -1,3 +1,4 @@
+import { isString } from 'util';
 import StyleComponent from '../components/styles/StyleComponent.vue';
 import MarginStyleComponent from '../components/styles/MarginStyleComponent.vue';
 import WidthStyleComponent from '../components/styles/WidthStyleComponent.vue';
@@ -39,10 +40,15 @@ export class BaseStyle {
     }
 
     decompute(computedStyles) {
+        // this.computedStyles = computedStyles;
         for (let i = 0; i < this.inputs.length; i += 1) {
             const inputStyle = this.inputs[i];
             if (inputStyle.attr) {
-                inputStyle.value = computedStyles[inputStyle.attr];
+                let tvalue = computedStyles[inputStyle.attr];
+                if (tvalue && isString(tvalue) && tvalue.slice(-2) === 'px' /* || tvalue.slice(-1) === '%' */) {
+                    tvalue = parseInt(tvalue.slice(0, -2), 10);
+                }
+                inputStyle.value = tvalue;
             }
         }
     }

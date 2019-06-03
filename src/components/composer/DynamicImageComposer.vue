@@ -5,8 +5,8 @@
 
             <div  class="margin12">
                 <label for="is-static">
-                    Use Variable
                     <input type = "checkbox" id="is-static" v-model="useVariable">  
+                    Use Variable
                 </label>
             </div>
 
@@ -23,13 +23,11 @@
 
            <div  class="item">
                <p>Width</p>
-               <input class=" medium" type="number" v-model = "selectedItem.data.width"/>
-
+                <dynamic-input :increment="10" :type="'number'" :width="'40px'" v-model="dynamicWidth"/>
            </div>
            <div  class="item">
-               <p>Height</p>
-               <input class=" medium" type="number"  v-model = "selectedItem.data.height"  />
-
+                <p>Height</p>
+                <dynamic-input :increment="10" :type="'number'" :width="'40px'" v-model="dynamicHeight" />
            </div>
 
         </div>
@@ -38,27 +36,40 @@
 
 <script>
 import {EventBus} from "../EventBus"
+import DynamicInput from "../inputs/DynamicInput"
 export default {
     name: "DynamicImageComposer",
     props: ["selectedItem","variables"],
+    components:{DynamicInput},
     data(){
         return {
-            imageWidth:"",imageHeight:""
+            imageWidth:"",imageHeight:"",coupledDimensions:true
         }
     },
     methods:{
         setImage(event){
-            let image=this.selectedItem;
+            let imageElement=this.selectedItem;
             // this.selectedItem.data.imageUrl = url;
             const file=event.target.files[0];
             console.log(file)
             const reader=new FileReader()
+            imageElement.data.width = imageElement.data.height = 0;
             reader.onload=function(){
-                image.data.imageUrl=reader.result;
+                imageElement.data.imageUrl=reader.result;
+                /*  
+                var image = new Image();
+                image.src = reader.result;
+                image.onload = function(){
+                    const scalefactor = 256 / Math.max(this.naturalWidth,this.naturalHeight);
+                    imageElement.data.width = this.naturalWidth * scalefactor;
+                    imageElement.data.height = this.naturalHeight * scalefactor;
+                }
+                */
             }
             if(file){
                 reader.readAsDataURL(file);
             }
+
         },
         setImageSize(){
             this.selectedItem.data.width = this.imageWidth;
@@ -74,8 +85,29 @@ export default {
         useVariable:{
             get(){return !this.selectedItem.data.static;},
             set(val){this.selectedItem.data.static = !val;}
+        },
+        dynamicWidth:{
+            get(){
+                return this.selectedItem.data.width;
+            },
+            set(val){
+                const aspectRatio = this.selectedItem.data.height / this.selectedItem.data.width;
+                this.selectedItem.data.width = val;
+                this. selectedItem.data.height = val * aspectRatio;
+            }
+        },
+        dynamicHeight:{
+            get(){
+                return this.selectedItem.data.height;
+            },
+            set(val){
+                const aspectRatio = this.selectedItem.data.width / this.selectedItem.data.height;
+                this.selectedItem.data.height = val;
+                this. selectedItem.data.width = val * aspectRatio;
+            }
         }
-    }
+
+    },
     
 }
 </script>

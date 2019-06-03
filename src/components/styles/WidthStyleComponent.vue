@@ -22,8 +22,10 @@
     <div class="style-inputs">
         <div class="input">
             <div class="checkbox-input">
-                <input type="checkbox" v-model="setFixedWidth.value" />
-                <div class="label">Set Fixed Width</div>
+                <label for="is-fixedwidth">
+                    <input type = "checkbox" id="is-fixedwidth" v-model="setFixedWidth.value">  
+                    Set Fixed Width
+                </label>
             </div>
             <dynamic-input type="number" v-model="width.value" class="width-input" v-show="setFixedWidth.value" />
         </div>

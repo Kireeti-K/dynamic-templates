@@ -125,7 +125,7 @@ export class TableContainer extends Container {
             const trow = [];
             for (let j = 0; j < config.data.rows[0].length; j += 1) {
                 const tcell = new TableCellContainer();
-                tcell.deserialize(config.data.rows[i][i]);
+                tcell.deserialize(config.data.rows[i][j]);
                 trow.push(tcell);
                 this.addChild(tcell);
             }

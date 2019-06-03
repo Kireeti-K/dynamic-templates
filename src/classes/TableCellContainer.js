@@ -18,6 +18,6 @@ export class TableCellContainer extends Container {
 
     deserialize(config) {
         this.styles.decompute(config.styles);
-        this.children[0].deserialize(config);
+        this.children[0].deserialize(config.child);
     }
 }

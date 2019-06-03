@@ -28,6 +28,7 @@ export class StyleSystem {
     }
 
     decompute(computedStyles) {
+        this.computedStyles = computedStyles;
         for (let i = 0; i < this.inputStyles.length; i += 1) {
             this.inputStyles[i].decompute(computedStyles);
         }

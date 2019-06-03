@@ -19,7 +19,7 @@
         :src="itemObject.data.imageUrl" 
         :width="itemObject.data.width" 
         :height="itemObject.data.height"
-
+        :ref="itemObject.id"
 
         :style="itemObject.styles.computedStyles"
         :class="{'is-focused': isFocused}"
@@ -43,9 +43,37 @@ export default {
             EventBus,
         }
     },
+    mounted() {
+       this.setDefaultSize();
+    },
     computed:{
         isFocused:function(){
-            return this.selectedItem==this.itemObject;
+            return this.selectedItem == this.itemObject;
+        },
+        imageUrl:function(){
+            return this.itemObject.data.imageUrl;
+        }
+    },
+    methods:{
+        setDefaultSize(){
+            const vm = this;
+            this.$refs[this.itemObject.id].onload = function() {
+                console.log(this);
+                console.log("Width ", this.naturalWidth);
+                console.log("Height ", this.naturalHeight);
+                if (vm.itemObject.data.width == 0) {
+
+                    const scalefactor = 256.0 / Math.max(this.naturalWidth,this.naturalHeight);
+                    vm.itemObject.data.width = this.naturalWidth * scalefactor;
+                    vm.itemObject.data.height = this.naturalHeight * scalefactor;
+
+                }
+            }
+        }
+    },
+    watch:{
+        imageUrl:function(){
+            this.setDefaultSize();
         }
     }
 }

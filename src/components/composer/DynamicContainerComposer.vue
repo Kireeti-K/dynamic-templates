@@ -86,6 +86,7 @@
                     @delete-clicked="() => deleteItem(c)" 
                     @move-item="(dir) => moveItem(c,i,dir)"
                     @click="()=> updateSelectedItem(c)"
+                    :listPos="selectedItem.children.length == 1 ? -1 : i / (selectedItem.children.length - 1)"
                 >
                     {{c.displayName}}
                 </dynamic-list-item>

@@ -74,16 +74,14 @@
         @mouseleave="() => this.showMoveControls=false"
     >
         <div class="floaty-icon" >
-                <div @click="() => moveItem(-1)" v-show="showMoveControls" class="move-button">
+                <div @click="() => moveItem(-1)" v-show="showMoveControls" class="move-button" v-if="listPos>0">
                     <UpIcon w="16px" h="16px"/>
                 </div>
-                <div @click="() => moveItem(1)" v-show="showMoveControls" class="move-button">
+                <div @click="() => moveItem(1)" v-show="showMoveControls" class="move-button" v-if="listPos <1 && listPos >= 0">
                     <DownIcon w="16px" h="16px"/>
                 </div>
         </div>
 
- 
- 
         <div class="item-name" v-on="$listeners" >
             <slot />
         </div>
@@ -100,6 +98,7 @@ import UpIcon from "vue-ionicons/dist/ios-arrow-up";
 import DownIcon from "vue-ionicons/dist/ios-arrow-down";
 export default {
     name: "DynamicListItem",
+    props:['listPos'],
     components: {
         TrashIcon,UpIcon,DownIcon
     },

@@ -156,8 +156,8 @@ export class FlexStyle extends BaseStyle {
                 inputType: 'radio-switch',
                 options: [
                     { id: 'flex-start', text: 'Left' },
-                    { id: 'flex-end', text: 'Right' },
                     { id: 'center', text: 'Center' },
+                    { id: 'flex-end', text: 'Right' },
                 ],
                 value: 'flex-start',
             }),
@@ -187,8 +187,8 @@ export class TextAlignStyle extends BaseStyle {
                 attr: 'text-align',
                 options: [
                     { id: 'left', text: 'Left' },
-                    { id: 'right', text: 'Right' },
                     { id: 'center', text: 'Center' },
+                    { id: 'right', text: 'Right' },
                 ],
                 inputType: 'radio-switch',
                 value: 'left',

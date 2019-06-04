@@ -62,7 +62,7 @@ export default {
         },
         inputWidth() {
             if (this.containerWidth) return "100%";
-            else return this.width;
+            else return this.type == 'number' ? '40px' : this.width;
         }
     },
     methods: {

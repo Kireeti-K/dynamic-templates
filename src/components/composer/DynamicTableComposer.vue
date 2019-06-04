@@ -65,7 +65,7 @@ export default {
     },
     data(){
         return{
-            showAddMenu:false,movingItem:0,selectedVariable:null
+            showAddMenu:false,movingItem:0,selectedVariable:null,isStatic:true
         }
     },
     methods:{
@@ -105,8 +105,8 @@ export default {
     },
     computed:{
         useVariable:{
-            get(){return !this.selectedItem.data.static;},
-            set(val){this.selectedItem.data.static = !val;}
+            get(){return !this.selectedItem.static;},
+            set(val){this.selectedItem.static = !val;}
         }
         
     }

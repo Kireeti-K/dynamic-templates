@@ -98,7 +98,12 @@ import UpIcon from "vue-ionicons/dist/ios-arrow-up";
 import DownIcon from "vue-ionicons/dist/ios-arrow-down";
 export default {
     name: "DynamicListItem",
-    props:['listPos'],
+    props:{
+        listPos:{
+            type:Number,
+            default:0.5
+        }
+    },
     components: {
         TrashIcon,UpIcon,DownIcon
     },

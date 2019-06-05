@@ -21,6 +21,13 @@
         height: 633px;
         padding: 12px 0px;
     }
+    button{
+        background-color: white;
+        border:1px solid gray;
+        border-radius:4px;
+        padding: 8px;
+        margin: 2px;
+    }
 </style>
 
 <template>
@@ -29,11 +36,13 @@
             <dynamic-composer :selected-item="selectedItem">
                 <component :is="selectedItem.composer" :selected-item="selectedItem" :variables="variables"></component>
             </dynamic-composer>
-            <button @click="getConfig"> getConfig </button>
-            <button @click="setConfig"> setConfig </button>
+            <div style = "display:flex;justify-content:space-between;">
+                <button @click="getConfig"> Load </button>
+                <button @click="setConfig"> Save </button>
+            </div>
         </dynamic-card>
         <dynamic-card class="editor-area" @click="updateSelectedContainer(root)" >
-            <dynamic-template :root="root" :selected-item="selectedItem"></dynamic-template>
+            <dynamic-template :root="root" :selected-item="selectedItem" :variables="variables"></dynamic-template>
         </dynamic-card>
         <dynamic-card class="right-panel" v-if="selectedItem">
             <h4 style="margin-left: 24px">Styles</h4>
@@ -58,6 +67,10 @@ import { Container, Element, TextElement, TableContainer } from "../internal";
 import DynamicStyles from "./styles/DynamicStyles";
 import DynamicContainer from "./DynamicContainer";
 import DynamicComposer from "./composer/DynamicComposer";
+
+// custom templates
+
+import CbseTable from "../examples/cbseTable";
 
 export default {
     name: "DynamicEditor",
@@ -90,15 +103,57 @@ export default {
                 ],
                 tables:[
                     {
-                        id:"scholastic-marks",label:"sholastic marks",
-                        data: new TableContainer().data
+                        id:"cbse-table",label:"cbse table",
+                        data: {
+                            subjects:[
+                                {
+                                    id:"English",
+                                    term1:{
+                                        skills:[
+                                            {
+                                                id:"homework",
+                                                marks:20
+                                            },
+                                            {
+                                                id:"dabbing",
+                                                marks:70
+                                            },
+                                            {
+                                                id:"teacher assault",
+                                                marks:100
+                                            },
+                                        ]
+                                    }
+                                },
+                                {
+                                    id:"maths",
+                                    term1:{
+                                        skills:[
+                                            {
+                                                id:"homework",
+                                                marks:2
+                                            },
+                                            {
+                                                id:"planking",
+                                                marks:90
+                                            },
+                                            {
+                                                id:"teacher assault",
+                                                marks:120
+                                            },
+                                        ]
+                                    }
+                                },
+                            ]
+                        },
+                        component: CbseTable
                     },
                     {
                         id:"fake-marks",label:"fake marks",
-                        data: new TableContainer().data
+                        data: new TableContainer().data,
+                        component: CbseTable
                     },
                 ]
-
             }
         }
     },
@@ -169,17 +224,10 @@ export default {
             }
         },
         setConfig(){
-            const config = this.root.serialized();
-            const configString = JSON.stringify(config);
-            console.log(configString);
-            localStorage.setItem('config',configString);
+            EventBus.$emit('saveState');
         },
         getConfig() {
-            const configString = localStorage.getItem('config');
-            console.log(configString);
-            const tconfig = JSON.parse(configString);
-            this.root.deserialize(tconfig);
-            
+            EventBus.$emit('loadState')
         }
     },
 };

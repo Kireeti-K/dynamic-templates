@@ -16,6 +16,8 @@
                         @delete-clicked="() => deleteRow(i)" 
                         @move-item="(dir) => moveRow(i,dir)"
                         :class="{aboveall: movingItem == i}"
+                        :listPos="selectedItem.data.rows.length == 1 ? -1 : i / (selectedItem.data.rows.length - 1)"
+
                     >
                         row
                     </DynamicListItem>
@@ -31,6 +33,8 @@
                         @delete-clicked="() => deleteColumn(i)" 
                         @move-item="(dir) => moveColumn(i,dir)"
                         :class="{aboveall: movingItem == i}"
+                        :listPos="selectedItem.data.rows[0].length == 1 ? -1 : i / (selectedItem.data.rows[0].length - 1)"
+
                     >
                         column
                     </DynamicListItem>
@@ -41,7 +45,7 @@
 
          <div v-show="useVariable"  >
                 <h4>Table</h4>
-                <select v-model="selectedVariable" @click="setTableVar()" >
+                <select v-model="selectedVariable" @click="setTableVariable()" >
                     <option v-for="t in variables.tables" :key="t.id" :value="t" >
                         {{t.label}}
                     </option>
@@ -97,16 +101,22 @@ export default {
             this.selectedItem.moveColumn(index,dir);
             this.movingItem = index+dir;
         },
-        setTableVar(){
+        setTableVariable(){
             const variable = this.selectedVariable;
-            this.selectedItem.data.variableID = variable.id;
             this.selectedItem.data = variable.data;
+            this.selectedItem.variableID = variable.id;
+            this.selectedItem.component = this.selectedVariable.component;
         }
     },
     computed:{
         useVariable:{
             get(){return !this.selectedItem.static;},
-            set(val){this.selectedItem.static = !val;}
+            set(val){
+                this.selectedItem.static = !val;
+                if(val == false){ 
+                    this.selectedItem.component = this.selectedItem.defaultComponent;
+                }
+            }
         }
         
     }

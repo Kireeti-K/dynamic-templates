@@ -13,7 +13,8 @@ Row.prototype = [];
 export class TableContainer extends Container {
     constructor() {
         super();
-        this.component = DynamicTable;
+        this.defaultComponent = DynamicTable;
+        this.component = this.defaultComponent;
         this.composer = DynamicTableComposer;
         this.displayName = 'Table';
         this.static = true;
@@ -105,31 +106,46 @@ export class TableContainer extends Container {
     serialized() {
         const result = {};
         result.objectType = 'TableContainer';
+        result.static = this.static;
+        result.variableID = this.variableID;
         result.data = { rows: [] };
-        for (let i = 0; i < this.data.rows.length; i += 1) {
-            const trow = [];
-            for (let j = 0; j < this.data.rows[0].length; j += 1) {
-                trow.push(this.data.rows[i][j].serialized());
+        if (this.static) {
+            for (let i = 0; i < this.data.rows.length; i += 1) {
+                const trow = [];
+                for (let j = 0; j < this.data.rows[0].length; j += 1) {
+                    trow.push(this.data.rows[i][j].serialized());
+                }
+                result.data.rows.push(trow);
             }
-            result.data.rows.push(trow);
         }
         result.styles = this.styles.computedStyles;
         return result;
     }
 
-    deserialize(config) {
+    deserialize(config, variables) {
         this.styles.decompute(config.styles);
-        this.data.rows.splice(0);
-        this.children.splice(0);
-        for (let i = 0; i < config.data.rows.length; i += 1) {
-            const trow = [];
-            for (let j = 0; j < config.data.rows[0].length; j += 1) {
-                const tcell = new TableCellContainer();
-                tcell.deserialize(config.data.rows[i][j]);
-                trow.push(tcell);
-                this.addChild(tcell);
+        this.static = config.static;
+        if (config.static) {
+            this.data.rows.splice(0);
+            this.children.splice(0);
+            for (let i = 0; i < config.data.rows.length; i += 1) {
+                const trow = new Row();
+                for (let j = 0; j < config.data.rows[0].length; j += 1) {
+                    const tcell = new TableCellContainer();
+                    tcell.deserialize(config.data.rows[i][j]);
+                    trow.push(tcell);
+                    this.addChild(tcell);
+                }
+                this.data.rows.push(trow);
             }
-            this.data.rows.push(trow);
+        } else {
+            for (let i = 0; i < variables.tables.length; i += 1) {
+                if (config.variableID === variables.tables[i].id) {
+                    this.component = variables.tables[i].component;
+                    this.data = variables.tables[i].data;
+                }
+            }
+            this.variableID = config.variableID;
         }
     }
 }

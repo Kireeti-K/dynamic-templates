@@ -23,7 +23,7 @@
 
 <template>
     <div class="container"
-        :class="{'is-focused': isFocused, 'is-editing': itemObject.editingMode}"
+        :class="{'is-focused': isFocused, 'is-editing': isEditing}"
         :style="[editingCssProps, itemObject.styles.computedStyles]"
         @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)"
     >
@@ -31,7 +31,7 @@
         <transition-group appear name="slide">
         <component 
             v-for="(child) in itemObject.children" :key="child.id"
-            :class="{'is-editing': itemObject.editingMode}"
+            :class="{'is-editing': isEditing}"
             :style="editingCssProps" 
             :is="child.component" 
             :item-object="child" 
@@ -61,6 +61,9 @@ export default {
             return {
                 "--color": this.itemObject.color,
             }
+        },
+        isEditing(){
+            return this.itemObject.editingMode && this.selectedItem != null;
         }
     }
 }

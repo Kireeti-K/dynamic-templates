@@ -6,6 +6,7 @@ export class TableCellContainer extends Container {
         super();
         this.addChild(new TextElement());
         this.styles.inputStyles[1].inputs[0].value = 10;
+        this.styles.inputStyles[1].inputs[1].value = 8;
     }
 
     serialized() {

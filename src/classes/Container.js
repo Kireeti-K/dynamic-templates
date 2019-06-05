@@ -2,7 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import {
     Item, StyleSystem, WidthStyle, MarginStyle,
-    FlexStyle, removeFlexIfWidth, TableContainer, ImageElement, TextElement
+    FlexStyle, TableContainer, ImageElement, TextElement,
 } from '../internal';
 import DynamicContainer from '../components/DynamicContainer.vue';
 import DynamicContainerComposer from '../components/composer/DynamicContainerComposer.vue';
@@ -53,14 +53,14 @@ export class Container extends Item {
         return result;
     }
 
-    deserialize(config) {
+    deserialize(config, variables) {
         this.children.splice(0);
         // to-do deserialize styles
         this.styles.decompute(config.styles);
         for (let i = 0; i < config.children.length; i += 1) {
             const DataType = this.getConstuctor(config.children[i].objectType);
             const tchild = new DataType();
-            tchild.deserialize(config.children[i]);
+            tchild.deserialize(config.children[i], variables);
             this.addChild(tchild);
         }
     }

@@ -180,4 +180,7 @@ export default {
     .dynamic-collapse{
         margin-bottom: 16px;
     }
+    .editor-controls select{
+        margin-left: 20px;
+    }
 </style>

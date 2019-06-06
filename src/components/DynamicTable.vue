@@ -1,7 +1,7 @@
 <style scoped>
     .table{
         color:black;
-       border-color: black;
+        border-color: black;
         border-collapse: collapse;
     }
     td,th {
@@ -17,12 +17,12 @@
     >
         <table class="table" >
             <tr>
-                <th v-for="(cell,n) in itemObject.data.rows[0]" :key="n">
+                <th v-for="(cell,n) in itemObject.data.rows[0]" :key="n" :style="cell.styles.computedStyles">
                     <DynamicTableCell :item-object="cell" />
                 </th>
             </tr>
             <tr v-for="(j) in itemObject.data.rows.length-1" :key="j">
-                <td v-for="(cell,n) in itemObject.data.rows[j]" :key="n">
+                <td v-for="(cell,n) in itemObject.data.rows[j]" :key="n" :style="cell.styles.computedStyles">
                     <DynamicTableCell :item-object="cell" :selectedItem="selectedItem" />
                 </td>
             </tr>

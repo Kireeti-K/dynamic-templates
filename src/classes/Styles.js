@@ -224,3 +224,21 @@ export class FontStyle extends BaseStyle {
         ];
     }
 }
+
+
+export class BorderStyle extends BaseStyle {
+    constructor() {
+        super();
+        this.label = 'Border';
+        this.inputs = [
+            new InputStyle({
+                label: 'Border Size',
+                attr: 'border-width',
+                inputType: 'number',
+                value: 1,
+                getComputedValue: value => `${value}px`,
+                setOnChildren: true,
+            }),
+        ];
+    }
+}

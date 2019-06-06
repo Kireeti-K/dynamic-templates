@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import {
     Container, TableCellContainer, StyleSystem, WidthStyle, MarginStyle,
-    TextAlignStyle, FontStyle,
+    TextAlignStyle, FontStyle, BorderStyle
 } from '../internal';
 import DynamicTable from '../components/DynamicTable.vue';
 import DynamicTableComposer from '../components/composer/DynamicTableComposer.vue';
@@ -32,10 +32,8 @@ export class TableContainer extends Container {
             }
             this.data.rows.push(trow);
         }
-
-        this.styles = new StyleSystem([
-            new FontStyle(),
-        ]);
+        this.styles.inputStyles.push(new FontStyle(), new BorderStyle());
+        // this.styles = new StyleSystem([new WidthStyle(), new BorderStyle(), new FontStyle()]);
     }
 
     recomputeChildren() {

@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { Container, TextElement } from '../internal';
+import { StyleSystem } from './StyleSystem';
+import { BorderStyle, FontStyle } from './Styles';
 
 export class TableCellContainer extends Container {
     constructor() {
@@ -7,6 +9,7 @@ export class TableCellContainer extends Container {
         this.addChild(new TextElement());
         this.styles.inputStyles[1].inputs[0].value = 10;
         this.styles.inputStyles[1].inputs[1].value = 8;
+        this.styles = new StyleSystem([new BorderStyle(), new FontStyle()]);
     }
 
     serialized() {

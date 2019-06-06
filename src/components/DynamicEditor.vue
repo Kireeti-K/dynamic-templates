@@ -1,6 +1,10 @@
 <style>
     /* typical pdf page width: 612, height: 792 */
     /* scaled down to .7 => width: 489, height: 633 */
+    :root{
+        --page-width:21.0cm;
+        --page-height:21.0cm;
+    }
     #dynamic-editor {
         display: flex;
         flex-direction: row;
@@ -11,14 +15,14 @@
     }
     #dynamic-editor .editor-area {
         margin-right: 40px;
-        width: 16.1cm;
-        height: 633px;
+        width: var(--page-width);
+        height: var(--page-height);
         padding: 12px 24px;
         overflow: auto;
     }
     #dynamic-editor .right-panel {
         width: 280px;
-        height: 633px;
+        height: var(--page-height);
         padding: 12px 0px;
     }
     button{
@@ -61,7 +65,7 @@ import DynamicCard from "./dumb/DynamicCard";
 import DynamicTemplate from "./DynamicTemplate";
 
 // classes
-import { Container, Element, TextElement, TableContainer } from "../internal";
+import { Container, Element, TextElement, } from "../internal";
 
 // components
 import DynamicStyles from "./styles/DynamicStyles";
@@ -69,7 +73,7 @@ import DynamicContainer from "./DynamicContainer";
 import DynamicComposer from "./composer/DynamicComposer";
 
 // custom templates
-
+import dummyData from "../examples/dummyData";
 import CbseTable from "../examples/cbseTable";
 
 export default {
@@ -104,57 +108,17 @@ export default {
                 tables:[
                     {
                         id:"cbse-table",label:"cbse table",
-                        data: {
-                            subjects:[
-                                {
-                                    id:"English",
-                                    term1:{
-                                        skills:[
-                                            {
-                                                id:"homework",
-                                                marks:20
-                                            },
-                                            {
-                                                id:"dabbing",
-                                                marks:70
-                                            },
-                                            {
-                                                id:"teacher assault",
-                                                marks:100
-                                            },
-                                        ]
-                                    }
-                                },
-                                {
-                                    id:"maths",
-                                    term1:{
-                                        skills:[
-                                            {
-                                                id:"homework",
-                                                marks:2
-                                            },
-                                            {
-                                                id:"planking",
-                                                marks:90
-                                            },
-                                            {
-                                                id:"teacher assault",
-                                                marks:120
-                                            },
-                                        ]
-                                    }
-                                },
-                            ]
-                        },
+                        data: dummyData.tableData,
                         component: CbseTable
                     },
                     {
                         id:"fake-marks",label:"fake marks",
-                        data: new TableContainer().data,
+                        data: dummyData.tableData,
                         component: CbseTable
                     },
                 ]
-            }
+            },
+            dummyData
         }
     },
     mounted() {

@@ -1,8 +1,7 @@
 <style scoped>
     .container.is-focused {
-        background-color: #f7f7f7 !important;
+        background-color: #e6e6e6 !important;
     }
-    .container:hover{outline: 1px solid blue;}
 </style>
 
 <template>

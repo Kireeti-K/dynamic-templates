@@ -23,7 +23,7 @@
 
            <div  class="item">
                <p>Width</p>
-                <dynamic-input :increment="10" :type="'number'" :width="'40px'" v-model="dynamicWidth"/>
+                <dynamic-input :increment="10" :type="'number'"  v-model="dynamicWidth"/>
            </div>
            <div  class="item">
                 <p>Height</p>
@@ -122,18 +122,7 @@ export default {
         box-shadow:  0 0 8px lightgray;
         */
     }
-    #controls-list input{
-        padding: 12px;
-        border:1px solid lightgray;
-        width:80px;
-        font-size: 110%;
-        background-color: white;
-        /* 
-        border-radius: 8px;
-        box-shadow: inset 0 2px 4px gray;
-        
-         */
-    }
+   
     #controls-list .item{
        margin:8px 0;
         display:flex;

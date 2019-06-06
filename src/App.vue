@@ -8,11 +8,16 @@
   height: 100%;
   font-size: 14px;
 }
+body {
+  background-color: bisque;
+}
 </style>
 
 <template>
   <div id="app">
+    <!--
     <h3 style="margin-bottom: 20px; text-align: center; color: #4169E1;">DYNAMIC TEMPLATES</h3>
+    -->
     <dynamic-editor></dynamic-editor>
   </div>
 </template>

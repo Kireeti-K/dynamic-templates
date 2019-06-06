@@ -1,10 +1,10 @@
 <style scoped>
 
-.dynamic-container{
-   min-height: 16.2cm;
-   min-width: 16.1cm;
+.dynamic-template{
+   min-width: 21.0cm;
+   min-height: 29.8cm;
 }
-.dynamic-container:hover{
+.dynamic-template:hover{
    outline-color: orange;
 }
 </style>

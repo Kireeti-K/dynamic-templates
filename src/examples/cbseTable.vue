@@ -3,6 +3,8 @@
         color:black;
        border-color: black;
         border-collapse: collapse;
+        width: 100%;
+       
     }
     td,th {
         border: solid 1px gray;
@@ -14,7 +16,7 @@
     <div class="cbse-table"
         :style="itemObject.styles.computedStyles"
         :class="{'is-focused': isFocused}"
-        
+        @click.stop="() => EventBus.$emit('updateSelectedContainer',itemObject)"
     >
         <table class="table" >
             <tr>
@@ -24,29 +26,29 @@
                 <th rowspan="2">
                         subject
                 </th>
-                <th colspan="3">
+                <th :colspan="itemObject.data.subjects[0].terms[0].skills.length">
                         term 1
                 </th>
-                <th colspan="3">
+                <th :colspan="itemObject.data.subjects[0].terms[0].skills.length">
                         term 2
                 </th>
             </tr>
             <tr>
-                <th v-for="(skill) in itemObject.data.subjects[0].term1.skills" :key="skill.id" >
+                <th v-for="(skill) in itemObject.data.subjects[0].terms[0].skills" :key="skill.id" >
                     {{skill.id}}
                 </th>
-                <th v-for="(skill,n) in itemObject.data.subjects[0].term1.skills" :key="n" >
+                <th v-for="(skill,n) in itemObject.data.subjects[0].terms[1].skills" :key="n" >
                     {{skill.id}}
                 </th>
             </tr>
             <tr v-for="(subject,j) in itemObject.data.subjects" :key="j">
-                <td>{{j+1}}</td>
+                <td>{{(j)}}</td>
                 <td>{{subject.id}}</td>
 
-                <td v-for="(skill) in subject.term1.skills" :key="skill.id">
+                <td v-for="(skill) in subject.terms[0].skills" :key="skill.id">
                     {{skill.marks}}
                 </td>
-                <td v-for="(skill) in subject.term1.skills" :key="skill.id+1">
+                <td v-for="(skill) in subject.terms[1].skills" :key="skill.id+1">
                     {{skill.marks}}
                 </td>
                 
@@ -57,16 +59,17 @@
 </template>
 
 <script>
-
+import {EventBus} from "../components/EventBus";
 export default {
     name: "CbseTable",
-    props: ["itemObject","selectedItem"],
+    props: ["itemObject","selectedItem",],
     components: {
         
     },
     data() {
         return {
-            nsubjects:6
+            nsubjects:6,
+            EventBus
         }
     },
     computed:{

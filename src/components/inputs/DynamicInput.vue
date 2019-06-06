@@ -12,11 +12,29 @@
         display: flex;
     }
     .dynamic-input-row button{
-        padding: 0 12px;
-        border: none;
+        height: 30px;
+        border: 1px solid #ddd;
         border-radius: 4px;
-        background-color: lightgray;
+
+        background-color: #ddd;
         outline: none;
+        margin: 0px;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+        /* font-size: 18px; */
+    }
+    .dynamic-input-row button div{
+        width: 24px;
+        line-height: .8em;
+    }
+    .dynamic-input-row .left-btn {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+    .dynamic-input-row .right-btn {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
     }
     .smol{
         width: 20 px;
@@ -25,7 +43,9 @@
 
 <template>
     <div class="dynamic-input-row">
-        <button v-if="type == 'number'" @click="changeValue(1)">+</button>
+        <button v-if="type == 'number'" class="left-btn" @click="changeValue(1)">
+            <PlusIcon w="16px" h="16px" />
+        </button>
         <input  
             class="dynamic-input" 
             :style="{'width': inputWidth}"
@@ -35,11 +55,15 @@
             @input="handleInput"
             :class = "{smol:type == 'number'}"
         >
-        <button v-if="type == 'number'" @click="changeValue(-1)">-</button>
+        <button v-if="type == 'number'" class="right-btn" @click="changeValue(-1)">
+            <MinusIcon w="16px" h="16px" > </MinusIcon>
+        </button>
     </div>
 </template>
 
 <script>
+import PlusIcon from "vue-ionicons/dist/md-arrow-dropup.vue";
+import MinusIcon from "vue-ionicons/dist/md-arrow-dropdown.vue";
 export default {
     name: "DynamicInput",
     props: {
@@ -62,7 +86,7 @@ export default {
         },
         inputWidth() {
             if (this.containerWidth) return "100%";
-            else return this.type == 'number' ? '40px' : this.width;
+            else return this.type == 'number' ? '24px' : this.width;
         }
     },
     methods: {
@@ -74,6 +98,9 @@ export default {
             tvalue += sign * this.increment;
             this.$emit('input',tvalue);
         }
+    },
+    components:{
+        PlusIcon,MinusIcon
     }
 }
 </script>

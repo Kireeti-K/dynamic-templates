@@ -1,8 +1,8 @@
 <style>
     .editor-styles {
-        height: 570px;
+        height: var(--page-height);
         overflow: auto;
-        padding: 0px 24px;
+        padding: 0px 0px;
     }
     .styles-form {
         margin-top: 4px;

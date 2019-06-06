@@ -4,8 +4,8 @@
 
         <div  class="margin12">
                 <label for="is-static">
-                    Use Variable
                     <input type = "checkbox" id="is-static" v-model="useVariable">  
+                    Use Variable
                 </label>
         </div>
 
@@ -119,6 +119,16 @@ export default {
             }
         }
         
+    },
+    mounted(){
+        if(!this.selectedItem.static) {
+            this.variables.tables.forEach((t) => {
+                    if(t.id == this.selectedItem.variableID) {
+                        this.selectedVariable = t;
+                    }
+                }
+            );
+        }
     }
 }
 </script>

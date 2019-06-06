@@ -1,7 +1,7 @@
 <style>
     .composer-wrapper {
         width: 230px;
-        height: 633px;
+        height: var(--page-height);
         padding: 12px 24px;
         overflow-y: auto;
         position: relative;

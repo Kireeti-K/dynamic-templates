@@ -117,4 +117,11 @@ export default {
     .text-box{
         margin-top:24px;
     }
+    
+    select{
+        padding :8px;
+        border: 1px solid gray;
+        border-radius: 4px;
+        background-color: white;   
+    }
 </style>

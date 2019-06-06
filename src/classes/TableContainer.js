@@ -1,5 +1,8 @@
 /* eslint-disable import/prefer-default-export */
-import { Container, TableCellContainer } from '../internal';
+import {
+    Container, TableCellContainer, StyleSystem, WidthStyle, MarginStyle,
+    TextAlignStyle, FontStyle,
+} from '../internal';
 import DynamicTable from '../components/DynamicTable.vue';
 import DynamicTableComposer from '../components/composer/DynamicTableComposer.vue';
 import { randomString } from '../utils/string';
@@ -29,6 +32,10 @@ export class TableContainer extends Container {
             }
             this.data.rows.push(trow);
         }
+
+        this.styles = new StyleSystem([
+            new FontStyle(),
+        ]);
     }
 
     recomputeChildren() {

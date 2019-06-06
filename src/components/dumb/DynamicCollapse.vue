@@ -1,8 +1,7 @@
 <style scoped>
     .dynamic-collapse .collapse-label {
-        background-color: #eee;
-        padding: 6px 12px;
-        border-radius: 4px;
+        background-color: rgb(247, 247, 247);
+        padding: 8px 20px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -10,11 +9,15 @@
         font-weight: 500;
         cursor: pointer;
     }
+    
     .dynamic-collapse .icon {
         line-height: 0px;
     }
     .dynamic-collapse .content {
+        padding : 8px 20px;
+        /*
         margin: 6px 18px 6px 12px;
+        */
     }
 </style>
 

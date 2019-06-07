@@ -163,6 +163,11 @@ export class FlexStyle extends BaseStyle {
             }),
             new InputStyle({
                 label: '',
+                attr: 'align-items',
+                value: 'center',
+            }),
+            new InputStyle({
+                label: '',
                 attr: 'flex',
                 setOnChildren: true,
                 value: 1,

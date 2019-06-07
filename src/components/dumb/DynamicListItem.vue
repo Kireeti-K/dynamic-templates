@@ -72,6 +72,10 @@
     <div class="dynamic-option" 
         @mouseover="() => this.showMoveControls=true"
         @mouseleave="() => this.showMoveControls=false"
+        @dragover="dragOver"
+        @dragleave="dragLeave"
+        @drop="dropItem(listPos)"  
+       
     >
         <div class="floaty-icon" >
                 <div @click="() => moveItem(-1)" v-show="showMoveControls" class="move-button" v-if="listPos>0">
@@ -82,10 +86,10 @@
                 </div>
         </div>
 
-        <div class="item-name" v-on="$listeners" >
+        <div class="item-name" v-on="$listeners" draggable= "true" @dragstart="dragStart" >
             <slot />
         </div>
-        <div class="delete" @click="() => $emit('delete-clicked')" v-show="showMoveControls||true">
+        <div class="delete" @click="() => $emit('delete-clicked')" v-show=" deletable">
             <TrashIcon w="18px" h="18px" root-class="delete-icon" />
         </div>
     </div>
@@ -102,6 +106,10 @@ export default {
         listPos:{
             type:Number,
             default:0.5
+        },
+        deletable:{
+            type:Boolean,
+            default:true
         }
     },
     components: {
@@ -109,14 +117,31 @@ export default {
     },
     data(){
         return{
-            showMoveControls:false
+            showMoveControls:false,
         }
     },
     methods:{
         moveItem(dir){
             this.$emit('move-item',dir);
             this.showMoveControls=false;
+        },
+        dropItem() {
+            console.log('dropped item ');
+            this.$emit('dropped-item');
+            this.dragLeave();
+        },
+        dragStart() {
+            console.log('started dragging');
+            this.$emit('drag-started');
+        },
+        dragOver(event){
+            this.$emit('dragged-over');
+            event.preventDefault();
+        },
+        dragLeave(){
+            this.$emit('drag-leave');
         }
+
     }
 }
 </script>

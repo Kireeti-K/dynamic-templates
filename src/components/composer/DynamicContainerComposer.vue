@@ -43,7 +43,9 @@
         border-bottom: 1px solid #ccc;
         cursor: pointer;
     }
-
+    .discoBorder {
+        animation : disco .1s infinite alternate;
+    }
     /* this is a master piece, never delete */
     @keyframes disco{
         from{box-shadow: 0 0 4px red;}
@@ -76,17 +78,35 @@
 
 <template>
     <div class="editor-controls" >
+        <div v-if="selectedItem.parent">
+            <dynamic-list-item
+                :deletable = "false"
+                :listPos = "-2"
+                @dropped-item="droppedItem()"
+                @dragged-over="draggedOver(selectedItem.parent)"
+                :class="{discoBorder: dragHost == selectedItem.parent}"
+                @drag-leave="dragLeave"
+                @click="()=> updateSelectedItem(selectedItem.parent)"
+            >
+                Parent
+            </dynamic-list-item>
+        </div>
         <h4>Container</h4>
-
+       
         <!-- childen list -->
         <div class="container-list" v-if="selectedItem && selectedItem.children.length > 0" >
             <transition-group name="slide">
                 <dynamic-list-item v-for="(c, i) in selectedItem.children" :key="c.id"
-                    :class="{aboveall: movingItem == i}"
+                    :class="{aboveall: movingItem == i,discoBorder: dragHost == c}"
+                    :listPos="selectedItem.children.length == 1 ? -1 : i / (selectedItem.children.length - 1)"
                     @delete-clicked="() => deleteItem(c)" 
                     @move-item="(dir) => moveItem(c,i,dir)"
                     @click="()=> updateSelectedItem(c)"
-                    :listPos="selectedItem.children.length == 1 ? -1 : i / (selectedItem.children.length - 1)"
+                    @drag-started="dragStarted(c)"
+                    @dropped-item="droppedItem()"
+                    @dragged-over="draggedOver(c)"
+                    @drag-leave="dragLeave"
+                    
                 >
                     {{c.displayName}}
                 </dynamic-list-item>
@@ -110,6 +130,7 @@
 
         </transition>
     </div>
+        
 
     </div>
 </template>
@@ -146,7 +167,9 @@ export default {
                 }
             ]
             ,
-            movingItem: 0
+            movingItem: 0,
+            draggedItem : null,
+            dragHost :null,
         }
     },
     methods:{
@@ -180,6 +203,29 @@ export default {
         },
         clickedAway(){
             this.showAddMenu=false;
+        },
+        droppedItem(){
+            // this.receivingItem = item;
+            // alert('dropped yo')
+            // const host = this.dragHost;
+            // if(host == this.dragHost)
+            if(this.dragHost){
+                this.draggedItem.parent.deleteChild(this.draggedItem);
+                this.dragHost.addChild(this.draggedItem);
+            }
+        },
+        dragStarted(item){
+            this.draggedItem = item;
+        },
+        draggedOver(item) {
+            console.log('dragged something over');
+            if((item != this.draggedItem) && (item instanceof Container) && !(item instanceof TableContainer)){
+                this.dragHost = item;
+                console.log('set host haha')
+            }
+        },
+        dragLeave(){
+            this.dragHost = null;
         }
     },
     components: {

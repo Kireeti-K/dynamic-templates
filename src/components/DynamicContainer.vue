@@ -28,7 +28,9 @@
         @click.stop="() => EventBus.$emit('updateSelectedContainer', itemObject)"
     >
         <div class="container-children" v-if="itemObject.children.length==0" style="padding: 10px; color: #333;">Empty container</div>
-        <transition-group appear name="slide">
+        <!--
+            <transition-group appear name="slide">
+        -->
         <component 
             v-for="(child) in itemObject.children" :key="child.id"
             :class="{'is-editing': isEditing}"
@@ -38,7 +40,9 @@
             :selected-item="selectedItem" 
         >
         </component>
+        <!--
         </transition-group>
+        -->
     </div>
 </template>
 

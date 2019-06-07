@@ -42,13 +42,16 @@
 import { EventBus } from "../EventBus";
 import { TableCellContainer } from '../../classes/TableCellContainer';
 import BackIcon from "vue-ionicons/dist/md-arrow-back";
+import { TableContainer } from '../../classes/TableContainer';
+import { Container } from '../../classes/Container';
 
 export default {
     name: "DynamicComposer",
         props:['selectedItem'],
     computed:{
         showBack(){
-            return this.selectedItem && this.selectedItem.parent != null;
+            const notContainer = !(this.selectedItem  instanceof Container) || (this.selectedItem instanceof TableContainer);
+            return this.selectedItem && this.selectedItem.parent != null && notContainer;
         }
     },
     methods:{
